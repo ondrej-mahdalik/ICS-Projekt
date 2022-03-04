@@ -3,7 +3,7 @@
     public record RideEntity(Guid Id, Location From, Location To, DateTime Departure, DateTime Arrival, Guid DriverId, string? Note) : IEntity
     {
         public UserEntity? Driver { get; init; }
-        public ICollection<UserEntity> Passengers { get; init; } = new List<UserEntity>();
+        public ICollection<ReservationEntity> Reservations { get; init; } = new List<ReservationEntity>();
     }
 
     public struct Location
