@@ -3,8 +3,8 @@
     public record UserEntity(
         Guid Id, string Name, string Surname, string Phone, string? ImageUrl) : IEntity
     {
-        private ICollection<ReviewEntity> Reviews { get; init; } = new List<ReviewEntity>();
-        private ICollection<VehicleEntity> Vehicles { get; init; } = new List<VehicleEntity>();
-        private ICollection<ReservationEntity> Reservations { get; init; } = new List<ReservationEntity>();
+        public ICollection<ReviewEntity> Reviews { get; init; } = new List<ReviewEntity>();
+        public ICollection<VehicleEntity> Vehicles { get; init; } = new List<VehicleEntity>();
+        public ICollection<ReservationEntity> Reservations { get; init; } = new List<ReservationEntity>();
     }
 }
