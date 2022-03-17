@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Facades\" />
+    <ProjectReference Include="..\RideSharing.DAL\RideSharing.DAL.csproj" />
   </ItemGroup>
 
 </Project>
