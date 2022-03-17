@@ -1,4 +1,7 @@
-﻿namespace RideSharing.BL.Models;
+﻿using AutoMapper;
+using RideSharing.DAL.Entities;
+
+namespace RideSharing.BL.Models;
 
 public record RideDetailModel(
     string FromName,
@@ -26,4 +29,13 @@ public record RideDetailModel(
     public int Distance { get; set; }
     public TimeSpan Duration { get; set; }
     public List<UserDetailModel> Passengers { get; init; } = new();
+    
+    public class MapperProfile : Profile
+    {
+        public MapperProfile()
+        {
+            CreateMap<RideEntity, RideDetailModel>()
+                .ReverseMap();
+        }
+    }
 }

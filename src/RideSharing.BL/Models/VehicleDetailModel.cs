@@ -24,7 +24,8 @@ public record VehicleDetailModel(
     {
         public MapperProfile()
         {
-            CreateMap<VehicleEntity, VehicleDetailModel>();
+            CreateMap<VehicleEntity, VehicleDetailModel>()
+                .ReverseMap();
         }
     }
 }
