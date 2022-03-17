@@ -30,7 +30,6 @@
     <Folder Include="Factories\" />
     <Folder Include="Migrations\" />
     <Folder Include="Seeds\" />
-    <Folder Include="UnitOfWork\" />
   </ItemGroup>
 
 </Project>
