@@ -20,8 +20,8 @@ public record RideDetailModel(
     public double ToLatitude { get; set; } = ToLatitude;
     public double ToLongitude { get; set; } = ToLongitude;
     
-    public RideDetailDriverModel? Driver { get; set; }
-    public RideDetailVehicleModel? Vehicle { get; set; }
+    public UserDetailModel? Driver { get; set; }
+    public VehicleDetailModel? Vehicle { get; set; }
     
     public DateTime Departure { get; set; } = Departure;
     public DateTime Arrival { get; set; } = Arrival;
