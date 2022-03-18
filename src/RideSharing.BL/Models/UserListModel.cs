@@ -11,7 +11,8 @@ public record UserListModel(
     public string Surname { get; set; } = Surname;
     public string? ImageUrl { get; set; }
     public int NumberOfVehicles { get; init; }
-    
+    public List<ReviewDetailModel> Rating{ get; set; } = new();
+
     public class MapperProfile : Profile
     {
         public MapperProfile()
