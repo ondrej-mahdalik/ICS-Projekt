@@ -1,3 +1,28 @@
-﻿namespace RideSharing.BL.Models;
+﻿using AutoMapper;
+using RideSharing.Common.Enums;
+using RideSharing.DAL.Entities;
 
-public record VehicleListModel() : ModelBase;
+namespace RideSharing.BL.Models;
+
+public record VehicleListModel(
+    Guid OwnerId,
+    VehicleType Type,
+    string Make,
+    DateTime Registered,
+    ushort Seats) : ModelBase
+{
+    public Guid OwnerId { get; set; } = OwnerId;
+    public VehicleType Type { get; set; } = Type;
+    public string Make { get; set; } = Make;
+    public DateTime Registered { get; set; } = Registered;
+    public ushort Seats { get; set; } = Seats;
+    public string? ImageUrl { get; set; }
+    
+    public class MapperProfile : Profile
+    {
+        public MapperProfile()
+        {
+            CreateMap<VehicleEntity, VehicleListModel>();
+        }
+    }
+}
