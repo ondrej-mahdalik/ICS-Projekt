@@ -15,6 +15,9 @@ public record RideListModel(
     public DateTime Arrival { get; set; } = Arrival;
     public int Distance { get; set; }
     public TimeSpan Duration { get; set; }
+
+    public UserListModel? User { get; set; }
+    public RideListVehicleModel? Vehicle { get; set; }
     
     public class MapperProfile : Profile
     {
