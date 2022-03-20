@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RideSharing.DAL.Entities;
+using RideSharing.DAL.Seeds;
 
 namespace RideSharing.DAL;
 
@@ -54,7 +55,11 @@ public class RideSharingDbContext : DbContext
 
         if (_seedDemoData)
         {
-            // TODO
+            ReservationSeeds.Seed(modelBuilder);
+            ReviewSeeds.Seed(modelBuilder);
+            RideSeeds.Seed(modelBuilder);
+            UserSeeds.Seed(modelBuilder);
+            VehicleSeeds.Seed(modelBuilder);
         }
     }
 }
