@@ -5,6 +5,6 @@ namespace RideSharing.DAL.Entities
         string? ImageUrl) : IEntity
     {
         public UserEntity? Owner { get; init; }
-        public ICollection<RideEntity> Rides { get; init; }
+        public ICollection<RideEntity> Rides { get; init; } = new List<RideEntity>();
     }
 }

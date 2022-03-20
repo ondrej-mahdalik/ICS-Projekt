@@ -19,7 +19,7 @@ public record VehicleDetailModel(
     public DateTime Registered { get; set; } = Registered;
     public ushort Seats { get; set; } = Seats;
     public string? ImageUrl { get; set; }
-    
+
     public class MapperProfile : Profile
     {
         public MapperProfile()
