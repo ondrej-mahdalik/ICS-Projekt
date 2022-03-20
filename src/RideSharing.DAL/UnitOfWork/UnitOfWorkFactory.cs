@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace RideSharing.DAL.UnitOfWork
 {
     public class UnitOfWorkFactory : IUnitOfWorkFactory
     {
-        private readonly IDbContextFactory<CookBookDbContext> _dbContextFactory;
+        private readonly IDbContextFactory<RideSharingDbContext> _dbContextFactory;
 
-        public UnitOfWorkFactory(IDbContextFactory<CookBookDbContext> dbContextFactory)
+        public UnitOfWorkFactory(IDbContextFactory<RideSharingDbContext> dbContextFactory)
         {
             _dbContextFactory = dbContextFactory;
         }
