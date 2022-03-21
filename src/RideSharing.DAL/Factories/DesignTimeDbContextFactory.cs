@@ -15,7 +15,7 @@ namespace RideSharing.DAL.Factories
                 @"Data Source=(LocalDB)\MSSQLLocalDB;
                 Initial Catalog = RideSharing;
                 MultipleActiveResultSets = True;
-                Integrated Security = True; ");
+                Integrated Security = True; "); // Connection string will be moved into AppSettings.json when RideSahring.App will be created (in 3. phase of development)
 
             return new RideSharingDbContext(builder.Options);
         }
