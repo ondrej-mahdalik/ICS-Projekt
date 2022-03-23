@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using RideSharing.DAL.Entities;
 
-namespace RideSharing.DAL.Seeds;
+namespace RideSharing.Common.Tests.Seeds;
 
 public static class ReviewSeeds
 {

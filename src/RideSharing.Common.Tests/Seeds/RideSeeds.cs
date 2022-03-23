@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using RideSharing.DAL.Entities;
 
-namespace RideSharing.DAL.Seeds;
+namespace RideSharing.Common.Tests.Seeds;
 
 public static class RideSeeds
 {
@@ -14,6 +14,7 @@ public static class RideSeeds
         ToName: "Brno",
         ToLatitude: 49.22611604448722,
         ToLongitude: 16.582455843955017,
+        Distance: 350,
         Departure: DateTime.Parse("22.2.2022 15:00"),
         Arrival: DateTime.Parse("22.2.2022 18:00"),
         DriverId: Guid.Parse(input: "f34cd643-1226-406d-971d-b5e6f745938e"),
@@ -23,8 +24,8 @@ public static class RideSeeds
 
     static RideSeeds()
     {
-        PrahaBrno.Reservations.Add(ReservationSeeds.BrnoTwoSeats);
-        PrahaBrno.Reviews.Add(ReviewSeeds.Perfect);
+        //PrahaBrno.Reservations.Add(ReservationSeeds.BrnoTwoSeats);
+        //PrahaBrno.Reviews.Add(ReviewSeeds.Perfect);
     }
 
     public static void Seed(this ModelBuilder modelBuilder)

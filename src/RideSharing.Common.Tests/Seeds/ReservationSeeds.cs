@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using RideSharing.DAL.Entities;
 
-namespace RideSharing.DAL.Seeds;
+namespace RideSharing.Common.Tests.Seeds;
 
 public static class ReservationSeeds
 {
@@ -16,7 +16,7 @@ public static class ReservationSeeds
 
     public static void Seed(this ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ReviewEntity>().HasData(
+        modelBuilder.Entity<ReservationEntity>().HasData(
             BrnoTwoSeats
         );
     }

@@ -6,14 +6,14 @@ namespace RideSharing.BL.Models;
 
 public record VehicleDetailModel(
     Guid OwnerId,
-    VehicleType Type,
+    VehicleType VehicleType,
     string Make,
     string Model,
     DateTime Registered,
     ushort Seats) : ModelBase
 {
     public Guid OwnerId { get; set; } = OwnerId;
-    public VehicleType Type { get; set; } = Type;
+    public VehicleType VehicleType { get; set; } = VehicleType;
     public string Make { get; set; } = Make;
     public string Model { get; set; } = Model;
     public DateTime Registered { get; set; } = Registered;
