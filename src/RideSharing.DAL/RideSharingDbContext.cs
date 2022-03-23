@@ -50,7 +50,7 @@ public class RideSharingDbContext : DbContext
 
         modelBuilder.Entity<UserEntity>()
             .HasMany(i => i.Reservations)
-            .WithOne(i => i.User)
+            .WithOne(i => i.ReservingUser)
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<VehicleEntity>()

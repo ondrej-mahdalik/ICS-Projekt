@@ -17,7 +17,6 @@ public static class RideSeeds
         Distance: 350,
         Departure: DateTime.Parse("22.2.2022 15:00"),
         Arrival: DateTime.Parse("22.2.2022 18:00"),
-        DriverId: Guid.Parse(input: "f34cd643-1226-406d-971d-b5e6f745938e"),
         VehicleId: Guid.Parse(input: "0a5ef2a1-d541-45ac-82a3-6b63a24d0572"),
         Note: "No eating in the car !"
     );

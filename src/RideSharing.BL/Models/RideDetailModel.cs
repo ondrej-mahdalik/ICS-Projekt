@@ -38,6 +38,7 @@ public record RideDetailModel(
         {
             CreateMap<RideEntity, RideDetailModel>()
                 .ForMember(model => model.Duration, action => action.MapFrom(src => src.Arrival - src.Departure))
+                .ForMember(model => model.Driver, action => action.MapFrom(src => src.Vehicle!.Owner))
                 .ReverseMap();
         }
     }

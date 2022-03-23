@@ -30,17 +30,16 @@ public static class UserSeeds
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UserEntity>().HasData(
-            JohnDoe with
-            {
-                Reservations = Array.Empty<ReservationEntity>(),
-                CreatedRides = Array.Empty<RideEntity>()
-            },
-            ElonTusk with
-            {
-                Reviews = Array.Empty<ReviewEntity>(),
-                Vehicles = Array.Empty<VehicleEntity>(),
-                CreatedRides = Array.Empty<RideEntity>()
-            }
+            //JohnDoe with
+            //{
+            //    Reservations = Array.Empty<ReservationEntity>(),
+            //},
+            //ElonTusk with
+            //{
+            //    Reviews = Array.Empty<ReviewEntity>(),
+            //    Vehicles = Array.Empty<VehicleEntity>(),
+            //}
+            JohnDoe, ElonTusk
         );
     }
 }
