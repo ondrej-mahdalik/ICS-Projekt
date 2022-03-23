@@ -3,14 +3,14 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.EquivalencyExpression;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using RideSharing.BL;
+using RideSharing.Common.Tests;
+using RideSharing.Common.Tests.Factories;
+using RideSharing.DAL;
+using RideSharing.DAL.UnitOfWork;
 using Xunit;
 using Xunit.Abstractions;
-using RideSharing.Common.Tests;
-using RideSharing.DAL;
-using RideSharing.Common.Tests.Factories;
-using RideSharing.DAL.UnitOfWork;
+
+namespace RideSharing.BL.Tests;
 
 public class CRUDFacadeTestsBase : IAsyncLifetime
 {

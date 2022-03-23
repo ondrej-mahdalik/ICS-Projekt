@@ -23,8 +23,8 @@ public static class RideSeeds
 
     static RideSeeds()
     {
-        PrahaBrno.Reservations.Add(ReservationSeeds.BrnoTwoSeats);
-        PrahaBrno.Reviews.Add(ReviewSeeds.Perfect);
+        //PrahaBrno.Reservations.Add(ReservationSeeds.BrnoTwoSeats);
+        //PrahaBrno.Reviews.Add(ReviewSeeds.Perfect);
     }
 
     public static void Seed(this ModelBuilder modelBuilder)

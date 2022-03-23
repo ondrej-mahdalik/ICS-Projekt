@@ -16,7 +16,7 @@ public static class ReservationSeeds
 
     public static void Seed(this ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ReviewEntity>().HasData(
+        modelBuilder.Entity<ReservationEntity>().HasData(
             BrnoTwoSeats
         );
     }

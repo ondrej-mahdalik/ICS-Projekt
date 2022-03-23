@@ -35,8 +35,13 @@ public class RideSharingDbContext : DbContext
 
         modelBuilder.Entity<UserEntity>()
             .HasMany(i => i.Reviews)
-            .WithOne(i => i.User)
+            .WithOne(i => i.ReviewedUser)
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<UserEntity>()
+            .HasMany(i => i.SubmittedReviews)
+            .WithOne(i => i.AuthorUser)
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<UserEntity>()
             .HasMany(i => i.Vehicles)
@@ -56,10 +61,10 @@ public class RideSharingDbContext : DbContext
         if (_seedDemoData)
         {
             ReservationSeeds.Seed(modelBuilder);
+            VehicleSeeds.Seed(modelBuilder);
             ReviewSeeds.Seed(modelBuilder);
             RideSeeds.Seed(modelBuilder);
             UserSeeds.Seed(modelBuilder);
-            VehicleSeeds.Seed(modelBuilder);
         }
     }
 }
