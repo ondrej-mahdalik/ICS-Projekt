@@ -1,8 +1,7 @@
-﻿namespace RideSharing.DAL.Entities
+﻿namespace RideSharing.DAL.Entities;
+
+public record ReservationEntity(Guid Id, Guid UserId, Guid RideId, ushort Seats, DateTime Timestamp) : IEntity
 {
-    public record ReservationEntity(Guid Id, Guid UserId, Guid RideId, ushort Seats, DateTime Timestamp) : IEntity
-    {
-        public UserEntity? User { get; init; }
-        public RideEntity? Ride { get; init; }
-    }
+    public UserEntity? User { get; init; }
+    public RideEntity? Ride { get; init; }
 }

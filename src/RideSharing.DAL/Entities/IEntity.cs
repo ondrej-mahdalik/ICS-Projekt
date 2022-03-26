@@ -1,7 +1,6 @@
-﻿namespace RideSharing.DAL.Entities
+﻿namespace RideSharing.DAL.Entities;
+
+public interface IEntity
 {
-    public interface IEntity
-    {
-        public Guid Id { get; }
-    }
+    public Guid Id { get; }
 }
