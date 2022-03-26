@@ -11,6 +11,7 @@ public record RideDetailModel(
     double ToLatitude,
     double ToLongitude,
     int Distance,
+    int SharedSeats,
     DateTime Departure,
     DateTime Arrival) : ModelBase
 {
@@ -28,6 +29,7 @@ public record RideDetailModel(
     public DateTime Arrival { get; set; } = Arrival;
     public string? Note { get; set; }
     public int Distance { get; set; } = Distance;
+    public int SharedSeats { get; set; } = SharedSeats;
     public TimeSpan Duration => Arrival - Departure;
     
     public List<RideDetailReservationModel> Reservations { get; init; } = new();
