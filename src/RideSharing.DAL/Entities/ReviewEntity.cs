@@ -1,8 +1,9 @@
 ﻿namespace RideSharing.DAL.Entities
 {
-    public record ReviewEntity(Guid Id, Guid RideId, Guid UserId, ushort Rating) : IEntity
+    public record ReviewEntity(Guid Id, Guid RideId, Guid ReviewedUserId, Guid? AuthorUserId, ushort Rating) : IEntity
     {
         public RideEntity? Ride { get; init; }
-        public UserEntity? User { get; init; }
+        public UserEntity? ReviewedUser { get; init; }
+        public UserEntity? AuthorUser { get; init; }
     }
 }

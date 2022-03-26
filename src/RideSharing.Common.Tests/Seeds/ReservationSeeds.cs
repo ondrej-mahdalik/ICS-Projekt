@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using RideSharing.DAL.Entities;
 
-namespace RideSharing.DAL.Seeds;
+namespace RideSharing.Common.Tests.Seeds;
 
 public static class ReservationSeeds
 {
@@ -11,7 +12,7 @@ public static class ReservationSeeds
         ReservingUserId: Guid.Parse(input: "505b1e64-ed3c-44d1-883e-67de32b3ca59"),
         RideId: Guid.Parse("42b612c1-b668-4168-9b73-71acfb64f094"),
         Seats: 2,
-        Timestamp: DateTime.Parse("20.02.2022")
+        Timestamp: DateTime.Parse("02/22/2022 14:00", CultureInfo.InvariantCulture)
     );
 
     public static void Seed(this ModelBuilder modelBuilder)

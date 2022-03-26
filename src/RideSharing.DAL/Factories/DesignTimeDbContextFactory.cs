@@ -17,6 +17,10 @@ namespace RideSharing.DAL.Factories
                 MultipleActiveResultSets = True;
                 Integrated Security = True; "); // Connection string will be moved into AppSettings.json when RideSahring.App will be created (in 3. phase of development)
 
+#if  DEBUG
+            builder.EnableSensitiveDataLogging();
+#endif
+
             return new RideSharingDbContext(builder.Options);
         }
     }

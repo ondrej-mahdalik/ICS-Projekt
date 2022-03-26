@@ -23,7 +23,7 @@ public record UserListModel(
                     action => action.MapFrom(src => src.Vehicles.Count))
                 .ForMember(dst => dst.UpcomingRidesCount,
                     action => action.MapFrom(src =>
-                        src.CreatedRides.Count(x => x.Departure > DateTime.Now) +
+                        src.Vehicles.SelectMany(x => x.Rides).Count(x => x.Departure > DateTime.Now) +
                         src.Reservations.Count(x => x.Ride != null && x.Ride.Departure > DateTime.Now)));
         }
     }

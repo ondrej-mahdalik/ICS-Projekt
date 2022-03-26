@@ -10,6 +10,8 @@ public record RideDetailModel(
     string ToName,
     double ToLatitude,
     double ToLongitude,
+    int Distance,
+    int SharedSeats,
     DateTime Departure,
     DateTime Arrival) : ModelBase
 {
@@ -26,16 +28,19 @@ public record RideDetailModel(
     public DateTime Departure { get; set; } = Departure;
     public DateTime Arrival { get; set; } = Arrival;
     public string? Note { get; set; }
-    public int Distance { get; set; }
+    public int Distance { get; set; } = Distance;
+    public int SharedSeats { get; set; } = SharedSeats;
     public TimeSpan Duration => Arrival - Departure;
     
-    public List<UserDetailModel> Passengers { get; init; } = new();
+    public List<RideDetailReservationModel> Reservations { get; init; } = new();
     
     public class MapperProfile : Profile
     {
         public MapperProfile()
         {
             CreateMap<RideEntity, RideDetailModel>()
+                .ForMember(model => model.Duration, action => action.MapFrom(src => src.Arrival - src.Departure))
+                .ForMember(model => model.Driver, action => action.MapFrom(src => src.Vehicle!.Owner))
                 .ReverseMap();
         }
     }

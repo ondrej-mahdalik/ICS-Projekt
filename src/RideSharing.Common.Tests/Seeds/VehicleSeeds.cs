@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using RideSharing.DAL.Entities;
 using RideSharing.Common.Enums;
 
-namespace RideSharing.DAL.Seeds;
+namespace RideSharing.Common.Tests.Seeds;
 
 public static class VehicleSeeds
 {
