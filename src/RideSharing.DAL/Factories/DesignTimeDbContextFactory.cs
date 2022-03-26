@@ -17,6 +17,11 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<RideSharin
                 MultipleActiveResultSets = True;
                 Integrated Security = True; "); // Connection string will be moved into AppSettings.json when RideSahring.App will be created (in 3. phase of development)
 
-        return new RideSharingDbContext(builder.Options);
+#if  DEBUG
+            builder.EnableSensitiveDataLogging();
+#endif
+
+            return new RideSharingDbContext(builder.Options);
+        }
     }
 }
