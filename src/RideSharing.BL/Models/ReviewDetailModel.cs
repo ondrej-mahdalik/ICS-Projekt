@@ -3,12 +3,12 @@ using RideSharing.DAL.Entities;
 
 namespace RideSharing.BL.Models;
 
-public record ReviewDetailModel(ushort Rating, Guid ReviewedUserId, Guid AuthorUserId, Guid RideId) : ModelBase
+public record ReviewDetailModel(ushort Rating) : ModelBase
 {
     public ushort Rating { get; set; } = Rating;
-    public Guid ReviewedUserId { get; set; } = ReviewedUserId;
-    public Guid AuthorUserId { get; set; } = AuthorUserId;
-    public Guid RideId { get; set; } = RideId;
+    public RideDetailModel? Ride { get; set; }
+    public UserDetailModel? ReviewedUser { get; set; }
+    public UserDetailModel? AuthorUser { get; set; }
 
     public class MapperProfile : Profile
     {

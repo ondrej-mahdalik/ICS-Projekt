@@ -22,14 +22,23 @@ public static class UserSeeds
     );
     static UserSeeds()
     {
-        JohnDoe.Vehicles.Add(VehicleSeeds.Felicia);
-        JohnDoe.Reviews.Add(ReviewSeeds.Perfect);
-        ElonTusk.Reservations.Add(ReservationSeeds.BrnoTwoSeats);
+        //JohnDoe.Vehicles.Add(VehicleSeeds.Felicia);
+        //JohnDoe.Reviews.Add(ReviewSeeds.Perfect);
+        //ElonTusk.Reservations.Add(ReservationSeeds.BrnoTwoSeats);
     }
 
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UserEntity>().HasData(
+            //JohnDoe with
+            //{
+            //    Reservations = Array.Empty<ReservationEntity>(),
+            //},
+            //ElonTusk with
+            //{
+            //    Reviews = Array.Empty<ReviewEntity>(),
+            //    Vehicles = Array.Empty<VehicleEntity>(),
+            //}
             JohnDoe, ElonTusk
         );
     }
