@@ -31,6 +31,7 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
             ToLatitude: 49.195061,
             ToLongitude: 16.606836,
             Distance: 203,
+            SharedSeats: 4,
             Departure: new DateTime(2022, 3, 25, 09, 04, 00),
             Arrival: new DateTime(2022, 3, 25, 12, 04, 00)
         );
@@ -49,7 +50,7 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
     public async Task GetById__SeededRide()
     {
         var ride = await _rideFacadeSUT.GetAsync(RideSeeds.PrahaBrno.Id);
-        Assert.Equal(Mapper.Map<RideDetailModel>(RideSeeds.PrahaBrno).Id, ride.Id);
+        Assert.Equal(Mapper.Map<RideDetailModel>(RideSeeds.PrahaBrno).Id, ride?.Id);
     }
 
     [Fact]
@@ -74,6 +75,7 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
             ToLatitude: 45.464664,
             ToLongitude: 9.188540,
             Distance: 861,
+            SharedSeats: 3,
             Departure: new DateTime(2022, 03, 26, 11, 40, 00),
             Arrival: new DateTime(2022, 03, 26, 19, 41, 00)
         );
@@ -95,7 +97,8 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
             ToLongitude: RideSeeds.PrahaBrno.ToLongitude,
             Distance: RideSeeds.PrahaBrno.Distance,
             Departure: RideSeeds.PrahaBrno.Departure,
-            Arrival: RideSeeds.PrahaBrno.Arrival
+            Arrival: RideSeeds.PrahaBrno.Arrival,
+            SharedSeats:RideSeeds.PrahaBrno.SharedSeats
         )
         {
             Id = RideSeeds.PrahaBrno.Id
