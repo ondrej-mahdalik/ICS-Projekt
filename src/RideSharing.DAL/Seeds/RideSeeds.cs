@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using RideSharing.DAL.Entities;
 
@@ -15,8 +16,9 @@ public static class RideSeeds
         ToLatitude: 49.22611604448722,
         ToLongitude: 16.582455843955017,
         Distance: 350,
-        Departure: DateTime.Parse("22.2.2022 15:00"),
-        Arrival: DateTime.Parse("22.2.2022 18:00"),
+        SharedSeats: 4,
+        Departure: DateTime.Parse("22.2.2022 15:00", CultureInfo.InvariantCulture),
+        Arrival: DateTime.Parse("22.2.2022 18:00", CultureInfo.InvariantCulture),
         VehicleId: Guid.Parse(input: "0a5ef2a1-d541-45ac-82a3-6b63a24d0572"),
         Note: "No eating in the car !"
     );
