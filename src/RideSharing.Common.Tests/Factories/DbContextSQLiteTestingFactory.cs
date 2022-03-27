@@ -6,12 +6,14 @@ namespace RideSharing.Common.Tests.Factories;
 public class DbContextSQLiteTestingFactory : IDbContextFactory<RideSharingDbContext>
 {
     private readonly string _databaseName;
-    private readonly bool _seedTestingData;
+    private readonly bool _seedDALTestingData;
+    private readonly bool _seedBLTestingData;
 
-    public DbContextSQLiteTestingFactory(string databaseName, bool seedTestingData = false)
+    public DbContextSQLiteTestingFactory(string databaseName, bool seedDALTestingData = false, bool seedBLTestingData = false)
     {
         _databaseName = databaseName;
-        _seedTestingData = seedTestingData;
+        _seedDALTestingData = seedDALTestingData;
+        _seedBLTestingData = seedBLTestingData;
     }
 
     public RideSharingDbContext CreateDbContext()
@@ -22,6 +24,6 @@ public class DbContextSQLiteTestingFactory : IDbContextFactory<RideSharingDbCont
          //builder.LogTo(System.Console.WriteLine); //Enable in case you want to see tests details, enabled may cause some inconsistencies in tests
          //builder.EnableSensitiveDataLogging();
         
-        return new RideSharingTestingDbContext(builder.Options, _seedTestingData);
+        return new RideSharingTestingDbContext(builder.Options, _seedDALTestingData, _seedBLTestingData);
     }
 }

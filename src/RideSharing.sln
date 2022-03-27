@@ -20,7 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RideSharing.DAL.Tests", "Ri
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{85DC0A63-39DC-4977-8030-0616FCBBA1E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RideSharing.Common.Tests", "RideSharing.Common.Tests\RideSharing.Common.Tests.csproj", "{558EE2FD-5A31-478E-974F-C77EA5249AB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RideSharing.Common.Tests", "RideSharing.Common.Tests\RideSharing.Common.Tests.csproj", "{558EE2FD-5A31-478E-974F-C77EA5249AB9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

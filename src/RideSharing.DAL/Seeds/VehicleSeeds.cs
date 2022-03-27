@@ -14,7 +14,7 @@ public static class VehicleSeeds
         VehicleType: VehicleType.Car,
         Make: "Škoda",
         Model: "Felicia",
-        Registered: DateTime.Parse("16.5.1996"),
+        Registered: DateTime.Parse("08/05/1996", CultureInfo.InvariantCulture),
         Seats: 5,
         ImageUrl: "https://auta5p.eu/katalog/skoda/felicia_28.jpg");
 

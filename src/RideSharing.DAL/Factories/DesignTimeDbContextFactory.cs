@@ -22,6 +22,6 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<RideSharin
 #endif
 
             return new RideSharingDbContext(builder.Options);
-        }
     }
 }
+

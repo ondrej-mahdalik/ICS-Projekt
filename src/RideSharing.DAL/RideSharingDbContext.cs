@@ -23,6 +23,7 @@ public class RideSharingDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        
         modelBuilder.Entity<RideEntity>()
             .HasMany(i => i.Reservations)
             .WithOne(i => i.Ride)
@@ -31,12 +32,12 @@ public class RideSharingDbContext : DbContext
         modelBuilder.Entity<ReservationEntity>()
             .HasOne(i => i.ReservingUser)
             .WithMany(i => i.Reservations)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);// BL has Restrict
 
         modelBuilder.Entity<RideEntity>()
             .HasMany(i => i.Reviews)
             .WithOne(i => i.Ride)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);// BL has Restrict
 
         modelBuilder.Entity<UserEntity>()
             .HasMany(i => i.Reviews)
@@ -46,7 +47,7 @@ public class RideSharingDbContext : DbContext
         modelBuilder.Entity<UserEntity>()
             .HasMany(i => i.SubmittedReviews)
             .WithOne(i => i.AuthorUser)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);// BL has Restrict
 
         modelBuilder.Entity<UserEntity>()
             .HasMany(i => i.Vehicles)
