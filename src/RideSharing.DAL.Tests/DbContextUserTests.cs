@@ -36,22 +36,19 @@ public class DbContextUserTests : DbContextTestsBase
 
         //Assert
         await using var dbx = await DbContextFactory.CreateDbContextAsync();
-        var actualEntity = await dbx.UserEntities
-            .SingleAsync(i => i.Id == entity.Id);
+        var actualEntity = await dbx.UserEntities.SingleAsync(i => i.Id == entity.Id);
 
         DeepAssert.Equal(entity, actualEntity);
-
     }
 
     [Fact]
     public async Task GetById_Only_User()
     {
         //Arrange
-            var expected = UserSeeds.GetNoRelationsEntity(UserSeeds.ReservationUser1);
+        var expected = UserSeeds.GetNoRelationsEntity(UserSeeds.ReservationUser1);
 
         //Act
-        var entity = await RideSharingDbContextSUT.UserEntities
-            .SingleAsync(i => i.Id == UserSeeds.ReservationUser1.Id);
+        var entity = await RideSharingDbContextSUT.UserEntities.SingleAsync(i => i.Id == UserSeeds.ReservationUser1.Id);
 
         //Assert
         DeepAssert.Equal(expected, entity);
@@ -66,8 +63,7 @@ public class DbContextUserTests : DbContextTestsBase
         expected.Vehicles.Add(VehicleSeeds.Karosa);
 
         //Act
-        var entity = await RideSharingDbContextSUT.UserEntities
-            .Include(i => i.Vehicles)
+        var entity = await RideSharingDbContextSUT.UserEntities.Include(i => i.Vehicles)
             .SingleAsync(i => i.Id == UserSeeds.DriverUser.Id);
 
         //Assert
@@ -84,10 +80,9 @@ public class DbContextUserTests : DbContextTestsBase
         var expected = UserSeeds.GetNoRelationsEntity(UserSeeds.DriverUser);
         expected.Vehicles.Add(feliciaWRides);
         expected.Vehicles.Add(VehicleSeeds.Karosa);
-        
+
         //Act
-        var entity = await RideSharingDbContextSUT.UserEntities
-            .Include(i => i.Vehicles)
+        var entity = await RideSharingDbContextSUT.UserEntities.Include(i => i.Vehicles)
             .ThenInclude(i => i.Rides)
             .SingleAsync(i => i.Id == UserSeeds.DriverUser.Id);
 
@@ -100,12 +95,11 @@ public class DbContextUserTests : DbContextTestsBase
     {
         //Arrange
         var expected = UserSeeds.GetNoRelationsEntity(UserSeeds.ReservationUser1);
-        expected.Reservations.Add(ReservationSeeds.User1PragueBrno); 
+        expected.Reservations.Add(ReservationSeeds.User1PragueBrno);
         expected.Reservations.Add(ReservationSeeds.User1BrnoBratislava);
 
         //Act
-        var entity = await RideSharingDbContextSUT.UserEntities
-            .Include(i => i.Reservations)
+        var entity = await RideSharingDbContextSUT.UserEntities.Include(i => i.Reservations)
             .SingleAsync(i => i.Id == UserSeeds.ReservationUser1.Id);
 
         //Assert
@@ -120,8 +114,7 @@ public class DbContextUserTests : DbContextTestsBase
         expected.Reviews.Add(ReviewSeeds.DriverPragueBrnoReview);
 
         //Act
-        var entity = await RideSharingDbContextSUT.UserEntities
-            .Include(i => i.Reviews)
+        var entity = await RideSharingDbContextSUT.UserEntities.Include(i => i.Reviews)
             .SingleAsync(i => i.Id == UserSeeds.DriverUser.Id);
 
         //Assert
@@ -136,8 +129,7 @@ public class DbContextUserTests : DbContextTestsBase
         expected.SubmittedReviews.Add(ReviewSeeds.DriverAuthoredPragueBrnoReview);
 
         //Act
-        var entity = await RideSharingDbContextSUT.UserEntities
-            .Include(i => i.SubmittedReviews)
+        var entity = await RideSharingDbContextSUT.UserEntities.Include(i => i.SubmittedReviews)
             .SingleAsync(i => i.Id == UserSeeds.DriverUser.Id);
 
         //Assert
@@ -149,14 +141,13 @@ public class DbContextUserTests : DbContextTestsBase
     {
         //Arrange
         var baseEntity = UserSeeds.UserUpdate;
-        var entity =
-            baseEntity with
-            {
-                Name = baseEntity.Name + "Updated",
-                Surname = baseEntity.Surname + "Updated",
-                Phone = baseEntity.Phone + "Updated",
-                ImageUrl = baseEntity.ImageUrl + "Updated"
-            }; 
+        var entity = baseEntity with
+        {
+            Name = baseEntity.Name + "Updated",
+            Surname = baseEntity.Surname + "Updated",
+            Phone = baseEntity.Phone + "Updated",
+            ImageUrl = baseEntity.ImageUrl + "Updated"
+        };
 
         //Act
         RideSharingDbContextSUT.UserEntities.Update(entity);
@@ -173,7 +164,7 @@ public class DbContextUserTests : DbContextTestsBase
     {
         //Arrange
         var baseEntity = UserSeeds.UserDelete;
-        
+
         //Act
         RideSharingDbContextSUT.UserEntities.Remove(baseEntity);
         await RideSharingDbContextSUT.SaveChangesAsync();
@@ -188,7 +179,6 @@ public class DbContextUserTests : DbContextTestsBase
         //Arrange
         var baseEntity = UserSeeds.UserDelete;
 
-
         //Act
         RideSharingDbContextSUT.UserEntities.Remove(
             RideSharingDbContextSUT.UserEntities.Single(i => i.Id == baseEntity.Id));
@@ -202,39 +192,39 @@ public class DbContextUserTests : DbContextTestsBase
     public async Task Delete_CascadeDeleteVehicles_User()
     {
         //Arrange
-        var baseEntity = UserSeeds.CascadeDeleteUser;
-        var baseEntityVehicle = VehicleSeeds.CascadeDeleteVehicle;
+        var baseEntity = UserSeeds.JustVehicleOwnerUser;
+        var baseEntityVehicle = VehicleSeeds.OneVehicle;
 
         //Act
-        RideSharingDbContextSUT.UserEntities.Remove(baseEntity);
+        RideSharingDbContextSUT.UserEntities.Remove(UserSeeds.JustVehicleOwnerUser);
         await RideSharingDbContextSUT.SaveChangesAsync();
 
         //Assert
         Assert.False(await RideSharingDbContextSUT.VehicleEntities.AnyAsync(i => i.Id == baseEntityVehicle.Id));
-
     }
-    
+
     [Fact]
     public async Task Delete_CascadeDeleteReservations_User()
     {
         //Arrange
-        var baseEntity = UserSeeds.CascadeDeleteUser;
-        var baseEntityOwnReservation = ReservationSeeds.CascadeDeleteReservation;
+        var baseEntity = UserSeeds.JustReservationOwnerUser;
+        var baseEntityOwnReservation = ReservationSeeds.JustOneReservation;
 
         //Act
         RideSharingDbContextSUT.UserEntities.Remove(baseEntity);
         await RideSharingDbContextSUT.SaveChangesAsync();
 
         //Assert
-        Assert.False(await RideSharingDbContextSUT.ReservationEntities.AnyAsync(i => i.Id == baseEntityOwnReservation.Id));
+        Assert.False(
+            await RideSharingDbContextSUT.ReservationEntities.AnyAsync(i => i.Id == baseEntityOwnReservation.Id));
     }
 
     [Fact]
     public async Task Delete_CascadeDeleteObtainedReviews_User()
     {
         //Arrange
-        var baseEntity = UserSeeds.CascadeDeleteUser;
-        var baseEntityObtainedReview = ReviewSeeds.CascadeDeleteObtainedReview;
+        var baseEntity = UserSeeds.JustObtainedReviewUser;
+        var baseEntityObtainedReview = ReviewSeeds.JustObtainedReview;
 
         //Act
         RideSharingDbContextSUT.UserEntities.Remove(baseEntity);
@@ -245,18 +235,21 @@ public class DbContextUserTests : DbContextTestsBase
     }
 
     [Fact]
-    public async Task Delete_CascadeDeleteSubmittedReviews_User()
+    public async Task Delete_NoCascadeDeleteSubmittedReviews_User()
     {
         //Arrange
-        var baseEntity = UserSeeds.CascadeDeleteUser;
-        var baseEntitySubmittedReview = ReviewSeeds.CascadeDeleteSubmittedReview;
+        var baseEntity = RideSeeds.GetNoRelationsEntity(RideSeeds.JustReviewRide);
+        baseEntity.Reviews.Add(ReviewSeeds.JustRideReview);
+        var baseEntitySubmittedReview = ReviewSeeds.JustRideReview;
 
         //Act
-        RideSharingDbContextSUT.UserEntities.Remove(baseEntity);
+        RideSharingDbContextSUT.RideEntities.Remove(baseEntity);
         await RideSharingDbContextSUT.SaveChangesAsync();
 
         //Assert
-        Assert.False(await RideSharingDbContextSUT.ReviewEntities.AnyAsync(i => i.Id == baseEntitySubmittedReview.Id));
+        Assert.True(await RideSharingDbContextSUT.ReviewEntities.AnyAsync(i => i.Id == baseEntitySubmittedReview.Id));
+        var review =
+            await RideSharingDbContextSUT.ReviewEntities.SingleAsync(i => i.Id == baseEntitySubmittedReview.Id);
+        Assert.True(review.RideId == null);
     }
-    
 }

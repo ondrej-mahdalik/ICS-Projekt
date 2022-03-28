@@ -9,7 +9,7 @@ using Xunit.Abstractions;
 
 namespace RideSharing.DAL.Tests;
 
-public class  DbContextTestsBase : IAsyncLifetime
+public class DbContextTestsBase : IAsyncLifetime
 {
     protected IDbContextFactory<RideSharingDbContext> DbContextFactory { get; }
     protected RideSharingDbContext RideSharingDbContextSUT { get; }
@@ -18,11 +18,11 @@ public class  DbContextTestsBase : IAsyncLifetime
     {
         XUnitTestOutputConverter converter = new(output);
         Console.SetOut(converter);
-        
+
         // DbContextFactory = new DbContextTestingInMemoryFactory(GetType().Name, seedTestingData: true);
         // DbContextFactory = new DbContextLocalDBTestingFactory(GetType().FullName!, seedTestingData: true);
         DbContextFactory = new DbContextSQLiteTestingFactory(GetType().FullName!, seedDALTestingData: true);
-        
+
         RideSharingDbContextSUT = DbContextFactory.CreateDbContext();
     }
 

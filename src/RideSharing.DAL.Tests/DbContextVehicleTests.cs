@@ -41,8 +41,7 @@ public class DbContextVehicleTests : DbContextTestsBase
 
         //Assert
         await using var dbx = await DbContextFactory.CreateDbContextAsync();
-        var actualEntity = await dbx.VehicleEntities
-            .SingleAsync(i => i.Id == entity.Id);
+        var actualEntity = await dbx.VehicleEntities.SingleAsync(i => i.Id == entity.Id);
 
         DeepAssert.Equal(entity, actualEntity);
     }
@@ -54,8 +53,7 @@ public class DbContextVehicleTests : DbContextTestsBase
         var expected = VehicleSeeds.GetNoRelationsEntity(VehicleSeeds.Felicia);
 
         //Act
-        var entity = await RideSharingDbContextSUT.VehicleEntities
-            .SingleAsync(i => i.Id == VehicleSeeds.Felicia.Id);
+        var entity = await RideSharingDbContextSUT.VehicleEntities.SingleAsync(i => i.Id == VehicleSeeds.Felicia.Id);
 
         //Assert
         DeepAssert.Equal(expected, entity);
@@ -71,8 +69,7 @@ public class DbContextVehicleTests : DbContextTestsBase
         };
 
         //Act
-        var entity = await RideSharingDbContextSUT.VehicleEntities
-            .Include(i => i.Owner)
+        var entity = await RideSharingDbContextSUT.VehicleEntities.Include(i => i.Owner)
             .SingleAsync(i => i.Id == VehicleSeeds.Felicia.Id);
 
         //Assert
@@ -88,8 +85,7 @@ public class DbContextVehicleTests : DbContextTestsBase
         expected.Rides.Add(RideSeeds.BrnoBratislava);
 
         //Act
-        var entity = await RideSharingDbContextSUT.VehicleEntities
-            .Include(i => i.Rides)
+        var entity = await RideSharingDbContextSUT.VehicleEntities.Include(i => i.Rides)
             .SingleAsync(i => i.Id == VehicleSeeds.Felicia.Id);
 
         //Assert
@@ -101,16 +97,15 @@ public class DbContextVehicleTests : DbContextTestsBase
     {
         //Arrange
         var baseEntity = VehicleSeeds.UpdateVehicle;
-        var entity =
-            baseEntity with
-            {
-                VehicleType = VehicleType.Car,
-                Make = baseEntity.Make + "Update",
-                Model = baseEntity.Make + "Update",
-                Registered = DateTime.Parse("03/12/2005", CultureInfo.InvariantCulture),
-                Seats = 15,
-                ImageUrl = "new_image_path"
-            };
+        var entity = baseEntity with
+        {
+            VehicleType = VehicleType.Car,
+            Make = baseEntity.Make + "Update",
+            Model = baseEntity.Make + "Update",
+            Registered = DateTime.Parse("03/12/2005", CultureInfo.InvariantCulture),
+            Seats = 15,
+            ImageUrl = "new_image_path"
+        };
 
         //Act
         RideSharingDbContextSUT.VehicleEntities.Update(entity);
@@ -141,7 +136,7 @@ public class DbContextVehicleTests : DbContextTestsBase
     {
         //Arrange
         var baseEntity = VehicleSeeds.DeleteVehicle;
-        
+
         //Act
         RideSharingDbContextSUT.VehicleEntities.Remove(
             RideSharingDbContextSUT.VehicleEntities.Single(i => i.Id == baseEntity.Id));
@@ -150,21 +145,4 @@ public class DbContextVehicleTests : DbContextTestsBase
         //Assert
         Assert.False(await RideSharingDbContextSUT.VehicleEntities.AnyAsync(i => i.Id == baseEntity.Id));
     }
-
-    [Fact]
-    public async Task DeleteById_CascadeDeletesRides_Vehicle()
-    {
-        //Arrange
-        var baseEntity = VehicleSeeds.CascadeDeleteVehicle;
-        var baseEntityRide = RideSeeds.CascadeDeleteRide;
-        
-        //Act
-        RideSharingDbContextSUT.VehicleEntities.Remove(baseEntity);
-        await RideSharingDbContextSUT.SaveChangesAsync();
-
-        //Assert
-        Assert.False(await RideSharingDbContextSUT.RideEntities.AnyAsync(i => i.Id == baseEntityRide.Id));
-    }
 }
-
-

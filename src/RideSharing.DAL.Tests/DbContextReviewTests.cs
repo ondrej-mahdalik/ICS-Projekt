@@ -38,8 +38,7 @@ public class DbContextReviewTests : DbContextTestsBase
 
         //Assert
         await using var dbx = await DbContextFactory.CreateDbContextAsync();
-        var actualEntity = await dbx.ReviewEntities
-            .SingleAsync(i => i.Id == entity.Id);
+        var actualEntity = await dbx.ReviewEntities.SingleAsync(i => i.Id == entity.Id);
 
         DeepAssert.Equal(entity, actualEntity);
     }
@@ -51,8 +50,9 @@ public class DbContextReviewTests : DbContextTestsBase
         var expected = ReviewSeeds.GetNoRelationsEntity(ReviewSeeds.DriverPragueBrnoReview);
 
         //Act
-        var entity = await RideSharingDbContextSUT.ReviewEntities
-            .SingleAsync(i => i.Id == ReviewSeeds.DriverPragueBrnoReview.Id);
+        var entity =
+            await RideSharingDbContextSUT.ReviewEntities.SingleAsync(i =>
+                i.Id == ReviewSeeds.DriverPragueBrnoReview.Id);
 
         //Assert
         DeepAssert.Equal(expected, entity);
@@ -68,8 +68,7 @@ public class DbContextReviewTests : DbContextTestsBase
         };
 
         //Act
-        var entity = await RideSharingDbContextSUT.ReviewEntities
-            .Include(i => i.AuthorUser)
+        var entity = await RideSharingDbContextSUT.ReviewEntities.Include(i => i.AuthorUser)
             .SingleAsync(i => i.Id == ReviewSeeds.DriverPragueBrnoReview.Id);
 
         //Assert
@@ -86,8 +85,7 @@ public class DbContextReviewTests : DbContextTestsBase
         };
 
         //Act
-        var entity = await RideSharingDbContextSUT.ReviewEntities
-            .Include(i => i.ReviewedUser)
+        var entity = await RideSharingDbContextSUT.ReviewEntities.Include(i => i.ReviewedUser)
             .SingleAsync(i => i.Id == ReviewSeeds.DriverPragueBrnoReview.Id);
 
         //Assert
@@ -104,8 +102,7 @@ public class DbContextReviewTests : DbContextTestsBase
         };
 
         //Act
-        var entity = await RideSharingDbContextSUT.ReviewEntities
-            .Include(i => i.Ride)
+        var entity = await RideSharingDbContextSUT.ReviewEntities.Include(i => i.Ride)
             .SingleAsync(i => i.Id == ReviewSeeds.DriverPragueBrnoReview.Id);
 
         //Assert
@@ -186,5 +183,3 @@ public class DbContextReviewTests : DbContextTestsBase
         Assert.True(await RideSharingDbContextSUT.RideEntities.AnyAsync(i => i.Id == ride.Id));
     }
 }
-
-

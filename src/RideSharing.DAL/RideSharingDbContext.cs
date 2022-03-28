@@ -23,41 +23,40 @@ public class RideSharingDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        
-        modelBuilder.Entity<RideEntity>()
+        modelBuilder.Entity<UserEntity>()
             .HasMany(i => i.Reservations)
-            .WithOne(i => i.Ride)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        modelBuilder.Entity<ReservationEntity>()
-            .HasOne(i => i.ReservingUser)
-            .WithMany(i => i.Reservations)
-            .OnDelete(DeleteBehavior.Cascade);// BL has Restrict
-
-        modelBuilder.Entity<RideEntity>()
-            .HasMany(i => i.Reviews)
-            .WithOne(i => i.Ride)
-            .OnDelete(DeleteBehavior.Cascade);// BL has Restrict
+            .WithOne(i => i.ReservingUser)
+            .OnDelete(DeleteBehavior.Cascade); // User deletion causes deletion of all his reservations
 
         modelBuilder.Entity<UserEntity>()
             .HasMany(i => i.Reviews)
             .WithOne(i => i.ReviewedUser)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Cascade); // User deletion causes deletion of all reviews that the user obtained
 
         modelBuilder.Entity<UserEntity>()
             .HasMany(i => i.SubmittedReviews)
             .WithOne(i => i.AuthorUser)
-            .OnDelete(DeleteBehavior.Cascade);// BL has Restrict
+            .OnDelete(DeleteBehavior.ClientSetNull); // User deletion keeps all reviews that the user created
 
         modelBuilder.Entity<UserEntity>()
             .HasMany(i => i.Vehicles)
             .WithOne(i => i.Owner)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Cascade); // User deletion causes deletion of all his vehicles
+
+        modelBuilder.Entity<RideEntity>()
+            .HasMany(i => i.Reservations)
+            .WithOne(i => i.Ride)
+            .OnDelete(DeleteBehavior.Cascade); // Ride deletion causes deletion of all it's reservations
+
+        modelBuilder.Entity<RideEntity>()
+            .HasMany(i => i.Reviews)
+            .WithOne(i => i.Ride)
+            .OnDelete(DeleteBehavior.ClientSetNull); // Ride deletion keeps all reviews regarding that ride
 
         modelBuilder.Entity<VehicleEntity>()
             .HasMany(i => i.Rides)
             .WithOne(i => i.Vehicle)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict); // Can't delete vehicle used in rides
 
         if (_seedDemoData)
         {

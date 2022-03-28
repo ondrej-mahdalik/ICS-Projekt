@@ -37,11 +37,9 @@ public class DbContextReservationTests : DbContextTestsBase
 
         //Assert
         await using var dbx = await DbContextFactory.CreateDbContextAsync();
-        var actualEntity = await dbx.ReservationEntities
-            .SingleAsync(i => i.Id == entity.Id);
+        var actualEntity = await dbx.ReservationEntities.SingleAsync(i => i.Id == entity.Id);
 
         DeepAssert.Equal(entity, actualEntity);
-
     }
 
     [Fact]
@@ -51,8 +49,9 @@ public class DbContextReservationTests : DbContextTestsBase
         var expected = ReservationSeeds.GetNoRelationsEntity(ReservationSeeds.User1PragueBrno);
 
         //Act
-        var entity = await RideSharingDbContextSUT.ReservationEntities
-            .SingleAsync(i => i.Id == ReservationSeeds.User1PragueBrno.Id);
+        var entity =
+            await RideSharingDbContextSUT.ReservationEntities.SingleAsync(i =>
+                i.Id == ReservationSeeds.User1PragueBrno.Id);
 
         //Assert
         DeepAssert.Equal(expected, entity);
@@ -62,11 +61,13 @@ public class DbContextReservationTests : DbContextTestsBase
     public async Task GetById_IncludingUser_Reservation()
     {
         //Arrange
-        var expected = ReservationSeeds.GetNoRelationsEntity(ReservationSeeds.User1PragueBrno) with {ReservingUser = UserSeeds.ReservationUser1};
+        var expected = ReservationSeeds.GetNoRelationsEntity(ReservationSeeds.User1PragueBrno) with
+        {
+            ReservingUser = UserSeeds.ReservationUser1
+        };
 
         //Act
-        var entity = await RideSharingDbContextSUT.ReservationEntities
-            .Include(i => i.ReservingUser)
+        var entity = await RideSharingDbContextSUT.ReservationEntities.Include(i => i.ReservingUser)
             .SingleAsync(i => i.Id == ReservationSeeds.User1PragueBrno.Id);
 
         //Assert
@@ -79,12 +80,13 @@ public class DbContextReservationTests : DbContextTestsBase
         //Arrange
         var user = UserSeeds.GetNoRelationsEntity(UserSeeds.ReservationUser1);
         user.Reviews.Add(ReviewSeeds.DriverAuthoredPragueBrnoReview);
-        user.Reviews.Add(ReviewSeeds.CascadeDeleteSubmittedReview);
-        var expected = ReservationSeeds.GetNoRelationsEntity(ReservationSeeds.User1PragueBrno) with { ReservingUser = user };
+        var expected = ReservationSeeds.GetNoRelationsEntity(ReservationSeeds.User1PragueBrno) with
+        {
+            ReservingUser = user
+        };
 
         //Act
-        var entity = await RideSharingDbContextSUT.ReservationEntities
-            .Include(i => i.ReservingUser)
+        var entity = await RideSharingDbContextSUT.ReservationEntities.Include(i => i.ReservingUser)
             .ThenInclude(i => i!.Reviews)
             .SingleAsync(i => i.Id == ReservationSeeds.User1PragueBrno.Id);
 
@@ -96,11 +98,13 @@ public class DbContextReservationTests : DbContextTestsBase
     public async Task GetById_IncludingRide_Reservation()
     {
         //Arrange
-        var expected = ReservationSeeds.GetNoRelationsEntity(ReservationSeeds.User1PragueBrno) with { Ride = RideSeeds.PragueBrno };
+        var expected = ReservationSeeds.GetNoRelationsEntity(ReservationSeeds.User1PragueBrno) with
+        {
+            Ride = RideSeeds.PragueBrno
+        };
 
         //Act
-        var entity = await RideSharingDbContextSUT.ReservationEntities
-            .Include(i => i.Ride)
+        var entity = await RideSharingDbContextSUT.ReservationEntities.Include(i => i.Ride)
             .SingleAsync(i => i.Id == ReservationSeeds.User1PragueBrno.Id);
 
         //Assert
@@ -112,14 +116,13 @@ public class DbContextReservationTests : DbContextTestsBase
     {
         //Arrange
         var baseEntity = ReservationSeeds.UpdateReservation;
-        var entity =
-            baseEntity with
-            {
-                ReservingUserId = UserSeeds.ReservationUser2.Id,
-                RideId = RideSeeds.BrnoBratislava.Id,
-                Seats = 2,
-                Timestamp = DateTime.Parse("04/20/2022 11:10", CultureInfo.InvariantCulture)
-            };
+        var entity = baseEntity with
+        {
+            ReservingUserId = UserSeeds.ReservationUser2.Id,
+            RideId = RideSeeds.BrnoBratislava.Id,
+            Seats = 2,
+            Timestamp = DateTime.Parse("04/20/2022 11:10", CultureInfo.InvariantCulture)
+        };
 
         //Act
         RideSharingDbContextSUT.ReservationEntities.Update(entity);
@@ -151,7 +154,6 @@ public class DbContextReservationTests : DbContextTestsBase
         //Arrange
         var baseEntity = ReservationSeeds.DeleteReservation;
 
-
         //Act
         RideSharingDbContextSUT.ReservationEntities.Remove(
             RideSharingDbContextSUT.ReservationEntities.Single(i => i.Id == baseEntity.Id));
@@ -168,7 +170,6 @@ public class DbContextReservationTests : DbContextTestsBase
         var baseEntity = ReservationSeeds.CascadeDeleteReservation;
         var reservingUser = UserSeeds.CascadeDeleteUser;
 
-
         //Act
         RideSharingDbContextSUT.ReservationEntities.Remove(baseEntity);
         await RideSharingDbContextSUT.SaveChangesAsync();
@@ -183,7 +184,6 @@ public class DbContextReservationTests : DbContextTestsBase
         //Arrange
         var baseEntity = ReservationSeeds.CascadeDeleteReservation;
         var ride = RideSeeds.CascadeDeleteRide;
-
 
         //Act
         RideSharingDbContextSUT.ReservationEntities.Remove(baseEntity);

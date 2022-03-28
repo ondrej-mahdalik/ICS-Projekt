@@ -13,7 +13,7 @@ public static class RideSeeds
         FromName: default!,
         FromLatitude: default,
         FromLongitude: default,
-        Distance:default,
+        Distance: default,
         ToName: default!,
         ToLatitude: default,
         ToLongitude: default,
@@ -70,6 +70,17 @@ public static class RideSeeds
     {
         Id = Guid.Parse("bdd94aaf-7dac-4d9c-badd-6a1eeb24e380")
     };
+
+    public static readonly RideEntity JustReservationRide = GetNoRelationsEntity(CascadeDeleteRide) with
+    {
+        Id = Guid.Parse("a8cea79c-130c-4624-9a1f-15119cf5f1ce")
+    };
+
+    public static readonly RideEntity JustReviewRide = GetNoRelationsEntity(CascadeDeleteRide) with
+    {
+        Id = Guid.Parse("02c74b2e-31c4-44b3-a3fd-fcae5206b89d")
+    };
+
     public static RideEntity GetNoRelationsEntity(RideEntity entity)
     {
         return entity with
@@ -82,13 +93,16 @@ public static class RideSeeds
 
     public static void Seed(this ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<RideEntity>().HasData(
-            PragueBrno,
-            BrnoBratislava,
-            CascadeDeleteRide,
-            UpdateRide,
-            DeleteRide
-        );
+        modelBuilder.Entity<RideEntity>()
+            .HasData(
+                PragueBrno,
+                BrnoBratislava,
+                CascadeDeleteRide,
+                UpdateRide,
+                DeleteRide,
+                JustReservationRide,
+                JustReviewRide
+            );
     }
 
 }
