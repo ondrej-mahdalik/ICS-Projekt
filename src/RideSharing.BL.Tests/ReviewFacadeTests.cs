@@ -23,7 +23,8 @@ namespace RideSharing.BL.Tests
         {
             var review = new ReviewDetailModel(
                 Rating: 5
-            );
+
+            ){ReviewedUser = Mapper.Map<UserDetailModel>(UserSeeds.ElonTusk)};
 
             var _ = await _reviewFacadeSUT.SaveAsync(review);
         }

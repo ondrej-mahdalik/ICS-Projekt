@@ -19,7 +19,7 @@ public class CRUDFacadeTestsBase : IAsyncLifetime
         XUnitTestOutputConverter converter = new(output);
         Console.SetOut(converter);
 
-        DbContextFactory = new DbContextLocalDBTestingFactory(GetType().FullName!, seedTestingData: true);
+        DbContextFactory = new DbContextSQLiteTestingFactory(GetType().FullName!, seedBLTestingData: true);
 
         UnitOfWorkFactory = new UnitOfWorkFactory(DbContextFactory);
 
