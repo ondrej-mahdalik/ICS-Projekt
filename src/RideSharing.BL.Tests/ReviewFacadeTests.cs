@@ -5,7 +5,7 @@ using Xunit;
 using RideSharing.BL.Models;
 using RideSharing.BL.Facades;
 using Microsoft.EntityFrameworkCore;
-using RideSharing.Common.Tests.Seeds;
+using RideSharing.Common.Tests.DALTestsSeeds;
 using Xunit.Abstractions;
 
 namespace RideSharing.BL.Tests
@@ -24,7 +24,10 @@ namespace RideSharing.BL.Tests
             var review = new ReviewDetailModel(
                 Rating: 5
 
-            ){ReviewedUser = Mapper.Map<UserDetailModel>(UserSeeds.ElonTusk)};
+            ){
+              ReviewedUser = Mapper.Map<UserDetailModel>(UserSeeds.DriverUser), 
+              AuthorUser = Mapper.Map<UserDetailModel>(UserSeeds.CascadeDeleteUser),
+              Ride = Mapper.Map<RideDetailModel>(RideSeeds.BrnoBratislava)};
 
             var _ = await _reviewFacadeSUT.SaveAsync(review);
         }
@@ -32,14 +35,14 @@ namespace RideSharing.BL.Tests
         public async Task GetAll_Single_SeededReview()
         {
             var reviews = await _reviewFacadeSUT.GetAsync();
-            var review = reviews.Single(i => i.Id == ReviewSeeds.Perfect.Id);
-            Assert.Equal(Mapper.Map<ReviewDetailModel>(ReviewSeeds.Perfect).Id, review.Id);
+            var review = reviews.Single(i => i.Id == ReviewSeeds.DriverPragueBrnoReview.Id);
+            Assert.Equal(Mapper.Map<ReviewDetailModel>(ReviewSeeds.DriverPragueBrnoReview).Id, review.Id);
         }
         [Fact]
         public async Task GetById_SeededReview()
         {
-            var review = await _reviewFacadeSUT.GetAsync(ReviewSeeds.Perfect.Id);
-            Assert.Equal(Mapper.Map<ReviewDetailModel>(ReviewSeeds.Perfect).Id, review.Id);
+            var review = await _reviewFacadeSUT.GetAsync(ReviewSeeds.DriverPragueBrnoReview.Id);
+            Assert.Equal(Mapper.Map<ReviewDetailModel>(ReviewSeeds.DriverPragueBrnoReview).Id, review.Id);
         }
         [Fact]
         public async Task GetById_NonExistent()
@@ -50,16 +53,17 @@ namespace RideSharing.BL.Tests
         [Fact]
         public async Task SeededReview_DeleteByIdDeleted()
         {
-            await _reviewFacadeSUT.DeleteAsync(ReviewSeeds.Perfect.Id);
+            await _reviewFacadeSUT.DeleteAsync(ReviewSeeds.DriverPragueBrnoReview.Id);
             await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
-            Assert.False(await dbxAssert.ReviewEntities.AnyAsync(i => i.Id == ReviewSeeds.Perfect.Id));
+            Assert.False(await dbxAssert.ReviewEntities.AnyAsync(i => i.Id == ReviewSeeds.DriverPragueBrnoReview.Id));
         }
         [Fact]
         public async Task NewReview_InsertOrUpdate_ReviewAdded()
         {
             var review = new ReviewDetailModel(
                 Rating: 3
-            );
+            )
+            { ReviewedUser = Mapper.Map<UserDetailModel>(UserSeeds.DriverUser) };
             review = await _reviewFacadeSUT.SaveAsync(review);
 
             await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
@@ -70,10 +74,10 @@ namespace RideSharing.BL.Tests
         public async Task NewReview_InsertOrUpdate_ReviewUpdated()
         {
             var review = new ReviewDetailModel(
-                Rating: ReviewSeeds.Perfect.Rating
+                Rating: ReviewSeeds.DriverPragueBrnoReview.Rating
             )
             {
-                Id = ReviewSeeds.Perfect.Id
+                Id = ReviewSeeds.DriverPragueBrnoReview.Id
             };
             review.Rating = 2;
             await _reviewFacadeSUT.SaveAsync(review);

@@ -58,13 +58,13 @@ public class RideSharingDbContext : DbContext
             .WithOne(i => i.Vehicle)
             .OnDelete(DeleteBehavior.Restrict); // Can't delete vehicle used in rides
 
-        if (_seedDemoData)
-        {
-            ReservationSeeds.Seed(modelBuilder);
-            VehicleSeeds.Seed(modelBuilder);
-            ReviewSeeds.Seed(modelBuilder);
-            RideSeeds.Seed(modelBuilder);
-            UserSeeds.Seed(modelBuilder);
-        }
+        //if (_seedDemoData)
+        //{
+        //    ReservationSeeds.Seed(modelBuilder);
+        //    VehicleSeeds.Seed(modelBuilder);
+        //    ReviewSeeds.Seed(modelBuilder);
+        //    RideSeeds.Seed(modelBuilder);
+        //    UserSeeds.Seed(modelBuilder);
+        //}
     }
 }

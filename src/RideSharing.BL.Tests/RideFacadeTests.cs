@@ -2,7 +2,7 @@
 using Xunit.Abstractions;
 using RideSharing.BL.Models;
 using System;
-using RideSharing.Common.Tests.Seeds;
+using RideSharing.Common.Tests.DALTestsSeeds;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 using System.Linq;
@@ -42,15 +42,15 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
     public async Task GetAll_Single_SeededRide()
     {
         var rides = await _rideFacadeSUT.GetAsync();
-            var ride = rides.Single(i => i.Id == RideSeeds.PrahaBrno.Id);
-        Assert.Equal(Mapper.Map<RideListModel>(RideSeeds.PrahaBrno).Id, ride.Id);
+            var ride = rides.Single(i => i.Id == RideSeeds.BrnoBratislava.Id);
+        Assert.Equal(Mapper.Map<RideListModel>(RideSeeds.BrnoBratislava).Id, ride.Id);
     }
 
     [Fact]
     public async Task GetById__SeededRide()
     {
-        var ride = await _rideFacadeSUT.GetAsync(RideSeeds.PrahaBrno.Id);
-        Assert.Equal(Mapper.Map<RideDetailModel>(RideSeeds.PrahaBrno).Id, ride?.Id);
+        var ride = await _rideFacadeSUT.GetAsync(RideSeeds.BrnoBratislava.Id);
+        Assert.Equal(Mapper.Map<RideDetailModel>(RideSeeds.BrnoBratislava).Id, ride?.Id);
     }
 
     [Fact]
@@ -62,7 +62,7 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
     [Fact]
     public async Task SeededRide_DeleteByIdDeleted()
     {
-        await Assert.ThrowsAsync<DbUpdateException>(async () => await _rideFacadeSUT.DeleteAsync(RideSeeds.PrahaBrno.Id));
+        await Assert.ThrowsAsync<DbUpdateException>(async () => await _rideFacadeSUT.DeleteAsync(RideSeeds.BrnoBratislava.Id));
     }
     [Fact]
     public async Task NewRide_InsertOrUpdate_RideAdded()
@@ -78,7 +78,8 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
             SharedSeats: 3,
             Departure: new DateTime(2022, 03, 26, 11, 40, 00),
             Arrival: new DateTime(2022, 03, 26, 19, 41, 00)
-        );
+        )
+        { Vehicle = Mapper.Map<VehicleDetailModel>(VehicleSeeds.Felicia) };
         ride = await _rideFacadeSUT.SaveAsync(ride);
 
         await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
@@ -89,19 +90,19 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
     public async Task NewRide_InsertOrUpdate_RideUpdated()
     {
         var ride = new RideDetailModel(
-            FromName: RideSeeds.PrahaBrno.FromName,
-            FromLatitude: RideSeeds.PrahaBrno.FromLatitude,
-            FromLongitude: RideSeeds.PrahaBrno.FromLongitude,
-            ToName: RideSeeds.PrahaBrno.ToName,
-            ToLatitude: RideSeeds.PrahaBrno.ToLatitude,
-            ToLongitude: RideSeeds.PrahaBrno.ToLongitude,
-            Distance: RideSeeds.PrahaBrno.Distance,
-            Departure: RideSeeds.PrahaBrno.Departure,
-            Arrival: RideSeeds.PrahaBrno.Arrival,
-            SharedSeats:RideSeeds.PrahaBrno.SharedSeats
+            FromName: RideSeeds.BrnoBratislava.FromName,
+            FromLatitude: RideSeeds.BrnoBratislava.FromLatitude,
+            FromLongitude: RideSeeds.BrnoBratislava.FromLongitude,
+            ToName: RideSeeds.BrnoBratislava.ToName,
+            ToLatitude: RideSeeds.BrnoBratislava.ToLatitude,
+            ToLongitude: RideSeeds.BrnoBratislava.ToLongitude,
+            Distance: RideSeeds.BrnoBratislava.Distance,
+            Departure: RideSeeds.BrnoBratislava.Departure,
+            Arrival: RideSeeds.BrnoBratislava.Arrival,
+            SharedSeats:RideSeeds.BrnoBratislava.SharedSeats
         )
         {
-            Id = RideSeeds.PrahaBrno.Id
+            Id = RideSeeds.BrnoBratislava.Id
         };
         ride.ToName = "Ostrava";
         ride.ToLatitude = 49.820923;

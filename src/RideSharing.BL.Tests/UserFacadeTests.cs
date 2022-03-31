@@ -5,7 +5,8 @@ using Xunit;
 using RideSharing.BL.Models;
 using RideSharing.BL.Facades;
 using Microsoft.EntityFrameworkCore;
-using RideSharing.Common.Tests.Seeds;
+using RideSharing.Common.Tests.DALTestsSeeds;
+using RideSharing.Common.Tests;
 using Xunit.Abstractions;
 
 namespace RideSharing.BL.Tests
@@ -34,16 +35,17 @@ namespace RideSharing.BL.Tests
         public async Task GetAll_Single_SeededUser()
         {
             var users = await _userFacadeSUT.GetAsync();
-                var user = users.Single(i => i.Id == UserSeeds.JohnDoe.Id);
+               var user = users.Single(i => i.Id == UserSeeds.DriverUser.Id);
+            var user2 = Mapper.Map<UserListModel>(UserSeeds.DriverUser);
                 //bool selectionOk = Mapper.Map<UserDetailModel>(UserSeeds.JohnDoe) == user
-            Assert.Equal(Mapper.Map<UserListModel>(UserSeeds.JohnDoe), user);
+            DeepAssert.Equal(Mapper.Map<UserListModel>(UserSeeds.DriverUser), user);
         }
 
         [Fact]
         public async Task GetById_SeededUser()
         {
-            var user = await _userFacadeSUT.GetAsync(UserSeeds.ElonTusk.Id);
-            Assert.Equal(Mapper.Map<UserDetailModel>(UserSeeds.ElonTusk), user);
+            var user = await _userFacadeSUT.GetAsync(UserSeeds.DriverUser.Id);
+            DeepAssert.Equal(Mapper.Map<UserDetailModel>(UserSeeds.DriverUser), user);
         }
 
         [Fact]
@@ -57,7 +59,7 @@ namespace RideSharing.BL.Tests
         [Fact]
         public async Task SeededUser_DeleteByIdDeleted()
         {
-           await Assert.ThrowsAsync<DbUpdateException>(async () => await _userFacadeSUT.DeleteAsync(UserSeeds.JohnDoe.Id));
+           await Assert.ThrowsAsync<DbUpdateException>(async () => await _userFacadeSUT.DeleteAsync(UserSeeds.DriverUser.Id));
         }
 
         [Fact]
@@ -77,7 +79,7 @@ namespace RideSharing.BL.Tests
             await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
             var userFromDb = await dbxAssert.UserEntities.SingleAsync(i => i.Id == user.Id);
            // DeepAssert.Equal(user, Mapper.Map<UserDetailModel>(userFromDb));
-            Assert.Equal(user, Mapper.Map<UserDetailModel>(userFromDb));
+            DeepAssert.Equal(user, Mapper.Map<UserDetailModel>(userFromDb));
         }
         [Fact]
         public async Task SeededUser_InsertOrUpdate_UserUpdated()
@@ -85,12 +87,12 @@ namespace RideSharing.BL.Tests
             //Arrange
             var user = new UserDetailModel
             (
-                Name: UserSeeds.JohnDoe.Name,
-                Surname: UserSeeds.JohnDoe.Surname,
-                Phone: UserSeeds.JohnDoe.Phone
+                Name: UserSeeds.DriverUser.Name,
+                Surname: UserSeeds.DriverUser.Surname,
+                Phone: UserSeeds.DriverUser.Phone
             )
             {
-                Id = UserSeeds.JohnDoe.Id
+                Id = UserSeeds.DriverUser.Id
             };
             user.Name += "updated";
             user.Surname += "updated";
@@ -102,12 +104,7 @@ namespace RideSharing.BL.Tests
             await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
             var userFromDb = await dbxAssert.UserEntities.SingleAsync(i => i.Id == user.Id);
             var updatedUser = Mapper.Map<UserDetailModel>(userFromDb);
-            //Assert.Equal(user.Id, updatedUser.Id);
-            //Assert.Equal(user.Name, updatedUser.Name);
-            //Assert.Equal(user.Surname, updatedUser.Surname);
-            Assert.Same(userFromDb, updatedUser);
-            //Assert.Equal(user.Id, Mapper.Map<UserDetailModel>(userFromDb).Id);
-           // DeepAssert.Equal(user, Mapper.Map<UserDetailModel>(ingredientFromDb));
+            DeepAssert.Equal(user, updatedUser);
         }
     }
 }

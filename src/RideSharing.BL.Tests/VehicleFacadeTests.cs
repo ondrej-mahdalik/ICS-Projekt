@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using RideSharing.BL.Facades;
 using RideSharing.BL.Models;
-using RideSharing.Common.Tests.Seeds;
+using RideSharing.Common.Tests.DALTestsSeeds;
 using Xunit;
 using Xunit.Abstractions;
 using RideSharing.Common.Enums;
@@ -24,7 +24,7 @@ namespace RideSharing.BL.Tests
         public async Task Create_WithNonExistingItem_DoesNotThrow()
         {
             var vehicle = new VehicleDetailModel(
-                OwnerId: UserSeeds.JohnDoe.Id,
+                OwnerId: UserSeeds.DriverUser.Id,
                 VehicleType: VehicleType.Car,
                 Make: "Ferrari",
                 Model: "250 gto",
@@ -60,17 +60,17 @@ namespace RideSharing.BL.Tests
         [Fact]
         public async Task SeededVehicle_DeleteByIdDeleted()
         {
-            var vehicle = _vehicleFacadeSUT.DeleteAsync(VehicleSeeds.Felicia.Id);
+            var vehicle = _vehicleFacadeSUT.DeleteAsync(VehicleSeeds.Karosa.Id);
             await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
-            Assert.False(await dbxAssert.VehicleEntities.AnyAsync(i => i.Id == VehicleSeeds.Felicia.Id));
+            Assert.False(await dbxAssert.VehicleEntities.AnyAsync(i => i.Id == VehicleSeeds.Karosa.Id));
 
         }
         [Fact]
-        public async Task NewReview_InsertOrUpdate_VehicleAdded()
+        public async Task NewVehicle_InsertOrUpdate_VehicleAdded()
         {
 
             var vehicle = new VehicleDetailModel(
-                OwnerId: UserSeeds.ElonTusk.Id,
+                OwnerId: UserSeeds.DriverUser.Id,
                 VehicleType: VehicleType.Car,
                 Make: "Volvo",
                 Model: "V90",
@@ -84,7 +84,7 @@ namespace RideSharing.BL.Tests
             Assert.Equal(vehicle.Id, vehicleFromDb.Id);
         }
         [Fact]
-        public async Task NewReview_InsertOrUpdate_VehicleUpdated()
+        public async Task NewVehicle_InsertOrUpdate_VehicleUpdated()
         {
             var vehicle = new VehicleDetailModel(
                 OwnerId: VehicleSeeds.Felicia.OwnerId,
