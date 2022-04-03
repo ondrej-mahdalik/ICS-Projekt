@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using RideSharing.Common.Tests.DALTestsSeeds;
 using RideSharing.Common.Tests;
 using Xunit.Abstractions;
+using RideSharing.DAL.Entities;
+using System.Collections.Generic;
 
 namespace RideSharing.BL.Tests
 {
@@ -37,8 +39,20 @@ namespace RideSharing.BL.Tests
             var users = await _userFacadeSUT.GetAsync();
                var user = users.Single(i => i.Id == UserSeeds.DriverUser.Id);
             var user2 = Mapper.Map<UserListModel>(UserSeeds.DriverUser);
-                //bool selectionOk = Mapper.Map<UserDetailModel>(UserSeeds.JohnDoe) == user
-            DeepAssert.Equal(Mapper.Map<UserListModel>(UserSeeds.DriverUser), user);
+            await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
+            int vehicleCount = await dbxAssert.VehicleEntities.CountAsync(i => i.OwnerId == UserSeeds.DriverUser.Id);
+            var reviewsOnUser = await dbxAssert.ReviewEntities.Where(i => i.ReviewedUserId == UserSeeds.DriverUser.Id).ToListAsync();
+            List<ReviewDetailModel> reviewsOnUserDetail = new List<ReviewDetailModel>();
+            foreach (ReviewEntity review in reviewsOnUser)
+            {
+                reviewsOnUserDetail.Add(Mapper.Map<ReviewDetailModel>(review));
+            }
+            int upcomingRidesCount = await dbxAssert.ReservationEntities.CountAsync(i => i.ReservingUserId == UserSeeds.DriverUser.Id && i.Ride.Departure > DateTime.Now);
+            upcomingRidesCount += await dbxAssert.RideEntities.CountAsync(i => i.Vehicle.OwnerId == UserSeeds.DriverUser.Id && i.Departure > DateTime.Now);
+            DeepAssert.Equal(user2, user, new string[] {"NumberOfVehicles", "Reviews", "UpcomingRidesCount"});
+            Assert.Equal(vehicleCount, user.NumberOfVehicles);
+            //Assert.Equal<ReviewDetailModel>(reviewsOnUserDetail, user.Reviews);
+            Assert.Equal(user.UpcomingRidesCount, upcomingRidesCount);
         }
 
         [Fact]

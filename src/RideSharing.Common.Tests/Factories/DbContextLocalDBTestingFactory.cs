@@ -20,7 +20,7 @@ namespace RideSharing.Common.Tests.Factories
 
             // Connection string should be put somewhere else (probably)
             builder.UseSqlServer($"Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog = {_databaseName};MultipleActiveResultSets = True;Integrated Security = True; ");
-            return new RideSharingDbContext(builder.Options, _seedTestingData);
+            return new RideSharingTestingDbContext(builder.Options, _seedTestingData);
 
         }
     }

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 using RideSharing.BL.Models;
+using RideSharing.DAL.Entities;
 using RideSharing.BL.Facades;
 using Microsoft.EntityFrameworkCore;
 using RideSharing.Common.Tests.DALTestsSeeds;
@@ -25,9 +26,38 @@ namespace RideSharing.BL.Tests
                 Rating: 5
 
             ){
-              ReviewedUser = Mapper.Map<UserDetailModel>(UserSeeds.DriverUser), 
-              AuthorUser = Mapper.Map<UserDetailModel>(UserSeeds.CascadeDeleteUser),
-              Ride = Mapper.Map<RideDetailModel>(RideSeeds.BrnoBratislava)};
+              ReviewedUser = Mapper.Map<UserDetailModel>(new UserEntity(
+                  Id: Guid.Parse("6A855B23-307F-4B31-B91B-9350D0E0BEDA"),
+                  Name: "Harrison",
+                  Surname: "Ford",
+                  Phone: "464546431",
+                  ImageUrl: null
+                  )), 
+              AuthorUser = Mapper.Map<UserDetailModel>(new UserEntity(
+                  Id: Guid.Parse("6E855B23-307F-4B31-B91B-9350D0E0BEDA"),
+                  Name: "Johnny",
+                  Surname: "Valda",
+                  Phone: "464513431",
+                  ImageUrl: null
+                  )),
+              Ride = Mapper.Map<RideDetailModel>(new RideEntity(
+                    Id: Guid.Parse("7C855B23-307F-4B31-B91B-9350D0E0BEDA"),
+                    FromName: "Olomouc",
+                    SharedSeats: 4,
+                    FromLatitude: 4.25,
+                    FromLongitude: 5.46,
+                    Distance: 25,
+                    ToName: "Brno",
+                    ToLatitude: 25.5,
+                    ToLongitude: 4654.48,
+                    Departure: DateTime.Now,
+                    Arrival: DateTime.Now.AddSeconds(30),
+                    VehicleId: VehicleSeeds.Felicia.Id,
+                    Note: null
+                  ))
+
+            };
+
 
             var _ = await _reviewFacadeSUT.SaveAsync(review);
         }
@@ -63,7 +93,10 @@ namespace RideSharing.BL.Tests
             var review = new ReviewDetailModel(
                 Rating: 3
             )
-            { ReviewedUser = Mapper.Map<UserDetailModel>(UserSeeds.DriverUser) };
+            { ReviewedUser = Mapper.Map<UserDetailModel>(UserSeeds.DriverUser),
+              Ride = Mapper.Map<RideDetailModel>(RideSeeds.JustReviewRide),
+              AuthorUser = Mapper.Map<UserDetailModel>(UserSeeds.ReservationUser1)
+            };
             review = await _reviewFacadeSUT.SaveAsync(review);
 
             await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();

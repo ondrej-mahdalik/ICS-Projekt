@@ -5,7 +5,9 @@ using System;
 using RideSharing.Common.Tests.DALTestsSeeds;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
+using RideSharing.DAL.Entities;
 using System.Linq;
+using RideSharing.Common.Tests;
 using System.Threading.Tasks;
 
 namespace RideSharing.BL.Tests;
@@ -34,7 +36,17 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
             SharedSeats: 4,
             Departure: new DateTime(2022, 3, 25, 09, 04, 00),
             Arrival: new DateTime(2022, 3, 25, 12, 04, 00)
-        );
+        )
+        {
+            Vehicle = new VehicleDetailModel(
+                 OwnerId: VehicleSeeds.Felicia.OwnerId,
+                 VehicleType: VehicleSeeds.Felicia.VehicleType,
+                 Make: VehicleSeeds.Felicia.Make,
+                 Model: VehicleSeeds.Felicia.Model,
+                 Registered: VehicleSeeds.Felicia.Registered,
+                 Seats: VehicleSeeds.Felicia.Seats
+           )
+        };
         var _ = await _rideFacadeSUT.SaveAsync(ride);
     }
 
@@ -79,7 +91,16 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
             Departure: new DateTime(2022, 03, 26, 11, 40, 00),
             Arrival: new DateTime(2022, 03, 26, 19, 41, 00)
         )
-        { Vehicle = Mapper.Map<VehicleDetailModel>(VehicleSeeds.Felicia) };
+        {
+            Vehicle = new VehicleDetailModel(
+                 OwnerId: VehicleSeeds.Felicia.OwnerId,
+                 VehicleType: VehicleSeeds.Felicia.VehicleType,
+                 Make: VehicleSeeds.Felicia.Make,
+                 Model: VehicleSeeds.Felicia.Model,
+                 Registered: VehicleSeeds.Felicia.Registered,
+                 Seats: VehicleSeeds.Felicia.Seats
+           )
+        };
         ride = await _rideFacadeSUT.SaveAsync(ride);
 
         await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
@@ -102,7 +123,16 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
             SharedSeats:RideSeeds.BrnoBratislava.SharedSeats
         )
         {
-            Id = RideSeeds.BrnoBratislava.Id
+            Id = RideSeeds.BrnoBratislava.Id,
+            Vehicle = new VehicleDetailModel(
+                 OwnerId: VehicleSeeds.Karosa.OwnerId,
+                 VehicleType: VehicleSeeds.Karosa.VehicleType,
+                 Make: VehicleSeeds.Karosa.Make,
+                 Model: VehicleSeeds.Karosa.Model,
+                 Registered: VehicleSeeds.Karosa.Registered,
+                 Seats: VehicleSeeds.Karosa.Seats
+           )
+
         };
         ride.ToName = "Ostrava";
         ride.ToLatitude = 49.820923;
@@ -112,9 +142,7 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
         await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
         var rideFromDb = await dbxAssert.RideEntities.SingleAsync(i => i.Id == ride.Id);
         var updatedRide = Mapper.Map<RideDetailModel>(rideFromDb);
-        Assert.Equal(ride.ToName, updatedRide.ToName);
-        Assert.Equal(ride.ToLatitude, updatedRide.ToLatitude);
-        Assert.Equal(ride.ToLongitude, updatedRide.ToLongitude);
+        DeepAssert.Equal(ride, updatedRide);
     }
 
 }
