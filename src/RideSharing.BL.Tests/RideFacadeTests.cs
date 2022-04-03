@@ -21,7 +21,6 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
         _rideFacadeSUT = new RideFacade(UnitOfWorkFactory, Mapper);
     }
 
-    // Error in mapping Vehicle type
     [Fact]
     public async Task Create_WithNonExistingItem_DoesNotThrow()
     {
@@ -74,7 +73,9 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
     [Fact]
     public async Task SeededRide_DeleteByIdDeleted()
     {
-        await Assert.ThrowsAsync<DbUpdateException>(async () => await _rideFacadeSUT.DeleteAsync(RideSeeds.BrnoBratislava.Id));
+        var vehicle = _rideFacadeSUT.DeleteAsync(RideSeeds.BrnoBratislava.Id);
+        await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
+        Assert.False(await dbxAssert.RideEntities.AnyAsync(i => i.Id == RideSeeds.BrnoBratislava.Id));
     }
     [Fact]
     public async Task NewRide_InsertOrUpdate_RideAdded()

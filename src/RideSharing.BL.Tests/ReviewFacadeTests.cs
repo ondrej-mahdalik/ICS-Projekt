@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 using RideSharing.BL.Models;
-using RideSharing.DAL.Entities;
 using RideSharing.BL.Facades;
 using Microsoft.EntityFrameworkCore;
 using RideSharing.Common.Tests.DALTestsSeeds;
@@ -25,23 +24,18 @@ namespace RideSharing.BL.Tests
             var review = new ReviewDetailModel(
                 Rating: 5
 
-            ){
-              ReviewedUser = Mapper.Map<UserDetailModel>(new UserEntity(
-                  Id: Guid.Parse("6A855B23-307F-4B31-B91B-9350D0E0BEDA"),
+            ) {
+                ReviewedUser = new UserDetailModel(
                   Name: "Harrison",
                   Surname: "Ford",
-                  Phone: "464546431",
-                  ImageUrl: null
-                  )), 
-              AuthorUser = Mapper.Map<UserDetailModel>(new UserEntity(
-                  Id: Guid.Parse("6E855B23-307F-4B31-B91B-9350D0E0BEDA"),
+                  Phone: "464546431"
+                  ),
+                AuthorUser = new UserDetailModel(
                   Name: "Johnny",
                   Surname: "Valda",
-                  Phone: "464513431",
-                  ImageUrl: null
-                  )),
-              Ride = Mapper.Map<RideDetailModel>(new RideEntity(
-                    Id: Guid.Parse("7C855B23-307F-4B31-B91B-9350D0E0BEDA"),
+                  Phone: "464513431"
+                  ),
+                Ride = new RideDetailModel(
                     FromName: "Olomouc",
                     SharedSeats: 4,
                     FromLatitude: 4.25,
@@ -51,11 +45,19 @@ namespace RideSharing.BL.Tests
                     ToLatitude: 25.5,
                     ToLongitude: 4654.48,
                     Departure: DateTime.Now,
-                    Arrival: DateTime.Now.AddSeconds(30),
-                    VehicleId: VehicleSeeds.Felicia.Id,
-                    Note: null
-                  ))
-
+                    Arrival: DateTime.Now.AddSeconds(30)
+                  )
+                {
+                    Vehicle = new VehicleDetailModel(
+                     OwnerId: VehicleSeeds.Karosa.OwnerId,
+                     VehicleType: VehicleSeeds.Karosa.VehicleType,
+                     Make: VehicleSeeds.Karosa.Make,
+                     Model: VehicleSeeds.Karosa.Model,
+                     Registered: VehicleSeeds.Karosa.Registered,
+                     Seats: VehicleSeeds.Karosa.Seats
+                     )
+              }
+              
             };
 
 
@@ -94,9 +96,39 @@ namespace RideSharing.BL.Tests
             var review = new ReviewDetailModel(
                 Rating: 3
             )
-            { ReviewedUser = Mapper.Map<UserDetailModel>(UserSeeds.DriverUser),
-              Ride = Mapper.Map<RideDetailModel>(RideSeeds.JustReviewRide),
-              AuthorUser = Mapper.Map<UserDetailModel>(UserSeeds.ReservationUser1)
+            { 
+                ReviewedUser = new UserDetailModel(
+                    Name: UserSeeds.DriverUser.Name,
+                    Surname:UserSeeds.DriverUser.Surname,
+                    Phone: UserSeeds.DriverUser.Phone
+                ),
+                AuthorUser = new UserDetailModel(
+                  Name: UserSeeds.ReservationUser1.Name,
+                  Surname: UserSeeds.ReservationUser1.Surname,
+                  Phone: UserSeeds.ReservationUser1.Phone
+                ), 
+                Ride = new RideDetailModel(
+                    FromName: RideSeeds.JustReviewRide.FromName,
+                    FromLatitude: RideSeeds.JustReviewRide.FromLatitude,
+                    FromLongitude: RideSeeds.JustReviewRide.FromLongitude,
+                    ToName: RideSeeds.JustReviewRide.ToName,
+                    ToLatitude: RideSeeds.JustReviewRide.ToLatitude,
+                    ToLongitude: RideSeeds.JustReviewRide.ToLongitude,
+                    Distance: RideSeeds.JustReviewRide.Distance,
+                    SharedSeats: RideSeeds.JustReviewRide.SharedSeats,
+                    Departure: RideSeeds.JustReviewRide.Departure,
+                    Arrival: RideSeeds.JustReviewRide.Arrival
+                )
+                {
+                    Vehicle = new VehicleDetailModel(
+                        OwnerId: UserSeeds.DriverUser.Id,
+                        VehicleType: VehicleSeeds.Felicia.VehicleType,
+                        Make: VehicleSeeds.Felicia.Make,
+                        Model: VehicleSeeds.Felicia.Model,
+                        Registered: VehicleSeeds.Felicia.Registered,
+                        Seats: VehicleSeeds.Felicia.Seats
+                    )
+                }
             };
             review = await _reviewFacadeSUT.SaveAsync(review);
 
@@ -108,10 +140,42 @@ namespace RideSharing.BL.Tests
         public async Task NewReview_InsertOrUpdate_ReviewUpdated()
         {
             var review = new ReviewDetailModel(
-                Rating: ReviewSeeds.DriverPragueBrnoReview.Rating
+                Rating: 3
             )
             {
-                Id = ReviewSeeds.DriverPragueBrnoReview.Id
+                Id = ReviewSeeds.JustRideReview.Id,
+                ReviewedUser = new UserDetailModel(
+                    Name: UserSeeds.DriverUser.Name,
+                    Surname: UserSeeds.DriverUser.Surname,
+                    Phone: UserSeeds.DriverUser.Phone
+                ),
+                AuthorUser = new UserDetailModel(
+                  Name: UserSeeds.ReservationUser1.Name,
+                  Surname: UserSeeds.ReservationUser1.Surname,
+                  Phone: UserSeeds.ReservationUser1.Phone
+                ),
+                Ride = new RideDetailModel(
+                    FromName: RideSeeds.JustReviewRide.FromName,
+                    FromLatitude: RideSeeds.JustReviewRide.FromLatitude,
+                    FromLongitude: RideSeeds.JustReviewRide.FromLongitude,
+                    ToName: RideSeeds.JustReviewRide.ToName,
+                    ToLatitude: RideSeeds.JustReviewRide.ToLatitude,
+                    ToLongitude: RideSeeds.JustReviewRide.ToLongitude,
+                    Distance: RideSeeds.JustReviewRide.Distance,
+                    SharedSeats: RideSeeds.JustReviewRide.SharedSeats,
+                    Departure: RideSeeds.JustReviewRide.Departure,
+                    Arrival: RideSeeds.JustReviewRide.Arrival
+                )
+                {
+                    Vehicle = new VehicleDetailModel(
+                        OwnerId: UserSeeds.DriverUser.Id,
+                        VehicleType: VehicleSeeds.Felicia.VehicleType,
+                        Make: VehicleSeeds.Felicia.Make,
+                        Model: VehicleSeeds.Felicia.Model,
+                        Registered: VehicleSeeds.Felicia.Registered,
+                        Seats: VehicleSeeds.Felicia.Seats
+                    )
+                }
             };
             review.Rating = 2;
             await _reviewFacadeSUT.SaveAsync(review);

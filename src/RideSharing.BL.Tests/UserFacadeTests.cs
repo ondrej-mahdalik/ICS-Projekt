@@ -37,29 +37,21 @@ namespace RideSharing.BL.Tests
         public async Task GetAll_Single_SeededUser()
         {
             var users = await _userFacadeSUT.GetAsync();
-               var user = users.Single(i => i.Id == UserSeeds.DriverUser.Id);
-            var user2 = Mapper.Map<UserListModel>(UserSeeds.DriverUser);
-            await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
-            int vehicleCount = await dbxAssert.VehicleEntities.CountAsync(i => i.OwnerId == UserSeeds.DriverUser.Id);
-            var reviewsOnUser = await dbxAssert.ReviewEntities.Where(i => i.ReviewedUserId == UserSeeds.DriverUser.Id).ToListAsync();
-            List<ReviewDetailModel> reviewsOnUserDetail = new List<ReviewDetailModel>();
-            foreach (ReviewEntity review in reviewsOnUser)
-            {
-                reviewsOnUserDetail.Add(Mapper.Map<ReviewDetailModel>(review));
-            }
-            int upcomingRidesCount = await dbxAssert.ReservationEntities.CountAsync(i => (i.ReservingUserId != UserSeeds.DriverUser.Id || i.Ride != null) && i.Ride!.Departure > DateTime.Now);
-            upcomingRidesCount += await dbxAssert.RideEntities.CountAsync(i => i.Vehicle != null && i.Vehicle.OwnerId == UserSeeds.DriverUser.Id && i.Departure > DateTime.Now);
-            DeepAssert.Equal(user2, user, new string[] {"NumberOfVehicles", "Reviews", "UpcomingRidesCount"});
-            Assert.Equal(vehicleCount, user.NumberOfVehicles);
-            //Assert.Equal<ReviewDetailModel>(reviewsOnUserDetail, user.Reviews);
-            Assert.Equal(user.UpcomingRidesCount, upcomingRidesCount);
+            var user = users.Single(i => i.Id == UserSeeds.JustSubmittedReviewUser.Id);
+            DeepAssert.Equal(Mapper.Map<UserListModel>(UserSeeds.JustSubmittedReviewUser), user);
+            Assert.Equal(0, user.NumberOfVehicles);
+            Assert.Equal(0, user.UpcomingRidesCount);
+            Assert.Equal(user.Reviews, new List<ReviewDetailModel>());
         }
 
         [Fact]
         public async Task GetById_SeededUser()
         {
-            var user = await _userFacadeSUT.GetAsync(UserSeeds.DriverUser.Id);
-            DeepAssert.Equal(Mapper.Map<UserDetailModel>(UserSeeds.DriverUser), user);
+            var user = await _userFacadeSUT.GetAsync(UserSeeds.JustSubmittedReviewUser.Id);
+            DeepAssert.Equal(Mapper.Map<UserDetailModel>(UserSeeds.JustSubmittedReviewUser), user);
+            Assert.NotNull(user);
+            Assert.Equal(0, user!.NumberOfVehicles);
+            Assert.Equal(user.Reviews, new List<ReviewDetailModel>());
         }
 
         [Fact]

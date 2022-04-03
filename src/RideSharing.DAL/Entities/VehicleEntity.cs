@@ -5,7 +5,7 @@ namespace RideSharing.DAL.Entities
         string? ImageUrl) : IEntity
     {
 #nullable disable
-        public VehicleEntity() : this(default, default, default, default, default!, default, default, default) { }
+        public VehicleEntity() : this(default, default, default, string.Empty, string.Empty, default, default, default) { }
 #nullable enable
         public UserEntity? Owner { get; init; }
         public ICollection<RideEntity> Rides { get; init; } = new List<RideEntity>();
