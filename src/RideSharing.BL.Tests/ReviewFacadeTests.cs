@@ -72,7 +72,8 @@ namespace RideSharing.BL.Tests
         public async Task GetById_SeededReview()
         {
             var review = await _reviewFacadeSUT.GetAsync(ReviewSeeds.DriverPragueBrnoReview.Id);
-            Assert.Equal(Mapper.Map<ReviewDetailModel>(ReviewSeeds.DriverPragueBrnoReview).Id, review.Id);
+            Assert.NotNull(review);
+            Assert.Equal(Mapper.Map<ReviewDetailModel>(ReviewSeeds.DriverPragueBrnoReview).Id, review!.Id);
         }
         [Fact]
         public async Task GetById_NonExistent()

@@ -47,8 +47,8 @@ namespace RideSharing.BL.Tests
             {
                 reviewsOnUserDetail.Add(Mapper.Map<ReviewDetailModel>(review));
             }
-            int upcomingRidesCount = await dbxAssert.ReservationEntities.CountAsync(i => i.ReservingUserId == UserSeeds.DriverUser.Id && i.Ride.Departure > DateTime.Now);
-            upcomingRidesCount += await dbxAssert.RideEntities.CountAsync(i => i.Vehicle.OwnerId == UserSeeds.DriverUser.Id && i.Departure > DateTime.Now);
+            int upcomingRidesCount = await dbxAssert.ReservationEntities.CountAsync(i => (i.ReservingUserId != UserSeeds.DriverUser.Id || i.Ride != null) && i.Ride!.Departure > DateTime.Now);
+            upcomingRidesCount += await dbxAssert.RideEntities.CountAsync(i => i.Vehicle != null && i.Vehicle.OwnerId == UserSeeds.DriverUser.Id && i.Departure > DateTime.Now);
             DeepAssert.Equal(user2, user, new string[] {"NumberOfVehicles", "Reviews", "UpcomingRidesCount"});
             Assert.Equal(vehicleCount, user.NumberOfVehicles);
             //Assert.Equal<ReviewDetailModel>(reviewsOnUserDetail, user.Reviews);
