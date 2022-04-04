@@ -111,6 +111,7 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
     [Fact]
     public async Task NewRide_InsertOrUpdate_RideUpdated()
     {
+        // Arrange
         var ride = new RideDetailModel(
             FromName: RideSeeds.BrnoBratislava.FromName,
             FromLatitude: RideSeeds.BrnoBratislava.FromLatitude,
@@ -135,11 +136,14 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
            )
 
         };
+
+        // Act
         ride.ToName = "Ostrava";
         ride.ToLatitude = 49.820923;
         ride.ToLongitude = 18.262524;
         await _rideFacadeSUT.SaveAsync(ride);
 
+        // Assert
         await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
         var rideFromDb = await dbxAssert.RideEntities.SingleAsync(i => i.Id == ride.Id);
         var updatedRide = Mapper.Map<RideDetailModel>(rideFromDb);

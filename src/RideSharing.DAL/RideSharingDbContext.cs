@@ -36,7 +36,7 @@ public class RideSharingDbContext : DbContext
         modelBuilder.Entity<UserEntity>()
             .HasMany(i => i.SubmittedReviews)
             .WithOne(i => i.AuthorUser)
-            .OnDelete(DeleteBehavior.ClientSetNull); // User deletion keeps all reviews that the user created
+            .OnDelete(DeleteBehavior.Restrict); // User deletion keeps all reviews that the user created
 
         modelBuilder.Entity<UserEntity>()
             .HasMany(i => i.Vehicles)
@@ -58,13 +58,14 @@ public class RideSharingDbContext : DbContext
             .WithOne(i => i.Vehicle)
             .OnDelete(DeleteBehavior.Restrict); // Can't delete vehicle used in rides
 
-        //if (_seedDemoData)
-        //{
-        //    ReservationSeeds.Seed(modelBuilder);
-        //    VehicleSeeds.Seed(modelBuilder);
-        //    ReviewSeeds.Seed(modelBuilder);
-        //    RideSeeds.Seed(modelBuilder);
-        //    UserSeeds.Seed(modelBuilder);
-        //}
+
+        if (_seedDemoData)
+        {
+            ReservationSeeds.Seed(modelBuilder);
+            VehicleSeeds.Seed(modelBuilder);
+            ReviewSeeds.Seed(modelBuilder);
+            RideSeeds.Seed(modelBuilder);
+            UserSeeds.Seed(modelBuilder);
+        }
     }
 }
