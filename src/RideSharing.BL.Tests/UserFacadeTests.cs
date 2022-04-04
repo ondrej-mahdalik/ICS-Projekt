@@ -61,11 +61,17 @@ namespace RideSharing.BL.Tests
             Assert.Null(user);
         }
 
-        // Not sure if delete should fail
         [Fact]
-        public async Task SeededUser_DeleteByIdDeleted()
+        public async Task SeededUserWithRide_DeleteById_Throws()
         {
-           await Assert.ThrowsAsync<DbUpdateException>(async () => await _userFacadeSUT.DeleteAsync(UserSeeds.DriverUser.Id));
+            await Assert.ThrowsAsync<DbUpdateException>(async () => await _userFacadeSUT.DeleteAsync(UserSeeds.DriverUser.Id));
+        }
+        [Fact]
+        public async Task SeededUserWithoutRide_DeleteById_DoesNotThrow()
+        {
+            var user = _userFacadeSUT.DeleteAsync(UserSeeds.JustVehicleOwnerUser.Id);
+            await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
+            Assert.False(await dbxAssert.UserEntities.AnyAsync(i => i.Id == UserSeeds.JustVehicleOwnerUser.Id));
         }
 
         [Fact]
@@ -111,6 +117,29 @@ namespace RideSharing.BL.Tests
             var userFromDb = await dbxAssert.UserEntities.SingleAsync(i => i.Id == user.Id);
             var updatedUser = Mapper.Map<UserDetailModel>(userFromDb);
             DeepAssert.Equal(user, updatedUser);
+        }
+        [Fact]
+        public async Task SeededUser_Delete_DeletesAllHisVehicles()
+        {
+            var user = _userFacadeSUT.DeleteAsync(UserSeeds.JustVehicleOwnerUser.Id);
+            await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
+            Assert.Equal(0, await dbxAssert.VehicleEntities.CountAsync(i => i.OwnerId == UserSeeds.JustVehicleOwnerUser.Id));
+        }
+        [Fact]
+        public async Task SeededUser_Delete_DeletesAllReviewsHeObtained()
+        {
+            var user = _userFacadeSUT.DeleteAsync(UserSeeds.JustObtainedReviewUser.Id);
+            await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
+            Assert.Equal(0, await dbxAssert.ReviewEntities.CountAsync(i => i.ReviewedUserId == UserSeeds.JustObtainedReviewUser.Id));
+        }
+        [Fact]
+        public async Task SeededUser_Delete_KeepsAllReviewsHeSubmitted()
+        {
+            var user = _userFacadeSUT.DeleteAsync(UserSeeds.JustSubmittedReviewUser.Id);
+            await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
+
+            // TODO Do it properly
+            Assert.True(await dbxAssert.ReviewEntities.CountAsync(i => i.AuthorUserId == UserSeeds.JustSubmittedReviewUser.Id) > 0);
         }
     }
 }

@@ -58,11 +58,17 @@ namespace RideSharing.BL.Tests
         }
 
         [Fact]
-        public async Task SeededVehicle_DeleteByIdDeleted()
+        public async Task SeededVehicleWithoutRide_DeleteById_DoesNotThrow()
         {
             var vehicle = _vehicleFacadeSUT.DeleteAsync(VehicleSeeds.Karosa.Id);
             await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
             Assert.False(await dbxAssert.VehicleEntities.AnyAsync(i => i.Id == VehicleSeeds.Karosa.Id));
+
+        }
+        [Fact]
+        public async Task SeededVehicleWithRide_DeleteById_Throws()
+        {
+            await Assert.ThrowsAsync<DbUpdateException>(async () => await _vehicleFacadeSUT.DeleteAsync(VehicleSeeds.Felicia.Id));
 
         }
         [Fact]
