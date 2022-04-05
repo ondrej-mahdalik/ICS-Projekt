@@ -79,7 +79,7 @@ public class DbContextReservationTests : DbContextTestsBase
     {
         //Arrange
         var user = UserSeeds.GetNoRelationsEntity(UserSeeds.ReservationUser1);
-        user.Reviews.Add(ReviewSeeds.DriverAuthoredPragueBrnoReview);
+        user.ReceivedReviews.Add(ReviewSeeds.DriverAuthoredPragueBrnoReview);
         var expected = ReservationSeeds.GetNoRelationsEntity(ReservationSeeds.User1PragueBrno) with
         {
             ReservingUser = user
@@ -87,7 +87,7 @@ public class DbContextReservationTests : DbContextTestsBase
 
         //Act
         var entity = await RideSharingDbContextSUT.ReservationEntities.Include(i => i.ReservingUser)
-            .ThenInclude(i => i!.Reviews)
+            .ThenInclude(i => i!.ReceivedReviews)
             .SingleAsync(i => i.Id == ReservationSeeds.User1PragueBrno.Id);
 
         //Assert

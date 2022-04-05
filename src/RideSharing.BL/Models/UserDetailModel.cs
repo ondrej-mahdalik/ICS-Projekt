@@ -13,7 +13,7 @@ public record UserDetailModel(
     public string Phone { get; set; } = Phone;
     public string? ImageUrl { get; set; }
     public int NumberOfVehicles { get; set; }
-    public List<ReviewDetailModel> Reviews { get; set; } = new();
+    public List<ReviewDetailModel> ReceivedReviews { get; set; } = new();
 
     public class MapperProfile : Profile
     {

@@ -86,7 +86,7 @@ public static class UserSeeds
     {
         return entity with
         {
-            Reviews = new List<ReviewEntity>(),
+            ReceivedReviews = new List<ReviewEntity>(),
             SubmittedReviews = new List<ReviewEntity>(),
             Vehicles = new List<VehicleEntity>(),
             Reservations = new List<ReservationEntity>()

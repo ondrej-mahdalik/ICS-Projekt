@@ -111,10 +111,10 @@ public class DbContextUserTests : DbContextTestsBase
     {
         //Arrange
         var expected = UserSeeds.GetNoRelationsEntity(UserSeeds.DriverUser);
-        expected.Reviews.Add(ReviewSeeds.DriverPragueBrnoReview);
+        expected.ReceivedReviews.Add(ReviewSeeds.DriverPragueBrnoReview);
 
         //Act
-        var entity = await RideSharingDbContextSUT.UserEntities.Include(i => i.Reviews)
+        var entity = await RideSharingDbContextSUT.UserEntities.Include(i => i.ReceivedReviews)
             .SingleAsync(i => i.Id == UserSeeds.DriverUser.Id);
 
         //Assert

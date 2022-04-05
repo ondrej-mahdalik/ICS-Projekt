@@ -41,7 +41,7 @@ namespace RideSharing.BL.Tests
             DeepAssert.Equal(Mapper.Map<UserListModel>(UserSeeds.JustSubmittedReviewUser), user);
             Assert.Equal(0, user.NumberOfVehicles);
             Assert.Equal(0, user.UpcomingRidesCount);
-            Assert.Equal(user.Reviews, new List<ReviewDetailModel>());
+            Assert.Equal(user.ReceivedReviews, new List<ReviewDetailModel>());
         }
 
         [Fact]
@@ -51,7 +51,7 @@ namespace RideSharing.BL.Tests
             DeepAssert.Equal(Mapper.Map<UserDetailModel>(UserSeeds.JustSubmittedReviewUser), user);
             Assert.NotNull(user);
             Assert.Equal(0, user!.NumberOfVehicles);
-            Assert.Equal(user.Reviews, new List<ReviewDetailModel>());
+            Assert.Equal(user.ReceivedReviews, new List<ReviewDetailModel>());
         }
 
         [Fact]
@@ -129,11 +129,16 @@ namespace RideSharing.BL.Tests
         [Fact]
         public async Task SeededUser_Delete_KeepsAllReviewsHeSubmitted()
         {
-            await _userFacadeSUT.DeleteAsync(UserSeeds.JustSubmittedReviewUser.Id);
+            // Arrange
             await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
+            int originalCount = await dbxAssert.ReviewEntities.CountAsync(i => i.AuthorUserId == null);
 
-            // TODO Do it properly
-            //Assert.True(await dbxAssert.ReviewEntities.CountAsync(i => i.AuthorUserId == null) == 1);
+            // Act
+            await _userFacadeSUT.DeleteAsync(UserSeeds.JustSubmittedReviewUser.Id);
+
+            // Assert
+            int newCount = await dbxAssert.ReviewEntities.CountAsync(i => i.AuthorUserId == null);
+            Assert.Equal(1, newCount - originalCount);
         }
     }
 }

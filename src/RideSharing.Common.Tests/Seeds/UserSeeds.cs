@@ -23,7 +23,7 @@ public static class UserSeeds
     static UserSeeds()
     {
         //JohnDoe.Vehicles.Add(VehicleSeeds.Felicia);
-        //JohnDoe.Reviews.Add(ReviewSeeds.Perfect);
+        //JohnDoe.ReceivedReviews.Add(ReviewSeeds.Perfect);
         //ElonTusk.Reservations.Add(ReservationSeeds.BrnoTwoSeats);
     }
 
