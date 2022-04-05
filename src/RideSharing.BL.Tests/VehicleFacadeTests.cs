@@ -46,7 +46,7 @@ namespace RideSharing.BL.Tests
         public async Task GetById_SeededVehicle()
         {
             var vehicle = await _vehicleFacadeSUT.GetAsync(VehicleSeeds.Felicia.Id);
-            Assert.Equal(Mapper.Map<VehicleDetailModel>(VehicleSeeds.Felicia).Id, vehicle.Id);
+            Assert.Equal(Mapper.Map<VehicleDetailModel>(VehicleSeeds.Felicia).Id, vehicle?.Id);
         }
 
         [Fact]
