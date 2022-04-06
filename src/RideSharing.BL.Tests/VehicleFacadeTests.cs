@@ -8,6 +8,7 @@ using RideSharing.Common.Tests.DALTestsSeeds;
 using Xunit;
 using Xunit.Abstractions;
 using RideSharing.Common.Enums;
+using RideSharing.Common.Tests;
 
 namespace RideSharing.BL.Tests
 {
@@ -39,7 +40,7 @@ namespace RideSharing.BL.Tests
         {
             var vehicles = await _vehicleFacadeSUT.GetAsync();
                 var vehicle = vehicles.Single(i => i.Id == VehicleSeeds.Felicia.Id);
-            Assert.Equal(vehicle.Id, Mapper.Map<VehicleListModel>(VehicleSeeds.Felicia).Id);
+            DeepAssert.Equal(vehicle, Mapper.Map<VehicleListModel>(VehicleSeeds.Felicia));
         }
 
         [Fact]

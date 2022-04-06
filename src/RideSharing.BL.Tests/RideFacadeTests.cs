@@ -54,14 +54,16 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
     {
         var rides = await _rideFacadeSUT.GetAsync();
             var ride = rides.Single(i => i.Id == RideSeeds.BrnoBratislava.Id);
-        Assert.Equal(Mapper.Map<RideListModel>(RideSeeds.BrnoBratislava).Id, ride.Id);
+            DeepAssert.Equal(Mapper.Map<RideListModel>(RideSeeds.BrnoBratislava), ride,
+                new string[] {"Driver", "Vehicle"});
     }
 
     [Fact]
     public async Task GetById__SeededRide()
     {
         var ride = await _rideFacadeSUT.GetAsync(RideSeeds.BrnoBratislava.Id);
-        Assert.Equal(Mapper.Map<RideDetailModel>(RideSeeds.BrnoBratislava).Id, ride?.Id);
+        DeepAssert.Equal(Mapper.Map<RideDetailModel>(RideSeeds.BrnoBratislava), ride,
+            new string[] { "Driver", "Vehicle", "Reservations"});
     }
 
     [Fact]
@@ -150,4 +152,11 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
         DeepAssert.Equal(ride, updatedRide);
     }
 
+    [Fact]
+    public async Task DeleteRide_KeepsAllItsReviews()
+    {
+        await _rideFacadeSUT.DeleteAsync(RideSeeds.PragueBrno.Id);
+        await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
+        Assert.True(await dbxAssert.ReviewEntities.CountAsync(i => i.RideId == null) == 2);
+    }
 }
