@@ -31,7 +31,7 @@ public class RideSharingDbContext : DbContext
 
             entity.HasMany(i => i.ReceivedReviews)
                 .WithOne(i => i.ReviewedUser)
-                .OnDelete(DeleteBehavior.ClientCascade); // User deletion causes deletion of all their received reviews
+                .OnDelete(DeleteBehavior.NoAction); // User reviews have to be deleted manually before deleting the user (Cascade deletion is not possible)
 
             entity.HasMany(i => i.SubmittedReviews)
                 .WithOne(i => i.AuthorUser)
@@ -46,7 +46,7 @@ public class RideSharingDbContext : DbContext
         {
             entity.HasMany(i => i.Reservations)
                 .WithOne(i => i.Ride)
-                .OnDelete(DeleteBehavior.Cascade); // Ride deletion causes deletion of all it's reservations
+                .OnDelete(DeleteBehavior.Cascade); // Ride deletion causes deletion of all its reservations
 
             entity.HasMany(i => i.Reviews)
                 .WithOne(i => i.Ride)

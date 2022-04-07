@@ -49,8 +49,7 @@ namespace RideSharing.BL.Tests
         {
             var user = await _userFacadeSUT.GetAsync(UserSeeds.JustSubmittedReviewUser.Id);
             DeepAssert.Equal(Mapper.Map<UserDetailModel>(UserSeeds.JustSubmittedReviewUser), user);
-            Assert.NotNull(user);
-            Assert.Equal(0, user!.NumberOfVehicles);
+            Assert.Empty(user!.Vehicles);
             Assert.Equal(user.ReceivedReviews, new List<ReviewDetailModel>());
         }
 

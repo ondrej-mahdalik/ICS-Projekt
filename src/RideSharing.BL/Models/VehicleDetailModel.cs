@@ -10,7 +10,8 @@ public record VehicleDetailModel(
     string Make,
     string Model,
     DateTime Registered,
-    ushort Seats) : ModelBase
+    ushort Seats,
+    string? ImageUrl = null) : ModelBase
 {
     public Guid OwnerId { get; set; } = OwnerId;
     public VehicleType VehicleType { get; set; } = VehicleType;
@@ -18,7 +19,7 @@ public record VehicleDetailModel(
     public string Model { get; set; } = Model;
     public DateTime Registered { get; set; } = Registered;
     public ushort Seats { get; set; } = Seats;
-    public string? ImageUrl { get; set; }
+    public string? ImageUrl { get; set; } = ImageUrl;
 
     public class MapperProfile : Profile
     {

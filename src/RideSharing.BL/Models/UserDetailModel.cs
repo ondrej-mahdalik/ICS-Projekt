@@ -6,22 +6,22 @@ namespace RideSharing.BL.Models;
 public record UserDetailModel(
     string Name,
     string Surname,
-    string Phone) : ModelBase
+    string Phone,
+    string? ImageUrl = null) : ModelBase
 {
     public string Name { get; set; } = Name;
     public string Surname { get; set; } = Surname;
     public string Phone { get; set; } = Phone;
-    public string? ImageUrl { get; set; }
-    public int NumberOfVehicles { get; set; }
+    public string? ImageUrl { get; set; } = ImageUrl;
+    public List<VehicleDetailModel> Vehicles { get; set; } = new();
     public List<ReviewDetailModel> ReceivedReviews { get; set; } = new();
-
+    public List<ReviewDetailModel> SubmittedReviews { get; set; } = new();
+    
     public class MapperProfile : Profile
     {
         public MapperProfile()
         {
             CreateMap<UserEntity, UserDetailModel>()
-                .ForMember(dst => dst.NumberOfVehicles,
-                    action => action.MapFrom(src => src.Vehicles.Count))
                 .ReverseMap();
         }
     }

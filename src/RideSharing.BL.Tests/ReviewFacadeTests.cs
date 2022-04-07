@@ -21,6 +21,7 @@ namespace RideSharing.BL.Tests
         [Fact]
         public async Task Create_WithNonExistingItem_DoesNotThrow()
         {
+            // Arrange
             var review = new ReviewDetailModel(
                 Rating: 5
 
@@ -29,23 +30,23 @@ namespace RideSharing.BL.Tests
                   Name: "Harrison",
                   Surname: "Ford",
                   Phone: "464546431"
-                  ),
+                ),
                 AuthorUser = new UserDetailModel(
                   Name: "Johnny",
                   Surname: "Valda",
                   Phone: "464513431"
-                  ),
+                ),
                 Ride = new RideDetailModel(
                     FromName: "Olomouc",
-                    SharedSeats: 4,
                     FromLatitude: 4.25,
                     FromLongitude: 5.46,
-                    Distance: 25,
                     ToName: "Brno",
                     ToLatitude: 25.5,
                     ToLongitude: 4654.48,
+                    Distance: 25,
+                    SharedSeats: 4,
                     Departure: DateTime.Now,
-                    Arrival: DateTime.Now.AddSeconds(30)
+                    Arrival: DateTime.Now.AddMinutes(30)
                   )
                 {
                     Vehicle = new VehicleDetailModel(
@@ -60,7 +61,7 @@ namespace RideSharing.BL.Tests
               
             };
 
-
+            // Act
             var _ = await _reviewFacadeSUT.SaveAsync(review);
         }
         [Fact]
@@ -143,16 +144,18 @@ namespace RideSharing.BL.Tests
                 Rating: 3
             )
             {
-                Id = ReviewSeeds.JustRideReview.Id,
+                //Id = ReviewSeeds.JustRideReview.Id,
                 ReviewedUser = new UserDetailModel(
                     Name: UserSeeds.DriverUser.Name,
                     Surname: UserSeeds.DriverUser.Surname,
-                    Phone: UserSeeds.DriverUser.Phone
+                    Phone: UserSeeds.DriverUser.Phone,
+                    ImageUrl:UserSeeds.DriverUser.ImageUrl
                 ),
                 AuthorUser = new UserDetailModel(
-                  Name: UserSeeds.ReservationUser1.Name,
-                  Surname: UserSeeds.ReservationUser1.Surname,
-                  Phone: UserSeeds.ReservationUser1.Phone
+                    Name: UserSeeds.ReservationUser1.Name,
+                    Surname: UserSeeds.ReservationUser1.Surname,
+                    Phone: UserSeeds.ReservationUser1.Phone,
+                    ImageUrl: UserSeeds.ReservationUser1.ImageUrl
                 ),
                 Ride = new RideDetailModel(
                     FromName: RideSeeds.JustReviewRide.FromName,
@@ -164,7 +167,8 @@ namespace RideSharing.BL.Tests
                     Distance: RideSeeds.JustReviewRide.Distance,
                     SharedSeats: RideSeeds.JustReviewRide.SharedSeats,
                     Departure: RideSeeds.JustReviewRide.Departure,
-                    Arrival: RideSeeds.JustReviewRide.Arrival
+                    Arrival: RideSeeds.JustReviewRide.Arrival,
+                    Note: RideSeeds.JustReviewRide.Note
                 )
                 {
                     Vehicle = new VehicleDetailModel(
@@ -173,7 +177,8 @@ namespace RideSharing.BL.Tests
                         Make: VehicleSeeds.Felicia.Make,
                         Model: VehicleSeeds.Felicia.Model,
                         Registered: VehicleSeeds.Felicia.Registered,
-                        Seats: VehicleSeeds.Felicia.Seats
+                        Seats: VehicleSeeds.Felicia.Seats,
+                        ImageUrl: VehicleSeeds.Felicia.ImageUrl
                     )
                 }
             };

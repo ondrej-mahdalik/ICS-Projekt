@@ -13,7 +13,8 @@ public record RideDetailModel(
     int Distance,
     int SharedSeats,
     DateTime Departure,
-    DateTime Arrival) : ModelBase
+    DateTime Arrival,
+    string? Note = null) : ModelBase
 {
     public string FromName { get; set; } = FromName;
     public double FromLatitude { get; set; } = FromLatitude;
@@ -27,11 +28,11 @@ public record RideDetailModel(
     
     public DateTime Departure { get; set; } = Departure;
     public DateTime Arrival { get; set; } = Arrival;
-    public string? Note { get; set; }
+    public string? Note { get; set; } = Note;
     public int Distance { get; set; } = Distance;
     public int SharedSeats { get; set; } = SharedSeats;
     public TimeSpan Duration => Arrival - Departure;
-    
+
     public List<RideDetailReservationModel> Reservations { get; init; } = new();
     
     public class MapperProfile : Profile
