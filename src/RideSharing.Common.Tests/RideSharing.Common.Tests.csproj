@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RideSharing.BL\RideSharing.BL.csproj" />
     <ProjectReference Include="..\RideSharing.DAL\RideSharing.DAL.csproj" />
   </ItemGroup>
 

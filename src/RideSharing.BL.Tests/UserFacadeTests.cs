@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using RideSharing.Common.Tests.DALTestsSeeds;
 using RideSharing.Common.Tests;
 using Xunit.Abstractions;
-using RideSharing.DAL.Entities;
 using System.Collections.Generic;
 
 namespace RideSharing.BL.Tests
@@ -105,7 +104,7 @@ namespace RideSharing.BL.Tests
                 Phone: UserSeeds.DriverUser.Phone
             )
             {
-                Id = UserSeeds.DriverUser.Id,
+                Id = UserSeeds.DriverUser.Id
             };
             user.Name += "updated";
             user.Surname += "updated";
@@ -124,7 +123,7 @@ namespace RideSharing.BL.Tests
         {
             await _userFacadeSUT.DeleteAsync(UserSeeds.JustObtainedReviewUser.Id);
             await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
-            Assert.Equal(0, await dbxAssert.ReviewEntities.CountAsync(i => i.ReviewedUserId == UserSeeds.JustObtainedReviewUser.Id));
+            Assert.Equal(0, await dbxAssert.ReviewEntities.CountAsync(i => i.Ride!.Vehicle!.OwnerId == UserSeeds.JustObtainedReviewUser.Id));
         }
         [Fact]
         public async Task SeededUser_Delete_KeepsAllReviewsHeSubmitted()
