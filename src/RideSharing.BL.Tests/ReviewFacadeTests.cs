@@ -26,11 +26,6 @@ namespace RideSharing.BL.Tests
                 Rating: 5
 
             ) {
-                ReviewedUser = new UserDetailModel(
-                  Name: "Harrison",
-                  Surname: "Ford",
-                  Phone: "464546431"
-                ),
                 AuthorUser = new UserDetailModel(
                   Name: "Johnny",
                   Surname: "Valda",
@@ -98,11 +93,6 @@ namespace RideSharing.BL.Tests
                 Rating: 3
             )
             { 
-                ReviewedUser = new UserDetailModel(
-                    Name: UserSeeds.DriverUser.Name,
-                    Surname:UserSeeds.DriverUser.Surname,
-                    Phone: UserSeeds.DriverUser.Phone
-                ),
                 AuthorUser = new UserDetailModel(
                   Name: UserSeeds.ReservationUser1.Name,
                   Surname: UserSeeds.ReservationUser1.Surname,
@@ -144,13 +134,7 @@ namespace RideSharing.BL.Tests
                 Rating: 3
             )
             {
-                //Id = ReviewSeeds.JustRideReview.Id,
-                ReviewedUser = new UserDetailModel(
-                    Name: UserSeeds.DriverUser.Name,
-                    Surname: UserSeeds.DriverUser.Surname,
-                    Phone: UserSeeds.DriverUser.Phone,
-                    ImageUrl:UserSeeds.DriverUser.ImageUrl
-                ),
+                Id = ReviewSeeds.JustRideReview.Id,
                 AuthorUser = new UserDetailModel(
                     Name: UserSeeds.ReservationUser1.Name,
                     Surname: UserSeeds.ReservationUser1.Surname,

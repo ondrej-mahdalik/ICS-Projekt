@@ -7,7 +7,6 @@ public record ReviewDetailModel(ushort Rating) : ModelBase
 {
     public ushort Rating { get; set; } = Rating;
     public RideDetailModel? Ride { get; set; }
-    public UserDetailModel? ReviewedUser { get; set; }
     public UserDetailModel? AuthorUser { get; set; }
 
     public class MapperProfile : Profile

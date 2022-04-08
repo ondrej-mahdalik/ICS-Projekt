@@ -28,7 +28,6 @@ public class DbContextReviewTests : DbContextTestsBase
         {
             RideId = RideSeeds.BrnoBratislava.Id,
             AuthorUserId = UserSeeds.ReservationUser2.Id,
-            ReviewedUserId = UserSeeds.DriverUser.Id,
             Rating = 1
         };
 
@@ -73,23 +72,6 @@ public class DbContextReviewTests : DbContextTestsBase
 
         //Assert
         DeepAssert.Equal(expected, entity, "SubmittedReviews");
-    }
-
-    [Fact]
-    public async Task GetById_IncludingReviewedUser_Review()
-    {
-        //Arrange
-        var expected = ReviewSeeds.GetNoRelationsEntity(ReviewSeeds.DriverPragueBrnoReview) with
-        {
-            ReviewedUser = UserSeeds.GetNoRelationsEntity(UserSeeds.DriverUser)
-        };
-
-        //Act
-        var entity = await RideSharingDbContextSUT.ReviewEntities.Include(i => i.ReviewedUser)
-            .SingleAsync(i => i.Id == ReviewSeeds.DriverPragueBrnoReview.Id);
-
-        //Assert
-        DeepAssert.Equal(expected, entity, "ReceivedReviews");
     }
 
     [Fact]
