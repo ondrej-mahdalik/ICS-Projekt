@@ -97,6 +97,7 @@ namespace RideSharing.BL.Tests
         public async Task SeededUser_InsertOrUpdate_UserUpdated()
         {
             //Arrange
+
             var user = new UserDetailModel
             (
                 Name: UserSeeds.DriverUser.Name,
@@ -104,7 +105,8 @@ namespace RideSharing.BL.Tests
                 Phone: UserSeeds.DriverUser.Phone
             )
             {
-                Id = UserSeeds.DriverUser.Id
+                Id = UserSeeds.DriverUser.Id,
+
             };
             user.Name += "updated";
             user.Surname += "updated";

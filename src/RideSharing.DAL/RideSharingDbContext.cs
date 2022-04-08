@@ -31,11 +31,11 @@ public class RideSharingDbContext : DbContext
 
             entity.HasMany(i => i.ReceivedReviews)
                 .WithOne(i => i.ReviewedUser)
-                .OnDelete(DeleteBehavior.NoAction); // User reviews have to be deleted manually before deleting the user (Cascade deletion is not possible)
+                .OnDelete(DeleteBehavior.Cascade); // User reviews have to be deleted manually before deleting the user (Cascade deletion is not possible)
 
             entity.HasMany(i => i.SubmittedReviews)
                 .WithOne(i => i.AuthorUser)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.NoAction);
 
             entity.HasMany(i => i.Vehicles)
                 .WithOne(i => i.Owner)

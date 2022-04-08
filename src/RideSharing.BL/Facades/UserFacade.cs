@@ -20,14 +20,18 @@ public class UserFacade : CRUDFacade<UserEntity, UserListModel, UserDetailModel>
 
     public new async Task DeleteAsync(Guid id)
     {
-        // Delete all reviews the user has received
-        var reviewFacade = new ReviewFacade(_unitOfWorkFactory, _mapper);
-        var reviews = (await reviewFacade.GetAsync()).Where(x => x.ReviewedUser?.Id == id);
-        foreach (var review in reviews)
-            await reviewFacade.DeleteAsync(review);
-
         await using var uow = _unitOfWorkFactory.Create();
 
+        // Delete all reviews the user has received
+        var reviewFacade = new ReviewFacade(_unitOfWorkFactory, _mapper);
+        var reviews = (await reviewFacade.GetAsync()).Where(x => x.AuthorUser?.Id == id);
+        var newReviews = reviews.ToList();
+        foreach (var review in newReviews)
+        {
+            review.AuthorUser = null;
+            await uow.GetRepository<ReviewEntity>().InsertOrUpdateAsync(review, _mapper).ConfigureAwait(false);
+            await uow.CommitAsync();
+        }
 
         // Delete the user
         uow.GetRepository<UserEntity>().Delete(id);

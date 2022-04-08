@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using RideSharing.BL.Models;
 using RideSharing.DAL.Entities;
 using RideSharing.Common.Tests.Seeds;
 

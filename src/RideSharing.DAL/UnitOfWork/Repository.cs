@@ -30,4 +30,6 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, I
     }
 
     public void Delete(Guid entityId) => _dbSet.Remove(_dbSet.Single(i => i.Id == entityId));
+
+    public void DeleteRange(IEnumerable<Guid> entityIds) => _dbSet.RemoveRange(_dbSet.Where(i => entityIds.Contains(i.Id)));
 }
