@@ -144,7 +144,7 @@ namespace RideSharing.BL.Tests
                 Rating: 3
             )
             {
-                //Id = ReviewSeeds.JustRideReview.Id,
+                Id = ReviewSeeds.JustRideReview.Id,
                 ReviewedUser = new UserDetailModel(
                     Name: UserSeeds.DriverUser.Name,
                     Surname: UserSeeds.DriverUser.Surname,

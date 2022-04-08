@@ -54,8 +54,8 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
     {
         var rides = await _rideFacadeSUT.GetAsync();
             var ride = rides.Single(i => i.Id == RideSeeds.BrnoBratislava.Id);
-            DeepAssert.Equal(Mapper.Map<RideListModel>(RideSeeds.BrnoBratislava), ride,
-                new string[] {"Driver", "Vehicle"});
+        DeepAssert.Equal(Mapper.Map<RideListModel>(RideSeeds.BrnoBratislava), ride, new string[] {"Driver", "Vehicle"});
+        DeepAssert.Equal(ride.Vehicle, Mapper.Map<RideListVehicleModel>(VehicleSeeds.Felicia));
     }
 
     [Fact]
