@@ -22,16 +22,12 @@ public record RideDetailModel(
     public string ToName { get; set; } = ToName;
     public double ToLatitude { get; set; } = ToLatitude;
     public double ToLongitude { get; set; } = ToLongitude;
-    
-    public UserDetailModel? Driver { get; set; }
-    public VehicleDetailModel? Vehicle { get; set; }
-    
+    public VehicleListModel? Vehicle { get; set; }
     public DateTime Departure { get; set; } = Departure;
     public DateTime Arrival { get; set; } = Arrival;
     public string? Note { get; set; } = Note;
     public int Distance { get; set; } = Distance;
     public int SharedSeats { get; set; } = SharedSeats;
-    public TimeSpan Duration => Arrival - Departure;
 
     public List<RideDetailReservationModel> Reservations { get; init; } = new();
     
@@ -40,9 +36,8 @@ public record RideDetailModel(
         public MapperProfile()
         {
             CreateMap<RideEntity, RideDetailModel>()
-                .ForMember(model => model.Duration, action => action.MapFrom(src => src.Arrival - src.Departure))
-                .ForMember(model => model.Driver, action => action.MapFrom(src => src.Vehicle!.Owner))
-                .ReverseMap();
+                .ReverseMap()
+                .ForMember(entity => entity.Vehicle, action => action.Ignore());
         }
     }
 }

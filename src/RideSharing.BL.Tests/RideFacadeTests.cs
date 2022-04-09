@@ -35,17 +35,7 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
             SharedSeats: 4,
             Departure: new DateTime(2022, 3, 25, 09, 04, 00),
             Arrival: new DateTime(2022, 3, 25, 12, 04, 00)
-        )
-        {
-            Vehicle = new VehicleDetailModel(
-                 OwnerId: VehicleSeeds.Felicia.OwnerId,
-                 VehicleType: VehicleSeeds.Felicia.VehicleType,
-                 Make: VehicleSeeds.Felicia.Make,
-                 Model: VehicleSeeds.Felicia.Model,
-                 Registered: VehicleSeeds.Felicia.Registered,
-                 Seats: VehicleSeeds.Felicia.Seats
-           )
-        };
+        );
         var _ = await _rideFacadeSUT.SaveAsync(ride);
     }
 
@@ -95,7 +85,7 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
             Arrival: new DateTime(2022, 03, 26, 19, 41, 00)
         )
         {
-            Vehicle = new VehicleDetailModel(
+            Vehicle = new VehicleListModel(
                  OwnerId: VehicleSeeds.Felicia.OwnerId,
                  VehicleType: VehicleSeeds.Felicia.VehicleType,
                  Make: VehicleSeeds.Felicia.Make,
@@ -103,6 +93,9 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
                  Registered: VehicleSeeds.Felicia.Registered,
                  Seats: VehicleSeeds.Felicia.Seats
            )
+            {
+                Id = VehicleSeeds.Felicia.Id
+            }
         };
         ride = await _rideFacadeSUT.SaveAsync(ride);
 
@@ -128,15 +121,18 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
         )
         {
             Id = RideSeeds.BrnoBratislava.Id,
-            Vehicle = new VehicleDetailModel(
+            Vehicle = new VehicleListModel(
                  OwnerId: VehicleSeeds.Karosa.OwnerId,
                  VehicleType: VehicleSeeds.Karosa.VehicleType,
                  Make: VehicleSeeds.Karosa.Make,
                  Model: VehicleSeeds.Karosa.Model,
                  Registered: VehicleSeeds.Karosa.Registered,
-                 Seats: VehicleSeeds.Karosa.Seats
+                 Seats: VehicleSeeds.Karosa.Seats,
+                 ImageUrl: VehicleSeeds.Karosa.ImageUrl
            )
-
+            {
+                Id = VehicleSeeds.Karosa.Id
+            }
         };
 
         // Act
@@ -147,7 +143,7 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
 
         // Assert
         await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
-        var rideFromDb = await dbxAssert.RideEntities.SingleAsync(i => i.Id == ride.Id);
+        var rideFromDb = await dbxAssert.RideEntities.Include(entity => entity.Vehicle).SingleAsync(i => i.Id == ride.Id);
         var updatedRide = Mapper.Map<RideDetailModel>(rideFromDb);
         DeepAssert.Equal(ride, updatedRide);
     }

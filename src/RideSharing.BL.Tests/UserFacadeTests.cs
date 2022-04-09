@@ -24,12 +24,12 @@ namespace RideSharing.BL.Tests
         public async Task Create_WithNonExistingItem_DoesNotThrow()
         {
             var user = new UserDetailModel(
-                Name: @"Jan",
-                Surname: @"Václavík",
-                Phone: @"746652914"
+                Name: "Jan",
+                Surname: "Václavík",
+                Phone: "746652914"
             );
 
-            var _ = await _userFacadeSUT.SaveAsync(user);
+            await _userFacadeSUT.SaveAsync(user);
         }
 
         [Fact]
@@ -40,7 +40,6 @@ namespace RideSharing.BL.Tests
             DeepAssert.Equal(Mapper.Map<UserListModel>(UserSeeds.JustSubmittedReviewUser), user);
             Assert.Equal(0, user.NumberOfVehicles);
             Assert.Equal(0, user.UpcomingRidesCount);
-            Assert.Equal(user.ReceivedReviews, new List<ReviewDetailModel>());
         }
 
         [Fact]

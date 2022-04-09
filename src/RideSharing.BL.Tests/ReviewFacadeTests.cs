@@ -24,37 +24,7 @@ namespace RideSharing.BL.Tests
             // Arrange
             var review = new ReviewDetailModel(
                 Rating: 5
-
-            ) {
-                AuthorUser = new UserDetailModel(
-                  Name: "Johnny",
-                  Surname: "Valda",
-                  Phone: "464513431"
-                ),
-                Ride = new RideDetailModel(
-                    FromName: "Olomouc",
-                    FromLatitude: 4.25,
-                    FromLongitude: 5.46,
-                    ToName: "Brno",
-                    ToLatitude: 25.5,
-                    ToLongitude: 4654.48,
-                    Distance: 25,
-                    SharedSeats: 4,
-                    Departure: DateTime.Now,
-                    Arrival: DateTime.Now.AddMinutes(30)
-                  )
-                {
-                    Vehicle = new VehicleDetailModel(
-                     OwnerId: VehicleSeeds.Karosa.OwnerId,
-                     VehicleType: VehicleSeeds.Karosa.VehicleType,
-                     Make: VehicleSeeds.Karosa.Make,
-                     Model: VehicleSeeds.Karosa.Model,
-                     Registered: VehicleSeeds.Karosa.Registered,
-                     Seats: VehicleSeeds.Karosa.Seats
-                     )
-              }
-              
-            };
+            );
 
             // Act
             var _ = await _reviewFacadeSUT.SaveAsync(review);
@@ -93,32 +63,25 @@ namespace RideSharing.BL.Tests
                 Rating: 3
             )
             { 
-                AuthorUser = new UserDetailModel(
+                AuthorUser = new UserListModel(
                   Name: UserSeeds.ReservationUser1.Name,
                   Surname: UserSeeds.ReservationUser1.Surname,
-                  Phone: UserSeeds.ReservationUser1.Phone
-                ), 
-                Ride = new RideDetailModel(
+                  Phone: UserSeeds.ReservationUser1.Phone,
+                  ImageUrl: UserSeeds.ReservationUser1.ImageUrl
+                )
+                {
+                    Id = UserSeeds.ReservationUser1.Id
+                }, 
+                Ride = new RideListModel(
                     FromName: RideSeeds.JustReviewRide.FromName,
-                    FromLatitude: RideSeeds.JustReviewRide.FromLatitude,
-                    FromLongitude: RideSeeds.JustReviewRide.FromLongitude,
                     ToName: RideSeeds.JustReviewRide.ToName,
-                    ToLatitude: RideSeeds.JustReviewRide.ToLatitude,
-                    ToLongitude: RideSeeds.JustReviewRide.ToLongitude,
                     Distance: RideSeeds.JustReviewRide.Distance,
                     SharedSeats: RideSeeds.JustReviewRide.SharedSeats,
                     Departure: RideSeeds.JustReviewRide.Departure,
                     Arrival: RideSeeds.JustReviewRide.Arrival
                 )
                 {
-                    Vehicle = new VehicleDetailModel(
-                        OwnerId: UserSeeds.DriverUser.Id,
-                        VehicleType: VehicleSeeds.Felicia.VehicleType,
-                        Make: VehicleSeeds.Felicia.Make,
-                        Model: VehicleSeeds.Felicia.Model,
-                        Registered: VehicleSeeds.Felicia.Registered,
-                        Seats: VehicleSeeds.Felicia.Seats
-                    )
+                    Id = RideSeeds.JustReviewRide.Id
                 }
             };
             review = await _reviewFacadeSUT.SaveAsync(review);
@@ -131,46 +94,36 @@ namespace RideSharing.BL.Tests
         public async Task NewReview_InsertOrUpdate_ReviewUpdated()
         {
             var review = new ReviewDetailModel(
-                Rating: 3
+                Rating: ReviewSeeds.JustRideReview.Rating
             )
             {
                 Id = ReviewSeeds.JustRideReview.Id,
-                AuthorUser = new UserDetailModel(
+                AuthorUser = new UserListModel(
                     Name: UserSeeds.ReservationUser1.Name,
                     Surname: UserSeeds.ReservationUser1.Surname,
                     Phone: UserSeeds.ReservationUser1.Phone,
                     ImageUrl: UserSeeds.ReservationUser1.ImageUrl
-                ),
-                Ride = new RideDetailModel(
+                )
+                {
+                    Id = UserSeeds.ReservationUser1.Id
+                },
+                Ride = new RideListModel(
                     FromName: RideSeeds.JustReviewRide.FromName,
-                    FromLatitude: RideSeeds.JustReviewRide.FromLatitude,
-                    FromLongitude: RideSeeds.JustReviewRide.FromLongitude,
                     ToName: RideSeeds.JustReviewRide.ToName,
-                    ToLatitude: RideSeeds.JustReviewRide.ToLatitude,
-                    ToLongitude: RideSeeds.JustReviewRide.ToLongitude,
                     Distance: RideSeeds.JustReviewRide.Distance,
                     SharedSeats: RideSeeds.JustReviewRide.SharedSeats,
                     Departure: RideSeeds.JustReviewRide.Departure,
-                    Arrival: RideSeeds.JustReviewRide.Arrival,
-                    Note: RideSeeds.JustReviewRide.Note
+                    Arrival: RideSeeds.JustReviewRide.Arrival
                 )
                 {
-                    Vehicle = new VehicleDetailModel(
-                        OwnerId: UserSeeds.DriverUser.Id,
-                        VehicleType: VehicleSeeds.Felicia.VehicleType,
-                        Make: VehicleSeeds.Felicia.Make,
-                        Model: VehicleSeeds.Felicia.Model,
-                        Registered: VehicleSeeds.Felicia.Registered,
-                        Seats: VehicleSeeds.Felicia.Seats,
-                        ImageUrl: VehicleSeeds.Felicia.ImageUrl
-                    )
+                    Id = RideSeeds.JustReviewRide.Id
                 }
             };
             review.Rating = 2;
             await _reviewFacadeSUT.SaveAsync(review);
 
             await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
-            var reviewFromDb = await dbxAssert.UserEntities.SingleAsync(i => i.Id == review.Id);
+            var reviewFromDb = await dbxAssert.ReviewEntities.SingleAsync(i => i.Id == review.Id);
             var updatedReview = Mapper.Map<ReviewDetailModel>(reviewFromDb);
             Assert.Equal(review.Rating, updatedReview.Rating);
         }

@@ -46,10 +46,6 @@ public class RideSharingDbContext : DbContext
 
             entity.HasMany(i => i.Reviews)
                 .WithOne(i => i.Ride)
-                .OnDelete(DeleteBehavior.SetNull); // Ride deletion keeps all reviews regarding that ride
-
-            entity.HasMany(i => i.Reviews)
-                .WithOne(i => i.Ride)
                 .OnDelete(DeleteBehavior.Cascade);
         });
 

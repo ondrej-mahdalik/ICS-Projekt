@@ -107,21 +107,6 @@ public class DbContextUserTests : DbContextTestsBase
     }
 
     [Fact]
-    public async Task GetById_IncludingReviews_User()
-    {
-        //Arrange
-        var expected = UserSeeds.GetNoRelationsEntity(UserSeeds.DriverUser);
-        expected.ReceivedReviews.Add(ReviewSeeds.DriverPragueBrnoReview);
-
-        //Act
-        var entity = await RideSharingDbContextSUT.UserEntities.Include(i => i.ReceivedReviews)
-            .SingleAsync(i => i.Id == UserSeeds.DriverUser.Id);
-
-        //Assert
-        DeepAssert.Equal(expected, entity, "ReviewedUser");
-    }
-
-    [Fact]
     public async Task GetById_IncludingSubmittedReviews_User()
     {
         //Arrange
