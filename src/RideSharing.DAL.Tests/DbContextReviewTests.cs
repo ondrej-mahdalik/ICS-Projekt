@@ -88,7 +88,7 @@ public class DbContextReviewTests : DbContextTestsBase
             .SingleAsync(i => i.Id == ReviewSeeds.DriverPragueBrnoReview.Id);
 
         //Assert
-        DeepAssert.Equal(expected, entity, "ReceivedReviews");
+        DeepAssert.Equal(expected, entity, "Reviews");
     }
 
     [Fact]

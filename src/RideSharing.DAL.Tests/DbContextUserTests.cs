@@ -212,7 +212,7 @@ public class DbContextUserTests : DbContextTestsBase
         var baseEntityObtainedReview = ReviewSeeds.JustObtainedReview;
 
         //Act
-        RideSharingDbContextSUT.UserEntities.Remove(baseEntity);
+        RideSharingDbContextSUT.UserEntities.Remove(baseEntity); // TODO Handle manually delete reviews when related ride is deleted
         await RideSharingDbContextSUT.SaveChangesAsync();
 
         //Assert

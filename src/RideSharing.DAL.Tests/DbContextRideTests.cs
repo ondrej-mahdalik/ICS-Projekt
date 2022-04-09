@@ -204,12 +204,12 @@ public class DbContextRideTests : DbContextTestsBase
     }
 
     [Fact]
-    public async Task Delete_NoCascadeDeleteReviews_Ride()
+    public async Task Delete_CascadeDeleteReviews_Ride()
     {
         //Arrange
         var baseEntity = RideSeeds.JustReviewRide;
-        baseEntity.Reviews.Add(ReviewSeeds.JustRideReview);
         var baseEntityReview = ReviewSeeds.JustRideReview;
+        baseEntity.Reviews.Add(baseEntityReview);
 
         Assert.True(await RideSharingDbContextSUT.ReviewEntities.AnyAsync(i => i.Id == baseEntityReview.Id));
 
@@ -218,6 +218,6 @@ public class DbContextRideTests : DbContextTestsBase
         await RideSharingDbContextSUT.SaveChangesAsync();
 
         //Assert
-        Assert.True(await RideSharingDbContextSUT.ReviewEntities.AnyAsync(i => i.Id == baseEntityReview.Id));
+        Assert.False(await RideSharingDbContextSUT.ReviewEntities.AnyAsync(i => i.Id == baseEntityReview.Id));
     }
 }
