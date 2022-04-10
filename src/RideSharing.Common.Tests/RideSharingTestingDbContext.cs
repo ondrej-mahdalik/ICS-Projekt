@@ -1,5 +1,5 @@
 ﻿using RideSharing.Common.Tests.Seeds;
-using DALSeeds = RideSharing.Common.Tests.DALTestsSeeds;
+using DALSeeds = RideSharing.Common.Tests.Seeds;
 
 using RideSharing.DAL;
 using Microsoft.EntityFrameworkCore;
@@ -8,38 +8,26 @@ namespace RideSharing.Common.Tests;
 
 public class RideSharingTestingDbContext : RideSharingDbContext
 {
-    private readonly bool _seedDALTestingData;
-    private readonly bool _seedBLTestingData;
+    private readonly bool _seedTestingData;
 
-    public RideSharingTestingDbContext(DbContextOptions contextOptions, bool seedDALTestingData = false, bool seedBLTestingData = false)
+    public RideSharingTestingDbContext(DbContextOptions contextOptions, bool seedTestingData = false)
         : base(contextOptions, seedDemoData:false)
     {
-        _seedDALTestingData = seedDALTestingData;
-        _seedBLTestingData = seedBLTestingData;
+        _seedTestingData = seedTestingData;
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        if (_seedDALTestingData)
+        if (_seedTestingData)
         {
-            DALSeeds.UserSeeds.Seed(modelBuilder);
-            DALSeeds.ReservationSeeds.Seed(modelBuilder);
-            DALSeeds.ReviewSeeds.Seed(modelBuilder);
-            DALSeeds.RideSeeds.Seed(modelBuilder);
-            DALSeeds.VehicleSeeds.Seed(modelBuilder);
+            Seeds.UserSeeds.Seed(modelBuilder);
+            Seeds.ReservationSeeds.Seed(modelBuilder);
+            Seeds.ReviewSeeds.Seed(modelBuilder);
+            Seeds.RideSeeds.Seed(modelBuilder);
+            Seeds.VehicleSeeds.Seed(modelBuilder);
         }
-
-        if (_seedBLTestingData)
-        {
-            UserSeeds.Seed(modelBuilder);
-            ReservationSeeds.Seed(modelBuilder);
-            ReviewSeeds.Seed(modelBuilder);
-            RideSeeds.Seed(modelBuilder);
-            VehicleSeeds.Seed(modelBuilder);
-        }
-
-
+        
     }
 }

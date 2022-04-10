@@ -2,7 +2,7 @@
 using Xunit.Abstractions;
 using RideSharing.BL.Models;
 using System;
-using RideSharing.Common.Tests.DALTestsSeeds;
+using RideSharing.Common.Tests.Seeds;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 using RideSharing.DAL.Entities;

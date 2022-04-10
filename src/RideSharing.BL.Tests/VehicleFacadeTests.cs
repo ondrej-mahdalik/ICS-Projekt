@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using RideSharing.BL.Facades;
 using RideSharing.BL.Models;
-using RideSharing.Common.Tests.DALTestsSeeds;
+using RideSharing.Common.Tests.Seeds;
 using Xunit;
 using Xunit.Abstractions;
 using RideSharing.Common.Enums;
