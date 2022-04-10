@@ -147,12 +147,4 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
         var updatedRide = Mapper.Map<RideDetailModel>(rideFromDb);
         DeepAssert.Equal(ride, updatedRide);
     }
-
-    [Fact]
-    public async Task DeleteRide_KeepsAllItsReviews()
-    {
-        await _rideFacadeSUT.DeleteAsync(RideSeeds.PragueBrno.Id);
-        await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
-        Assert.True(await dbxAssert.ReviewEntities.CountAsync(i => i.RideId == null) == 2);
-    }
 }

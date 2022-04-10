@@ -52,7 +52,7 @@ public class RideSharingDbContext : DbContext
         modelBuilder.Entity<VehicleEntity>()
             .HasMany(i => i.Rides)
             .WithOne(i => i.Vehicle)
-            .OnDelete(DeleteBehavior.Restrict); // Can't delete vehicle used in rides
+            .OnDelete(DeleteBehavior.ClientSetNull); // Can't delete vehicle used in rides
 
         if (_seedDemoData)
         {

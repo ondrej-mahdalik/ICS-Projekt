@@ -12,8 +12,8 @@ public static class VehicleSeeds
         Id: default,
         OwnerId: default,
         VehicleType: default,
-        Make: default!,
-        Model: default!,
+        Make: string.Empty,
+        Model: string.Empty,
         Registered: default,
         Seats: default,
         ImageUrl: default

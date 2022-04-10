@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using RideSharing.BL.Models;
 using RideSharing.DAL.Entities;

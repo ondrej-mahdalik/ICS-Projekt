@@ -36,13 +36,6 @@ public static class ReviewSeeds
         Rating: 1
     );
 
-    public static readonly ReviewEntity JustObtainedReview = new(
-        Id: Guid.Parse(input: "a9d5d032-ccdb-4db6-96bb-71df214b7a7f"),
-        RideId: null,
-        AuthorUserId: null,
-        Rating: 1
-    );
-
     public static readonly ReviewEntity JustSubmittedReview = new(
         Id: Guid.Parse(input: "cf8717b5-042a-435b-9fcd-4b1aa94a8309"),
         RideId: null,
@@ -80,7 +73,6 @@ public static class ReviewSeeds
                 DriverAuthoredPragueBrnoReview,
                 UpdateReview,
                 DeleteReview,
-                JustObtainedReview,
                 JustSubmittedReview,
                 JustRideReview
             );

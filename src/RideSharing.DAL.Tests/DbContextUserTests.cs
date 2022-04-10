@@ -208,21 +208,6 @@ public class DbContextUserTests : DbContextTestsBase
     public async Task Delete_CascadeDeleteObtainedReviews_User()
     {
         //Arrange
-        var baseEntity = UserSeeds.JustObtainedReviewUser;
-        var baseEntityObtainedReview = ReviewSeeds.JustObtainedReview;
-
-        //Act
-        RideSharingDbContextSUT.UserEntities.Remove(baseEntity); // TODO Handle manually delete reviews when related ride is deleted
-        await RideSharingDbContextSUT.SaveChangesAsync();
-
-        //Assert
-        Assert.False(await RideSharingDbContextSUT.ReviewEntities.AnyAsync(i => i.Id == baseEntityObtainedReview.Id));
-    }
-
-    [Fact]
-    public async Task Delete_NoCascadeDeleteSubmittedReviews_User()
-    {
-        //Arrange
         var baseEntity = RideSeeds.GetNoRelationsEntity(RideSeeds.JustReviewRide);
         baseEntity.Reviews.Add(ReviewSeeds.JustRideReview);
         var baseEntitySubmittedReview = ReviewSeeds.JustRideReview;
@@ -232,9 +217,21 @@ public class DbContextUserTests : DbContextTestsBase
         await RideSharingDbContextSUT.SaveChangesAsync();
 
         //Assert
-        Assert.True(await RideSharingDbContextSUT.ReviewEntities.AnyAsync(i => i.Id == baseEntitySubmittedReview.Id));
-        var review =
-            await RideSharingDbContextSUT.ReviewEntities.SingleAsync(i => i.Id == baseEntitySubmittedReview.Id);
-        Assert.True(review.RideId == null);
+        Assert.False(await RideSharingDbContextSUT.ReviewEntities.AnyAsync(i => i.Id == baseEntitySubmittedReview.Id));
+    }
+
+    [Fact]
+    public async Task Delete_NoCascadeDeleteSubmittedReviews_User()
+    {
+        //Arrange
+        var baseEntity = UserSeeds.JustSubmittedReviewUser;
+        var baseEntityObtainedReview = ReviewSeeds.JustSubmittedReview;
+
+        //Act
+        RideSharingDbContextSUT.UserEntities.Remove(baseEntity);
+        await RideSharingDbContextSUT.SaveChangesAsync();
+
+        //Assert
+        Assert.True(await RideSharingDbContextSUT.ReviewEntities.AnyAsync(i => i.Id == baseEntityObtainedReview.Id && i.AuthorUserId == null));
     }
 }
