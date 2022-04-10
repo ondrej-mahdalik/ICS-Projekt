@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using RideSharing.Common.Tests.DALTestsSeeds;
+using RideSharing.Common.Tests.Seeds;
 using RideSharing.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
