@@ -29,5 +29,5 @@ steps:
 
 - task: VSTest@2
   inputs:
+    testSelector: testRun
     platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
