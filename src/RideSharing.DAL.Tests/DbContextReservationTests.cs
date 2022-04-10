@@ -2,9 +2,9 @@
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using RideSharing.Common.Tests.Seeds;
 using Microsoft.EntityFrameworkCore;
 using RideSharing.Common.Tests;
+using RideSharing.Common.Tests.Seeds;
 using Xunit;
 using Xunit.Abstractions;
 

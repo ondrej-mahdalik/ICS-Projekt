@@ -20,7 +20,7 @@ public record RideListModel(
     public TimeSpan Duration { get; set; }
 
     public RideListVehicleModel? Vehicle { get; set; }
-    
+
     public class MapperProfile : Profile
     {
         public MapperProfile()

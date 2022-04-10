@@ -20,13 +20,13 @@ public class CRUDFacadeTestsBase : IAsyncLifetime
         Console.SetOut(converter);
 
         //DbContextFactory = new DbContextSQLiteTestingFactory(GetType().FullName!, seedDALTestingData: true);
-        DbContextFactory = new DbContextLocalDBTestingFactory(GetType().FullName!, seedTestingData: true);
+        DbContextFactory = new DbContextLocalDBTestingFactory(GetType().FullName!, true);
 
         UnitOfWorkFactory = new UnitOfWorkFactory(DbContextFactory);
 
         var configuration = new MapperConfiguration(cfg =>
             {
-                cfg.AddMaps(new[] {typeof(BusinessLogic),});
+                cfg.AddMaps(typeof(BusinessLogic));
                 cfg.AddCollectionMappers();
 
                 using var dbContext = DbContextFactory.CreateDbContext();
@@ -35,7 +35,6 @@ public class CRUDFacadeTestsBase : IAsyncLifetime
         );
         Mapper = new Mapper(configuration);
         Mapper.ConfigurationProvider.AssertConfigurationIsValid();
-
     }
 
     protected IDbContextFactory<RideSharingDbContext> DbContextFactory { get; }

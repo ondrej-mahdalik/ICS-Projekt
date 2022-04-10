@@ -1,5 +1,5 @@
-﻿using RideSharing.DAL;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using RideSharing.DAL;
 
 namespace RideSharing.Common.Tests.Factories;
 
@@ -18,10 +18,10 @@ public class DbContextSQLiteTestingFactory : IDbContextFactory<RideSharingDbCont
     {
         DbContextOptionsBuilder<RideSharingDbContext> builder = new();
         builder.UseSqlite($"Data Source={_databaseName};Cache=Shared");
-        
-         //builder.LogTo(System.Console.WriteLine); //Enable in case you want to see tests details, enabled may cause some inconsistencies in tests
-         //builder.EnableSensitiveDataLogging();
-        
+
+        //builder.LogTo(System.Console.WriteLine); //Enable in case you want to see tests details, enabled may cause some inconsistencies in tests
+        //builder.EnableSensitiveDataLogging();
+
         return new RideSharingTestingDbContext(builder.Options, _seedTestingData);
     }
 }

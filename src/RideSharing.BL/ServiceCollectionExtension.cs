@@ -1,12 +1,4 @@
-﻿using AutoMapper;
-using AutoMapper.EquivalencyExpression;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using RideSharing.BL.Facades;
-using RideSharing.DAL.UnitOfWork;
-
-namespace RideSharing.BL;
+﻿namespace RideSharing.BL;
 
 public static class ServiceCollectionExtension
 {

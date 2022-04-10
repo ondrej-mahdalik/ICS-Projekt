@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using RideSharing.Common.Tests.Seeds;
-using RideSharing.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.Internal;
-using RideSharing.Common.Enums;
 using RideSharing.Common.Tests;
+using RideSharing.Common.Tests.Seeds;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -26,9 +20,7 @@ public class DbContextReviewTests : DbContextTestsBase
         //Arrange
         var entity = ReviewSeeds.EmptyReviewEntity with
         {
-            RideId = RideSeeds.BrnoBratislava.Id,
-            AuthorUserId = UserSeeds.ReservationUser2.Id,
-            Rating = 1
+            RideId = RideSeeds.BrnoBratislava.Id, AuthorUserId = UserSeeds.ReservationUser2.Id, Rating = 1
         };
 
         //Act

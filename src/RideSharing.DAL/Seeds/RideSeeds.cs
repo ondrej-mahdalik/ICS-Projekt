@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using RideSharing.DAL.Entities;
 
@@ -8,7 +7,7 @@ namespace RideSharing.DAL.Seeds;
 public static class RideSeeds
 {
     public static readonly RideEntity PrahaBrno = new(
-        Id: Guid.Parse("42b612c1-b668-4168-9b73-71acfb64f094"),
+        Guid.Parse("42b612c1-b668-4168-9b73-71acfb64f094"),
         FromName: "Praha",
         FromLatitude: 50.07698467371664,
         FromLongitude: 14.432483187893586,
@@ -19,7 +18,7 @@ public static class RideSeeds
         SharedSeats: 4,
         Departure: DateTime.Parse("02/22/2022 15:00", CultureInfo.InvariantCulture),
         Arrival: DateTime.Parse("02/22/2022 18:00", CultureInfo.InvariantCulture),
-        VehicleId: Guid.Parse(input: "0a5ef2a1-d541-45ac-82a3-6b63a24d0572"),
+        VehicleId: Guid.Parse("0a5ef2a1-d541-45ac-82a3-6b63a24d0572"),
         Note: "No eating in the car !"
     );
 

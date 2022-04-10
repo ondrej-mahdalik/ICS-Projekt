@@ -30,7 +30,7 @@ public record RideDetailModel(
     public int SharedSeats { get; set; } = SharedSeats;
 
     public List<RideDetailReservationModel> Reservations { get; init; } = new();
-    
+
     public class MapperProfile : Profile
     {
         public MapperProfile()

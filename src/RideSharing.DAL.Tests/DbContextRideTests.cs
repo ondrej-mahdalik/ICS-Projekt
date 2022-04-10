@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using RideSharing.Common.Tests.Seeds;
-using RideSharing.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using RideSharing.Common.Tests;
+using RideSharing.Common.Tests.Seeds;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -67,7 +64,7 @@ public class DbContextRideTests : DbContextTestsBase
     public async Task GetById_IncludingVehicle_Ride()
     {
         //Arrange
-        var expected = RideSeeds.GetNoRelationsEntity(RideSeeds.PragueBrno) with {Vehicle = VehicleSeeds.Felicia};
+        var expected = RideSeeds.GetNoRelationsEntity(RideSeeds.PragueBrno) with { Vehicle = VehicleSeeds.Felicia };
 
         //Act
         var entity = await RideSharingDbContextSUT.RideEntities.Include(i => i.Vehicle)
@@ -98,8 +95,8 @@ public class DbContextRideTests : DbContextTestsBase
     {
         //Arrange
         var expected = RideSeeds.GetNoRelationsEntity(RideSeeds.PragueBrno);
-        expected.Reservations.Add(ReservationSeeds.User1PragueBrno with {ReservingUser = UserSeeds.ReservationUser1});
-        expected.Reservations.Add(ReservationSeeds.User2PragueBrno with {ReservingUser = UserSeeds.ReservationUser2});
+        expected.Reservations.Add(ReservationSeeds.User1PragueBrno with { ReservingUser = UserSeeds.ReservationUser1 });
+        expected.Reservations.Add(ReservationSeeds.User2PragueBrno with { ReservingUser = UserSeeds.ReservationUser2 });
 
         //Act
         var entity = await RideSharingDbContextSUT.RideEntities.Include(i => i.Reservations)
@@ -144,7 +141,7 @@ public class DbContextRideTests : DbContextTestsBase
             Departure = DateTime.Parse("02/22/2020 17:30", CultureInfo.InvariantCulture),
             Arrival = DateTime.Parse("02/22/2020 19:40", CultureInfo.InvariantCulture),
             VehicleId = VehicleSeeds.Karosa.Id,
-            Note = baseEntity.Note + "update",
+            Note = baseEntity.Note + "update"
         };
 
         //Act

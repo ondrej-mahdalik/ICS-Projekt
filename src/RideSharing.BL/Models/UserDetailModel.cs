@@ -15,7 +15,7 @@ public record UserDetailModel(
     public string? ImageUrl { get; set; } = ImageUrl;
     public List<VehicleListModel> Vehicles { get; set; } = new();
     public List<ReviewListModel> SubmittedReviews { get; set; } = new();
-    
+
     public class MapperProfile : Profile
     {
         public MapperProfile()

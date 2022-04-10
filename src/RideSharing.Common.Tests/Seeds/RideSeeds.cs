@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using RideSharing.DAL.Entities;
 
@@ -8,7 +7,7 @@ namespace RideSharing.Common.Tests.Seeds;
 public static class RideSeeds
 {
     public static readonly RideEntity EmptyRideEntity = new(
-        Id: default,
+        default,
         SharedSeats: default,
         FromName: default!,
         FromLatitude: default,
@@ -24,7 +23,7 @@ public static class RideSeeds
     );
 
     public static readonly RideEntity PragueBrno = new(
-        Id: Guid.Parse("42b612c1-b668-4168-9b73-71acfb64f094"),
+        Guid.Parse("42b612c1-b668-4168-9b73-71acfb64f094"),
         SharedSeats: 4,
         FromName: "Prague",
         FromLatitude: 50.07698467371664,
@@ -40,7 +39,7 @@ public static class RideSeeds
     );
 
     public static readonly RideEntity BrnoBratislava = new(
-        Id: Guid.Parse(input: "88E52AEF-B1B5-4E41-A916-CC810E1FD305"),
+        Guid.Parse("88E52AEF-B1B5-4E41-A916-CC810E1FD305"),
         SharedSeats: 2,
         FromName: "Brno",
         FromLatitude: 50.07698467371664,
@@ -57,8 +56,7 @@ public static class RideSeeds
 
     public static readonly RideEntity CascadeDeleteRide = GetNoRelationsEntity(PragueBrno) with
     {
-        Id = Guid.Parse("1f459e21-ce03-4bfa-9794-25d09b231ba8"),
-        VehicleId = VehicleSeeds.CascadeDeleteVehicle.Id
+        Id = Guid.Parse("1f459e21-ce03-4bfa-9794-25d09b231ba8"), VehicleId = VehicleSeeds.CascadeDeleteVehicle.Id
     };
 
     public static readonly RideEntity UpdateRide = GetNoRelationsEntity(CascadeDeleteRide) with
@@ -85,9 +83,7 @@ public static class RideSeeds
     {
         return entity with
         {
-            Vehicle = null,
-            Reservations = new List<ReservationEntity>(),
-            Reviews = new List<ReviewEntity>()
+            Vehicle = null, Reservations = new List<ReservationEntity>(), Reviews = new List<ReviewEntity>()
         };
     }
 
@@ -104,5 +100,4 @@ public static class RideSeeds
                 JustReviewRide
             );
     }
-
 }

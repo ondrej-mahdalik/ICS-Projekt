@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Design;
 namespace RideSharing.DAL.Factories;
 
 /// <summary>
-/// EF Core CLI migration generation uses this DbContext to create model and migration
+///     EF Core CLI migration generation uses this DbContext to create model and migration
 /// </summary>
 public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<RideSharingDbContext>
 {
@@ -17,11 +17,10 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<RideSharin
                 MultipleActiveResultSets = True;
                 Integrated Security = True; "); // Connection string will be moved into AppSettings.json when RideSahring.App will be created (in 3. phase of development)
 
-#if  DEBUG
-            builder.EnableSensitiveDataLogging();
+#if DEBUG
+        builder.EnableSensitiveDataLogging();
 #endif
 
-            return new RideSharingDbContext(builder.Options);
+        return new RideSharingDbContext(builder.Options);
     }
 }
-

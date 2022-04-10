@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using RideSharing.Common.Tests.Seeds;
-using RideSharing.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using RideSharing.Common.Tests;
+using RideSharing.Common.Tests.Seeds;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -232,6 +228,7 @@ public class DbContextUserTests : DbContextTestsBase
         await RideSharingDbContextSUT.SaveChangesAsync();
 
         //Assert
-        Assert.True(await RideSharingDbContextSUT.ReviewEntities.AnyAsync(i => i.Id == baseEntityObtainedReview.Id && i.AuthorUserId == null));
+        Assert.True(await RideSharingDbContextSUT.ReviewEntities.AnyAsync(i =>
+            i.Id == baseEntityObtainedReview.Id && i.AuthorUserId == null));
     }
 }

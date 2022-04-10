@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using RideSharing.Common.Tests.Seeds;
-using RideSharing.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using RideSharing.Common.Enums;
 using RideSharing.Common.Tests;
+using RideSharing.Common.Tests.Seeds;
 using Xunit;
 using Xunit.Abstractions;
 

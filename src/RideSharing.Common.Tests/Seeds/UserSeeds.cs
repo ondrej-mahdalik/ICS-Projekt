@@ -1,45 +1,40 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using RideSharing.BL.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using RideSharing.DAL.Entities;
-using RideSharing.Common.Tests.Seeds;
 
 namespace RideSharing.Common.Tests.Seeds;
 
 public static class UserSeeds
 {
     public static readonly UserEntity EmptyUser = new(
-        Id: default,
-        Name: default!,
-        Surname: default!,
-        Phone: default!,
-        ImageUrl: default
+        default,
+        default!,
+        default!,
+        default!,
+        default
     );
 
     public static readonly UserEntity DriverUser = new(
-        Id: Guid.Parse(input: "f34cd643-1226-406d-971d-b5e6f745938e"),
-        Name: "Driver",
-        Surname: "Doe",
-        Phone: "737195090",
-        ImageUrl:
+        Guid.Parse("f34cd643-1226-406d-971d-b5e6f745938e"),
+        "Driver",
+        "Doe",
+        "737195090",
         "https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
     );
 
     public static readonly UserEntity ReservationUser1 = new(
-        Id: Guid.Parse(input: "EA6574A1-56DE-4436-A5B6-547CF33347AF"),
-        Name: "Reserve",
-        Surname: "First",
-        Phone: "585453123",
-        ImageUrl: "https://pbs.twimg.com/profile_images/1443129819122782209/sqba2I3D_400x400.jpg"
+        Guid.Parse("EA6574A1-56DE-4436-A5B6-547CF33347AF"),
+        "Reserve",
+        "First",
+        "585453123",
+        "https://pbs.twimg.com/profile_images/1443129819122782209/sqba2I3D_400x400.jpg"
     );
 
     public static readonly UserEntity ReservationUser2 = new(
-        Id: Guid.Parse(input: "2F400802-6581-45D3-94CE-8C8EA9DE272D"),
-        Name: "Reserve",
-        Surname: "Second",
-        Phone: "168489635",
-        ImageUrl: "https://icons-for-free.com/iconfiles/png/512/person-1324760545186718018.png"
+        Guid.Parse("2F400802-6581-45D3-94CE-8C8EA9DE272D"),
+        "Reserve",
+        "Second",
+        "168489635",
+        "https://icons-for-free.com/iconfiles/png/512/person-1324760545186718018.png"
     );
 
     public static readonly UserEntity UserUpdate = GetNoRelationsEntity(DriverUser) with
