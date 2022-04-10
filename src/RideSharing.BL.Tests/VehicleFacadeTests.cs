@@ -54,7 +54,7 @@ namespace RideSharing.BL.Tests
         public async Task GetById_NonExistent()
         {
             var vehicle =
-                await _vehicleFacadeSUT.GetAsync(Guid.Parse("D2453E4A-2A52-4199-A8BF-254893C575B6")); // Random Guid, Empty seed is used in Cookbook
+                await _vehicleFacadeSUT.GetAsync(Guid.Parse("D2453E4A-2A52-4199-A8BF-254893C575B6")); // Random Guid
             Assert.Null(vehicle);
         }
 
@@ -88,7 +88,7 @@ namespace RideSharing.BL.Tests
             
             await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
             var vehicleFromDb = await dbxAssert.VehicleEntities.SingleAsync(i => i.Id == vehicle.Id);
-            Assert.Equal(vehicle.Id, vehicleFromDb.Id);
+            DeepAssert.Equal(vehicle, Mapper.Map<VehicleDetailModel>(vehicleFromDb));
         }
         [Fact]
         public async Task NewVehicle_InsertOrUpdate_VehicleUpdated()
@@ -110,7 +110,8 @@ namespace RideSharing.BL.Tests
             await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
             var vehicleFromDb = await dbxAssert.VehicleEntities.SingleAsync(i => i.Id == vehicle.Id);
             var updatedVehicle = Mapper.Map<VehicleDetailModel>(vehicleFromDb);
-            Assert.Equal(vehicle.Make, updatedVehicle.Make);
+            DeepAssert.Equal(vehicle, updatedVehicle);
+            //Assert.Equal(vehicle.Make, updatedVehicle.Make);
         }
     }
 }

@@ -6,6 +6,7 @@ using RideSharing.BL.Models;
 using RideSharing.BL.Facades;
 using Microsoft.EntityFrameworkCore;
 using RideSharing.Common.Tests.DALTestsSeeds;
+using RideSharing.Common.Tests;
 using Xunit.Abstractions;
 
 namespace RideSharing.BL.Tests
@@ -46,7 +47,7 @@ namespace RideSharing.BL.Tests
         [Fact]
         public async Task GetById_NonExistent()
         {
-            var review = await _reviewFacadeSUT.GetAsync(Guid.Parse("D2453E4A-2A52-4199-A8BE-254853C575B6")); // Random Guid, Empty seed is used in Cookbook
+            var review = await _reviewFacadeSUT.GetAsync(Guid.Parse("D2453E4A-2A52-4199-A8BE-254853C575B6")); // Random Guid
             Assert.Null(review);
         }
         [Fact]
@@ -88,7 +89,9 @@ namespace RideSharing.BL.Tests
 
             await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
             var reviewFromDb = await dbxAssert.ReviewEntities.SingleAsync(i => i.Id == review.Id);
-            Assert.Equal(review.Id, reviewFromDb.Id);
+            DeepAssert.Equal(review, Mapper.Map<ReviewDetailModel>(reviewFromDb), new string[] { "AuthorUser", "Ride" });
+            DeepAssert.Equal(review.AuthorUser, Mapper.Map<UserListModel>(UserSeeds.ReservationUser1));
+            DeepAssert.Equal(review.Ride, Mapper.Map<RideListModel>(RideSeeds.JustReviewRide), "Vehicle");
         }
         [Fact]
         public async Task NewReview_InsertOrUpdate_ReviewUpdated()
@@ -125,7 +128,7 @@ namespace RideSharing.BL.Tests
             await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
             var reviewFromDb = await dbxAssert.ReviewEntities.SingleAsync(i => i.Id == review.Id);
             var updatedReview = Mapper.Map<ReviewDetailModel>(reviewFromDb);
-            Assert.Equal(review.Rating, updatedReview.Rating);
+            DeepAssert.Equal(review, updatedReview, new string[] { "AuthorUser", "Ride" });
         }
     }
 }

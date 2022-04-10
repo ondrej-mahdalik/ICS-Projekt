@@ -59,7 +59,7 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
     [Fact]
     public async Task GetById_NonExistent()
     {
-        var ride = await _rideFacadeSUT.GetAsync(Guid.Parse("D2453C4A-2A52-4199-A8BE-254893C575B6")); // Random Guid, Empty seed is used in Cookbook
+        var ride = await _rideFacadeSUT.GetAsync(Guid.Parse("D2453C4A-2A52-4199-A8BE-254893C575B6")); // Random Guid
         Assert.Null(ride);
     }
     [Fact]
@@ -101,7 +101,8 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
 
         await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
         var rideFromDb = await dbxAssert.RideEntities.SingleAsync(i => i.Id == ride.Id);
-        Assert.Equal(ride.Id, ride.Id);
+        DeepAssert.Equal(ride, Mapper.Map<RideDetailModel>(rideFromDb), new string[] {"Reservations", "Vehicle"});
+        DeepAssert.Equal(ride.Vehicle, Mapper.Map<VehicleListModel>(VehicleSeeds.Felicia));
     }
     [Fact]
     public async Task NewRide_InsertOrUpdate_RideUpdated()

@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using RideSharing.Common.Tests.DALTestsSeeds;
 using RideSharing.Common.Tests;
 using Xunit.Abstractions;
-using System.Collections.Generic;
 
 namespace RideSharing.BL.Tests
 {
@@ -89,7 +88,6 @@ namespace RideSharing.BL.Tests
             //Assert
             await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
             var userFromDb = await dbxAssert.UserEntities.SingleAsync(i => i.Id == user.Id);
-           // DeepAssert.Equal(user, Mapper.Map<UserDetailModel>(userFromDb));
             DeepAssert.Equal(user, Mapper.Map<UserDetailModel>(userFromDb));
         }
         [Fact]
