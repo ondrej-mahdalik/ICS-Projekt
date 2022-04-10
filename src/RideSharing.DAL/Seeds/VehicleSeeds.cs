@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using RideSharing.DAL.Entities;
 using RideSharing.Common.Enums;
@@ -13,7 +14,7 @@ public static class VehicleSeeds
         VehicleType: VehicleType.Car,
         Make: "Škoda",
         Model: "Felicia",
-        Registered: DateTime.Parse("16.05.1996"),
+        Registered: DateTime.Parse("08/05/1996", CultureInfo.InvariantCulture),
         Seats: 5,
         ImageUrl: "https://auta5p.eu/katalog/skoda/felicia_28.jpg");
 

@@ -5,14 +5,16 @@ namespace RideSharing.BL.Models;
 
 public record UserListModel(
     string Name,
-    string Surname) : ModelBase
+    string Surname,
+    string Phone,
+    string? ImageUrl = null) : ModelBase
 {
     public string Name { get; set; } = Name;
     public string Surname { get; set; } = Surname;
-    public string? ImageUrl { get; set; }
-    public int NumberOfVehicles { get; init; }
-    public List<ReviewDetailModel> Reviews { get; set; } = new();
-    public int UpcomingRidesCount { get; init; }
+    public string Phone { get; set; } = Phone;
+    public string? ImageUrl { get; set; } = ImageUrl;
+    public int NumberOfVehicles { get; }
+    public int UpcomingRidesCount { get; }
 
     public class MapperProfile : Profile
     {

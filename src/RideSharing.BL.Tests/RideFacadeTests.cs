@@ -5,7 +5,9 @@ using System;
 using RideSharing.Common.Tests.Seeds;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
+using RideSharing.DAL.Entities;
 using System.Linq;
+using RideSharing.Common.Tests;
 using System.Threading.Tasks;
 
 namespace RideSharing.BL.Tests;
@@ -19,7 +21,6 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
         _rideFacadeSUT = new RideFacade(UnitOfWorkFactory, Mapper);
     }
 
-    // Error in mapping Vehicle type
     [Fact]
     public async Task Create_WithNonExistingItem_DoesNotThrow()
     {
@@ -42,27 +43,31 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
     public async Task GetAll_Single_SeededRide()
     {
         var rides = await _rideFacadeSUT.GetAsync();
-            var ride = rides.Single(i => i.Id == RideSeeds.PrahaBrno.Id);
-        Assert.Equal(Mapper.Map<RideListModel>(RideSeeds.PrahaBrno).Id, ride.Id);
+            var ride = rides.Single(i => i.Id == RideSeeds.BrnoBratislava.Id);
+        DeepAssert.Equal(Mapper.Map<RideListModel>(RideSeeds.BrnoBratislava), ride, new string[] {"Driver", "Vehicle"});
+        DeepAssert.Equal(ride.Vehicle, Mapper.Map<RideListVehicleModel>(VehicleSeeds.Felicia));
     }
 
     [Fact]
     public async Task GetById__SeededRide()
     {
-        var ride = await _rideFacadeSUT.GetAsync(RideSeeds.PrahaBrno.Id);
-        Assert.Equal(Mapper.Map<RideDetailModel>(RideSeeds.PrahaBrno).Id, ride?.Id);
+        var ride = await _rideFacadeSUT.GetAsync(RideSeeds.BrnoBratislava.Id);
+        DeepAssert.Equal(Mapper.Map<RideDetailModel>(RideSeeds.BrnoBratislava), ride,
+            new string[] { "Driver", "Vehicle", "Reservations"});
     }
 
     [Fact]
     public async Task GetById_NonExistent()
     {
-        var ride = await _rideFacadeSUT.GetAsync(Guid.Parse("D2453C4A-2A52-4199-A8BE-254893C575B6")); // Random Guid, Empty seed is used in Cookbook
+        var ride = await _rideFacadeSUT.GetAsync(Guid.Parse("D2453C4A-2A52-4199-A8BE-254893C575B6")); // Random Guid
         Assert.Null(ride);
     }
     [Fact]
     public async Task SeededRide_DeleteByIdDeleted()
     {
-        await Assert.ThrowsAsync<DbUpdateException>(async () => await _rideFacadeSUT.DeleteAsync(RideSeeds.PrahaBrno.Id));
+        var vehicle = _rideFacadeSUT.DeleteAsync(RideSeeds.BrnoBratislava.Id);
+        await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
+        Assert.False(await dbxAssert.RideEntities.AnyAsync(i => i.Id == RideSeeds.BrnoBratislava.Id));
     }
     [Fact]
     public async Task NewRide_InsertOrUpdate_RideAdded()
@@ -78,42 +83,69 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
             SharedSeats: 3,
             Departure: new DateTime(2022, 03, 26, 11, 40, 00),
             Arrival: new DateTime(2022, 03, 26, 19, 41, 00)
-        );
+        )
+        {
+            Vehicle = new VehicleListModel(
+                 OwnerId: VehicleSeeds.Felicia.OwnerId,
+                 VehicleType: VehicleSeeds.Felicia.VehicleType,
+                 Make: VehicleSeeds.Felicia.Make,
+                 Model: VehicleSeeds.Felicia.Model,
+                 Registered: VehicleSeeds.Felicia.Registered,
+                 Seats: VehicleSeeds.Felicia.Seats
+           )
+            {
+                Id = VehicleSeeds.Felicia.Id
+            }
+        };
         ride = await _rideFacadeSUT.SaveAsync(ride);
 
         await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
         var rideFromDb = await dbxAssert.RideEntities.SingleAsync(i => i.Id == ride.Id);
-        Assert.Equal(ride.Id, ride.Id);
+        DeepAssert.Equal(ride, Mapper.Map<RideDetailModel>(rideFromDb), new string[] {"Reservations", "Vehicle"});
+        DeepAssert.Equal(ride.Vehicle, Mapper.Map<VehicleListModel>(VehicleSeeds.Felicia));
     }
     [Fact]
     public async Task NewRide_InsertOrUpdate_RideUpdated()
     {
+        // Arrange
         var ride = new RideDetailModel(
-            FromName: RideSeeds.PrahaBrno.FromName,
-            FromLatitude: RideSeeds.PrahaBrno.FromLatitude,
-            FromLongitude: RideSeeds.PrahaBrno.FromLongitude,
-            ToName: RideSeeds.PrahaBrno.ToName,
-            ToLatitude: RideSeeds.PrahaBrno.ToLatitude,
-            ToLongitude: RideSeeds.PrahaBrno.ToLongitude,
-            Distance: RideSeeds.PrahaBrno.Distance,
-            Departure: RideSeeds.PrahaBrno.Departure,
-            Arrival: RideSeeds.PrahaBrno.Arrival,
-            SharedSeats:RideSeeds.PrahaBrno.SharedSeats
+            FromName: RideSeeds.BrnoBratislava.FromName,
+            FromLatitude: RideSeeds.BrnoBratislava.FromLatitude,
+            FromLongitude: RideSeeds.BrnoBratislava.FromLongitude,
+            ToName: RideSeeds.BrnoBratislava.ToName,
+            ToLatitude: RideSeeds.BrnoBratislava.ToLatitude,
+            ToLongitude: RideSeeds.BrnoBratislava.ToLongitude,
+            Distance: RideSeeds.BrnoBratislava.Distance,
+            Departure: RideSeeds.BrnoBratislava.Departure,
+            Arrival: RideSeeds.BrnoBratislava.Arrival,
+            SharedSeats:RideSeeds.BrnoBratislava.SharedSeats
         )
         {
-            Id = RideSeeds.PrahaBrno.Id
+            Id = RideSeeds.BrnoBratislava.Id,
+            Vehicle = new VehicleListModel(
+                 OwnerId: VehicleSeeds.Karosa.OwnerId,
+                 VehicleType: VehicleSeeds.Karosa.VehicleType,
+                 Make: VehicleSeeds.Karosa.Make,
+                 Model: VehicleSeeds.Karosa.Model,
+                 Registered: VehicleSeeds.Karosa.Registered,
+                 Seats: VehicleSeeds.Karosa.Seats,
+                 ImageUrl: VehicleSeeds.Karosa.ImageUrl
+           )
+            {
+                Id = VehicleSeeds.Karosa.Id
+            }
         };
+
+        // Act
         ride.ToName = "Ostrava";
         ride.ToLatitude = 49.820923;
         ride.ToLongitude = 18.262524;
         await _rideFacadeSUT.SaveAsync(ride);
 
+        // Assert
         await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
-        var rideFromDb = await dbxAssert.RideEntities.SingleAsync(i => i.Id == ride.Id);
+        var rideFromDb = await dbxAssert.RideEntities.Include(entity => entity.Vehicle).SingleAsync(i => i.Id == ride.Id);
         var updatedRide = Mapper.Map<RideDetailModel>(rideFromDb);
-        Assert.Equal(ride.ToName, updatedRide.ToName);
-        Assert.Equal(ride.ToLatitude, updatedRide.ToLatitude);
-        Assert.Equal(ride.ToLongitude, updatedRide.ToLongitude);
+        DeepAssert.Equal(ride, updatedRide);
     }
-
 }

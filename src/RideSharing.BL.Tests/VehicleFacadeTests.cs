@@ -8,6 +8,7 @@ using RideSharing.Common.Tests.Seeds;
 using Xunit;
 using Xunit.Abstractions;
 using RideSharing.Common.Enums;
+using RideSharing.Common.Tests;
 
 namespace RideSharing.BL.Tests
 {
@@ -24,7 +25,7 @@ namespace RideSharing.BL.Tests
         public async Task Create_WithNonExistingItem_DoesNotThrow()
         {
             var vehicle = new VehicleDetailModel(
-                OwnerId: UserSeeds.JohnDoe.Id,
+                OwnerId: UserSeeds.DriverUser.Id,
                 VehicleType: VehicleType.Car,
                 Make: "Ferrari",
                 Model: "250 gto",
@@ -39,38 +40,44 @@ namespace RideSharing.BL.Tests
         {
             var vehicles = await _vehicleFacadeSUT.GetAsync();
                 var vehicle = vehicles.Single(i => i.Id == VehicleSeeds.Felicia.Id);
-            Assert.Equal(vehicle.Id, Mapper.Map<VehicleListModel>(VehicleSeeds.Felicia).Id);
+            DeepAssert.Equal(vehicle, Mapper.Map<VehicleListModel>(VehicleSeeds.Felicia));
         }
 
         [Fact]
         public async Task GetById_SeededVehicle()
         {
             var vehicle = await _vehicleFacadeSUT.GetAsync(VehicleSeeds.Felicia.Id);
-            Assert.Equal(Mapper.Map<VehicleDetailModel>(VehicleSeeds.Felicia).Id, vehicle.Id);
+            Assert.Equal(Mapper.Map<VehicleDetailModel>(VehicleSeeds.Felicia).Id, vehicle?.Id);
         }
 
         [Fact]
         public async Task GetById_NonExistent()
         {
             var vehicle =
-                await _vehicleFacadeSUT.GetAsync(Guid.Parse("D2453E4A-2A52-4199-A8BF-254893C575B6")); // Random Guid, Empty seed is used in Cookbook
+                await _vehicleFacadeSUT.GetAsync(Guid.Parse("D2453E4A-2A52-4199-A8BF-254893C575B6")); // Random Guid
             Assert.Null(vehicle);
         }
 
         [Fact]
-        public async Task SeededVehicle_DeleteByIdDeleted()
+        public async Task SeededVehicleWithoutRide_DeleteById_DoesNotThrow()
         {
-            var vehicle = _vehicleFacadeSUT.DeleteAsync(VehicleSeeds.Felicia.Id);
+            var vehicle = _vehicleFacadeSUT.DeleteAsync(VehicleSeeds.Karosa.Id);
             await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
-            Assert.False(await dbxAssert.VehicleEntities.AnyAsync(i => i.Id == VehicleSeeds.Felicia.Id));
+            Assert.False(await dbxAssert.VehicleEntities.AnyAsync(i => i.Id == VehicleSeeds.Karosa.Id));
 
         }
         [Fact]
-        public async Task NewReview_InsertOrUpdate_VehicleAdded()
+        public async Task SeededVehicleWithRide_DeleteById_Throws()
+        {
+            await Assert.ThrowsAsync<DbUpdateException>(async () => await _vehicleFacadeSUT.DeleteAsync(VehicleSeeds.Felicia.Id));
+
+        }
+        [Fact]
+        public async Task NewVehicle_InsertOrUpdate_VehicleAdded()
         {
 
             var vehicle = new VehicleDetailModel(
-                OwnerId: UserSeeds.ElonTusk.Id,
+                OwnerId: UserSeeds.DriverUser.Id,
                 VehicleType: VehicleType.Car,
                 Make: "Volvo",
                 Model: "V90",
@@ -81,10 +88,10 @@ namespace RideSharing.BL.Tests
             
             await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
             var vehicleFromDb = await dbxAssert.VehicleEntities.SingleAsync(i => i.Id == vehicle.Id);
-            Assert.Equal(vehicle.Id, vehicleFromDb.Id);
+            DeepAssert.Equal(vehicle, Mapper.Map<VehicleDetailModel>(vehicleFromDb));
         }
         [Fact]
-        public async Task NewReview_InsertOrUpdate_VehicleUpdated()
+        public async Task NewVehicle_InsertOrUpdate_VehicleUpdated()
         {
             var vehicle = new VehicleDetailModel(
                 OwnerId: VehicleSeeds.Felicia.OwnerId,
@@ -103,7 +110,8 @@ namespace RideSharing.BL.Tests
             await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
             var vehicleFromDb = await dbxAssert.VehicleEntities.SingleAsync(i => i.Id == vehicle.Id);
             var updatedVehicle = Mapper.Map<VehicleDetailModel>(vehicleFromDb);
-            Assert.Equal(vehicle.Make, updatedVehicle.Make);
+            DeepAssert.Equal(vehicle, updatedVehicle);
+            //Assert.Equal(vehicle.Make, updatedVehicle.Make);
         }
     }
 }

@@ -23,40 +23,36 @@ public class RideSharingDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<RideEntity>()
-            .HasMany(i => i.Reservations)
-            .WithOne(i => i.Ride)
-            .OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<UserEntity>(entity =>
+        {
+            entity.HasMany(i => i.Reservations)
+                .WithOne(i => i.ReservingUser)
+                .OnDelete(DeleteBehavior.Cascade);
 
-        modelBuilder.Entity<ReservationEntity>()
-            .HasOne(i => i.ReservingUser)
-            .WithMany(i => i.Reservations)
-            .OnDelete(DeleteBehavior.Restrict);
+            entity.HasMany(i => i.SubmittedReviews)
+                .WithOne(i => i.AuthorUser)
+                .OnDelete(DeleteBehavior.SetNull);
 
-        modelBuilder.Entity<RideEntity>()
-            .HasMany(i => i.Reviews)
-            .WithOne(i => i.Ride)
-            .OnDelete(DeleteBehavior.Restrict);
+            entity.HasMany(i => i.Vehicles)
+                .WithOne(i => i.Owner)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
 
-        modelBuilder.Entity<UserEntity>()
-            .HasMany(i => i.Reviews)
-            .WithOne(i => i.ReviewedUser)
-            .OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<RideEntity>(entity =>
+        {
+            entity.HasMany(i => i.Reservations)
+                .WithOne(i => i.Ride)
+                .OnDelete(DeleteBehavior.Cascade);
 
-        modelBuilder.Entity<UserEntity>()
-            .HasMany(i => i.SubmittedReviews)
-            .WithOne(i => i.AuthorUser)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        modelBuilder.Entity<UserEntity>()
-            .HasMany(i => i.Vehicles)
-            .WithOne(i => i.Owner)
-            .OnDelete(DeleteBehavior.Cascade);
+            entity.HasMany(i => i.Reviews)
+                .WithOne(i => i.Ride)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
 
         modelBuilder.Entity<VehicleEntity>()
             .HasMany(i => i.Rides)
             .WithOne(i => i.Vehicle)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.ClientSetNull);
 
         if (_seedDemoData)
         {

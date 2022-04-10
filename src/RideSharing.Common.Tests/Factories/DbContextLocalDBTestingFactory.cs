@@ -16,11 +16,12 @@ namespace RideSharing.Common.Tests.Factories
 
         public RideSharingDbContext CreateDbContext()
         {
-            DbContextOptionsBuilder<RideSharingDbContext> builder = new();
+            DbContextOptionsBuilder<RideSharingDbContext> builder = new DbContextOptionsBuilder<RideSharingDbContext>()
+                .EnableSensitiveDataLogging();
 
             // Connection string should be put somewhere else (probably)
             builder.UseSqlServer($"Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog = {_databaseName};MultipleActiveResultSets = True;Integrated Security = True; ");
-            return new RideSharingDbContext(builder.Options, _seedTestingData);
+            return new RideSharingTestingDbContext(builder.Options, _seedTestingData);
 
         }
     }
