@@ -65,7 +65,7 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
     [Fact]
     public async Task SeededRide_DeleteByIdDeleted()
     {
-        var vehicle = _rideFacadeSUT.DeleteAsync(RideSeeds.BrnoBratislava.Id);
+        await _rideFacadeSUT.DeleteAsync(RideSeeds.BrnoBratislava.Id);
         await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
         Assert.False(await dbxAssert.RideEntities.AnyAsync(i => i.Id == RideSeeds.BrnoBratislava.Id));
     }
