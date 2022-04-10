@@ -5,7 +5,7 @@ using Xunit;
 using RideSharing.BL.Models;
 using RideSharing.BL.Facades;
 using Microsoft.EntityFrameworkCore;
-using RideSharing.Common.Tests.DALTestsSeeds;
+using RideSharing.Common.Tests.Seeds;
 using RideSharing.Common.Tests;
 using Xunit.Abstractions;
 
