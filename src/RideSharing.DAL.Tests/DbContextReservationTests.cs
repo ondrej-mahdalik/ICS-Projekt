@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using RideSharing.Common.Tests.DALTestsSeeds;
-using RideSharing.DAL.Entities;
+using RideSharing.Common.Tests.Seeds;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 using RideSharing.Common.Tests;
 using Xunit;
 using Xunit.Abstractions;
@@ -71,7 +68,7 @@ public class DbContextReservationTests : DbContextTestsBase
             .SingleAsync(i => i.Id == ReservationSeeds.User1PragueBrno.Id);
 
         //Assert
-        DeepAssert.Equal(expected, entity, "Reservations");
+        DeepAssert.Equal(expected, entity, nameof(entity.Ride.Reservations));
     }
 
     [Fact]
@@ -89,7 +86,7 @@ public class DbContextReservationTests : DbContextTestsBase
             .SingleAsync(i => i.Id == ReservationSeeds.User1PragueBrno.Id);
 
         //Assert
-        DeepAssert.Equal(expected, entity, "Reservations", "ReviewedUser");
+        DeepAssert.Equal(expected, entity, nameof(expected.Ride.Reservations));
     }
 
     [Fact]
@@ -106,7 +103,7 @@ public class DbContextReservationTests : DbContextTestsBase
             .SingleAsync(i => i.Id == ReservationSeeds.User1PragueBrno.Id);
 
         //Assert
-        DeepAssert.Equal(expected, entity, "Reservations");
+        DeepAssert.Equal(expected, entity, nameof(expected.Ride.Reservations));
     }
 
     [Fact]

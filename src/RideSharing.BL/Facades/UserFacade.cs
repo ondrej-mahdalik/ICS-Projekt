@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using RideSharing.BL.Models;
 using RideSharing.DAL.Entities;
@@ -21,6 +20,6 @@ public class UserFacade : CRUDFacade<UserEntity, UserListModel, UserDetailModel>
             .Include(user => user.Reservations)
             //.ThenInclude(review => review.AuthorUser)
             .SingleOrDefaultAsync(user => user.Id == id);
-       return Mapper.Map<UserDetailModel>(user);
+        return Mapper.Map<UserDetailModel>(user);
     }
 }

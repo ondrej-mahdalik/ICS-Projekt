@@ -2,7 +2,7 @@
 using Xunit.Abstractions;
 using RideSharing.BL.Models;
 using System;
-using RideSharing.Common.Tests.DALTestsSeeds;
+using RideSharing.Common.Tests.Seeds;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 using RideSharing.DAL.Entities;
@@ -147,13 +147,5 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
         var rideFromDb = await dbxAssert.RideEntities.Include(entity => entity.Vehicle).SingleAsync(i => i.Id == ride.Id);
         var updatedRide = Mapper.Map<RideDetailModel>(rideFromDb);
         DeepAssert.Equal(ride, updatedRide);
-    }
-
-    [Fact]
-    public async Task DeleteRide_KeepsAllItsReviews()
-    {
-        await _rideFacadeSUT.DeleteAsync(RideSeeds.PragueBrno.Id);
-        await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
-        Assert.True(await dbxAssert.ReviewEntities.CountAsync(i => i.RideId == null) == 2);
     }
 }

@@ -27,7 +27,7 @@ public class RideSharingDbContext : DbContext
         {
             entity.HasMany(i => i.Reservations)
                 .WithOne(i => i.ReservingUser)
-                .OnDelete(DeleteBehavior.Cascade); // User deletion causes deletion of all their reservations
+                .OnDelete(DeleteBehavior.Cascade);
 
             entity.HasMany(i => i.SubmittedReviews)
                 .WithOne(i => i.AuthorUser)
@@ -35,14 +35,14 @@ public class RideSharingDbContext : DbContext
 
             entity.HasMany(i => i.Vehicles)
                 .WithOne(i => i.Owner)
-                .OnDelete(DeleteBehavior.Cascade); // User deletion causes deletion of all their vehicles
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<RideEntity>(entity =>
         {
             entity.HasMany(i => i.Reservations)
                 .WithOne(i => i.Ride)
-                .OnDelete(DeleteBehavior.Cascade); // Ride deletion causes deletion of all its reservations
+                .OnDelete(DeleteBehavior.Cascade);
 
             entity.HasMany(i => i.Reviews)
                 .WithOne(i => i.Ride)
@@ -52,7 +52,7 @@ public class RideSharingDbContext : DbContext
         modelBuilder.Entity<VehicleEntity>()
             .HasMany(i => i.Rides)
             .WithOne(i => i.Vehicle)
-            .OnDelete(DeleteBehavior.Restrict); // Can't delete vehicle used in rides
+            .OnDelete(DeleteBehavior.ClientSetNull);
 
         if (_seedDemoData)
         {

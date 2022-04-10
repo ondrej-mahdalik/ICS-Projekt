@@ -9,7 +9,7 @@ namespace RideSharing.BL.Facades;
 public class RideFacade : CRUDFacade<RideEntity, RideListModel, RideDetailModel>
 {
     public RideFacade(IUnitOfWorkFactory unitOfWorkFactory, IMapper mapper) : base(unitOfWorkFactory, mapper) { }
-    
+
     public override async Task<RideDetailModel?> GetAsync(Guid id)
     {
         await using var uow = UnitOfWorkFactory.Create();
