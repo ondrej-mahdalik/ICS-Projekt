@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using RideSharing.Common.Tests.DALTestsSeeds;
+using RideSharing.Common.Tests.Seeds;
 using Microsoft.EntityFrameworkCore;
 using RideSharing.Common.Tests;
 using Xunit;
