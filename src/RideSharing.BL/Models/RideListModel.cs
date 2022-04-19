@@ -19,7 +19,7 @@ public record RideListModel(
     public int SharedSeats { get; set; } = SharedSeats;
     public TimeSpan Duration { get; set; }
 
-    public RideListVehicleModel? Vehicle { get; set; }
+    public VehicleDetailModel? Vehicle { get; set; }
 
     public class MapperProfile : Profile
     {

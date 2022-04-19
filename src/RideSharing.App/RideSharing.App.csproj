@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MaterialDesignColors" Version="2.0.5" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.4.0" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1185.39" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Commands\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Factories\" />
+    <Folder Include="Messages\" />
+    <Folder Include="Wrappers\" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="Settings\" />
+    <Folder Include="Services\" />
+    <Folder Include="Resources\" />
+  </ItemGroup>
+
+</Project>
