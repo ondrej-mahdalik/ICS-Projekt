@@ -1,24 +1,26 @@
-﻿using System;
-using System.Windows;
-using MaterialDesignThemes.Wpf;
-using RideSharing.App;
+﻿using RideSharing.App.ViewModels;
 
 namespace RideSharing.App.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
-        public MainWindow()
+        public MainWindow(MainViewModel mainViewModel)
         {
             InitializeComponent();
-            webview.IsEnabled = false;
+            DataContext = mainViewModel;
+            //webview.IsEnabled = false;
         }
 
-        private void BtnSubmit_OnClick(object sender, RoutedEventArgs e)
-        {
-            webview.ExecuteScriptAsync($"setRoute(\"{TxtFrom.Text}\", \"{TxtTo.Text}\");");
-        }
-    }
+        //private void BtnSubmit_OnClick(object sender, RoutedEventArgs e)
+        //{
+        //    webview.ExecuteScriptAsync($"setRoute(\"{TxtFrom.Text}\", \"{TxtTo.Text}\");");
+        //}
+
+            /*<wv2:WebView2 Margin="5px"
+            Grid.Row="1" x:Name="webview"
+                      Source="https://ondrej-mahdalik.github.io/ridesharing-cdn/EmbedMap/" />*/
+}
 }
