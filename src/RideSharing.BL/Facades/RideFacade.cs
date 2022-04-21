@@ -20,4 +20,11 @@ public class RideFacade : CRUDFacade<RideEntity, RideListModel, RideDetailModel>
             .SingleOrDefaultAsync(ride => ride.Id == id);
         return Mapper.Map<RideDetailModel>(ride);
     }
+
+    public async Task<List<RideListModel>> GetFilteredAsync(DateTime? dateFrom = null, DateTime? dateTo = null, string? cityFrom = null, string? cityTo = null, int? seats = null)
+    {
+        await using var uow = UnitOfWorkFactory.Create();
+        var dbSet = uow.GetRepository<RideEntity>().Get();
+        return new List<RideListModel>(); // TODO
+    }
 }

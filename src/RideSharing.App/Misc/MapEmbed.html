@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Map Embed</title>
+</head>
+<body style="margin:0px;padding:0px;overflow:hidden">
+<iframe id="map"
+        style="overflow:hidden;overflow-x:hidden;overflow-y:hidden;height:100%;width:100%;position:absolute;top:0px;left:0px;right:0px;bottom:0px"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.google.com/maps/embed/v1/directions
+?key=AIzaSyBAB4jES18FbEwKzJGvZJXGOeL3ezWrVyk
+&origin=Brno+Czechia
+&destination=Prague+Czechia"></iframe>
+<script>
+    function SetRoute(origin, destination) {
+        var map = document.getElementById("map");
+        map.src = "https://www.google.com/maps/embed/v1/directions" +
+            "?key=AIzaSyBAB4jES18FbEwKzJGvZJXGOeL3ezWrVyk" +
+            "&origin=" + encodeURI(origin) +
+            "&destination=" + encodeURI(destination);
+    }
+</script>
+</body>
+</html>
