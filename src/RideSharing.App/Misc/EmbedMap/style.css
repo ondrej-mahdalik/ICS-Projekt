@@ -2,8 +2,16 @@
     height: 100%;
 }
 
+#error {
+    visibility: hidden;
+    color: lightsteelblue;
+    align-self: center;
+    justify-self: center;
+}
+
 html,
 body {
+    display: flex;
     height: 100%;
     margin: 0;
     padding: 0;

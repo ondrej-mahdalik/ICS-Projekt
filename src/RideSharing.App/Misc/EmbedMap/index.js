@@ -18,6 +18,11 @@ function initMap() {
 
 function setRoute(from, to) {
 
+    var error = Document.getElementById("error");
+    var map = Document.getElementById("map");
+    error.visibility = collapsed;
+    map.visibility = visible;
+
     directionsService.route({
         origin: {query: from},
         destination: {query: to},
@@ -25,7 +30,9 @@ function setRoute(from, to) {
     }).then((result) => {
         directionsRenderer.setDirections(result);
     }).catch((e) => {
-        window.alert("Failed to display map.\n" + e);
+        map.visibility = collapsed;
+        error.text = "An error occured: " + e;
+        error.visibility = visible;
     });
 }
 
