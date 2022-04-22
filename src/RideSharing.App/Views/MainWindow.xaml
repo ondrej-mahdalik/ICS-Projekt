@@ -29,24 +29,64 @@
                 <TextBlock Style="{StaticResource MaterialDesignHeadline5TextBlock}" FontWeight="Bold"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                           Padding="10px 0px">RideSharing</TextBlock>
-                <Menu x:Name="MainMenu" Grid.Column="1">
+                           Padding="10px 0px">RideSharing
+                </TextBlock>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button x:Name="BtnMenuHome"
+                            Style="{StaticResource MaterialDesignFlatLightButton}"
+                            Foreground="{StaticResource MaterialDesignLightForeground}"
+                            Margin="10px 5px" Click="MenuButtonClick" Cursor="Hand">Home
+                    </Button>
+                    <Button x:Name="BtnMenuFindRide"
+                            Style="{StaticResource MaterialDesignFlatLightButton}"
+                            Foreground="{StaticResource MaterialDesignLightForeground}"
+                            Margin="10px 5px" Click="MenuButtonClick">Find a Ride
+                    </Button>
+                    <Button x:Name="BtnMenuShareRide"
+                            Style="{StaticResource MaterialDesignFlatLightButton}"
+                            Foreground="{StaticResource MaterialDesignLightForeground}"
+                            Margin="10px 5px" Click="MenuButtonClick">Share my Ride
+                    </Button>
+                    <Button x:Name="BtnMenuVehicles"
+                            Style="{StaticResource MaterialDesignFlatLightButton}"
+                            Foreground="{StaticResource MaterialDesignLightForeground}"
+                            Margin="10px 5px" Click="MenuButtonClick">Manage Vehicles
+                    </Button>
+                    <Button x:Name="BtnMenuProfile"
+                            Style="{StaticResource MaterialDesignFlatLightButton}"
+                            Foreground="{StaticResource MaterialDesignLightForeground}"
+                            Margin="10px 5px" Click="MenuButtonClick">Profile Settings
+                    </Button>
+                    <Button x:Name="BtnMenuLogOut"
+                            Style="{StaticResource MaterialDesignFlatLightButton}"
+                            Foreground="{StaticResource MaterialDesignLightForeground}"
+                            Margin="10px 5px" Click="MenuButtonClick">Log Out
+                    </Button>
+                </StackPanel>
+                <!--<Menu x:Name="MainMenu" Grid.Column="1">
                     <Label>Home</Label>
                     <Label>Find a Ride</Label>
                     <Label>Share my Ride</Label>
                     <Label>Manage Vehicles</Label>
                     <Label>Profile Settings</Label>
                     <Label>Log Out</Label>
-                </Menu>
+                </Menu>-->
             </Grid>
         </materialDesign:Card>
-        <materialDesign:Transitioner Grid.Row="1" x:Name="Transitioner" SelectedIndex="1" >
+        <materialDesign:Transitioner Grid.Row="1" x:Name="Transitioner" SelectedIndex="0" >
             <materialDesign:TransitionerSlide>
-                <materialDesign:TransitionerSlide.OpeningEffects>
-                    <materialDesign:TransitionEffect Kind="FadeIn"/>
-                </materialDesign:TransitionerSlide.OpeningEffects>
+                <materialDesign:TransitionerSlide.OpeningEffect>
+                    <materialDesign:TransitionEffect Kind="ExpandIn"/>
+                </materialDesign:TransitionerSlide.OpeningEffect>
                 <views:DashboardView x:Name="Dashboard"
                                      DataContext="{Binding DashboardViewModel}" />
+            </materialDesign:TransitionerSlide>
+            <materialDesign:TransitionerSlide>
+                <materialDesign:TransitionerSlide.OpeningEffect>
+                    <materialDesign:TransitionEffect Kind="ExpandIn"/>
+                </materialDesign:TransitionerSlide.OpeningEffect>
+                <views:MapTestView x:Name="MapView"
+                                   DataContext="{Binding MapTestVIewModel}" />
             </materialDesign:TransitionerSlide>
         </materialDesign:Transitioner>
     </Grid>

@@ -1,4 +1,6 @@
-﻿using RideSharing.App.ViewModels;
+﻿using System.Windows;
+using System.Windows.Controls;
+using RideSharing.App.ViewModels;
 
 namespace RideSharing.App.Views
 {
@@ -11,16 +13,14 @@ namespace RideSharing.App.Views
         {
             InitializeComponent();
             DataContext = mainViewModel;
-            //webview.IsEnabled = false;
         }
 
-        //private void BtnSubmit_OnClick(object sender, RoutedEventArgs e)
-        //{
-        //    webview.ExecuteScriptAsync($"setRoute(\"{TxtFrom.Text}\", \"{TxtTo.Text}\");");
-        //}
-
-            /*<wv2:WebView2 Margin="5px"
-            Grid.Row="1" x:Name="webview"
-                      Source="https://ondrej-mahdalik.github.io/ridesharing-cdn/EmbedMap/" />*/
-}
+        private void MenuButtonClick(object sender, RoutedEventArgs e)
+        {
+            if ((Button)sender == BtnMenuHome)
+                Transitioner.SelectedIndex = 0;
+            else if ((Button)sender == BtnMenuFindRide)
+                Transitioner.SelectedIndex = 1;
+        }
+    }
 }
