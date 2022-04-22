@@ -14,7 +14,9 @@
         Background="{DynamicResource MaterialDesignPaper}"
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14"
-        FontFamily="{materialDesign:MaterialDesignFont}">
+        FontFamily="{materialDesign:MaterialDesignFont}"
+        MinWidth="900"
+        MinHeight="400">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -76,14 +78,14 @@
         <materialDesign:Transitioner Grid.Row="1" x:Name="Transitioner" SelectedIndex="0" >
             <materialDesign:TransitionerSlide>
                 <materialDesign:TransitionerSlide.OpeningEffect>
-                    <materialDesign:TransitionEffect Kind="ExpandIn"/>
+                    <materialDesign:TransitionEffect Kind="SlideInFromBottom"/>
                 </materialDesign:TransitionerSlide.OpeningEffect>
                 <views:DashboardView x:Name="Dashboard"
                                      DataContext="{Binding DashboardViewModel}" />
             </materialDesign:TransitionerSlide>
             <materialDesign:TransitionerSlide>
                 <materialDesign:TransitionerSlide.OpeningEffect>
-                    <materialDesign:TransitionEffect Kind="ExpandIn"/>
+                    <materialDesign:TransitionEffect Kind="SlideInFromBottom"/>
                 </materialDesign:TransitionerSlide.OpeningEffect>
                 <views:MapTestView x:Name="MapView"
                                    DataContext="{Binding MapTestVIewModel}" />

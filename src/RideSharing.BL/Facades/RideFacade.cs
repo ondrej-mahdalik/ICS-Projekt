@@ -21,10 +21,28 @@ public class RideFacade : CRUDFacade<RideEntity, RideListModel, RideDetailModel>
         return Mapper.Map<RideDetailModel>(ride);
     }
 
-    public async Task<List<RideListModel>> GetFilteredAsync(DateTime? dateFrom = null, DateTime? dateTo = null, string? cityFrom = null, string? cityTo = null, int? seats = null)
+    public async Task<IEnumerable<RideListModel>> GetFilteredAsync(DateTime? dateFrom = null, DateTime? dateTo = null, string? cityFrom = null, string? cityTo = null, int? seats = null)
     {
         await using var uow = UnitOfWorkFactory.Create();
         var dbSet = uow.GetRepository<RideEntity>().Get();
-        return new List<RideListModel>(); // TODO
+        var rides = dbSet.Where(x =>
+            (!dateFrom.HasValue || x.Departure > dateFrom.Value) &&
+            (!dateTo.HasValue || x.Departure < dateTo.Value) &&
+            (!seats.HasValue || x.SharedSeats >= seats.Value)
+        );
+
+        if (cityFrom != null)
+        {
+            string[] filters = cityFrom.Split(new [] {' '});
+            rides = rides.Where(x => filters.All(f => x.FromName.Contains(f)));
+        }
+
+        if (cityTo != null)
+        {
+            string[] filters = cityTo.Split(new[] {' '});
+            rides = rides.Where(x => filters.All(f => x.ToName.Contains((f))));
+        }
+
+        return await Mapper.ProjectTo<RideListModel>(rides).ToArrayAsync().ConfigureAwait(false);
     }
 }

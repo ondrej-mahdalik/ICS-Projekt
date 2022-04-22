@@ -21,7 +21,7 @@
             </Grid.ColumnDefinitions>
             <TextBox Margin="10px" x:Name="TxtFrom" />
             <TextBox Margin="10px" Grid.Column="1" x:Name="TxtTo"/>
-            <Button Margin="10px" Grid.Column="2" x:Name="BtnCalcRoute" Click="BtnCalcRoute_OnClick">Find route</Button>
+            <Button Margin="10px" Grid.Column="2" x:Name="BtnCalcRoute" Click="BtnCalcRoute_OnClick" IsDefault="True">Find route</Button>
         </Grid>
         <wpf:WebView2 Margin="5px"
                       Grid.Row="1" x:Name="WebView"
