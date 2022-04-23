@@ -10,13 +10,12 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="600"
         Width="990"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        Background="{DynamicResource MaterialDesignPaper}"
+        Style="{StaticResource MaterialDesignWindow}"
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14"
         FontFamily="{materialDesign:MaterialDesignFont}"
         MinWidth="900"
-        MinHeight="400">
+        MinHeight="600">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -33,60 +32,57 @@
                            VerticalAlignment="Center"
                            Padding="10px 0px">RideSharing
                 </TextBlock>
-                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Button x:Name="BtnMenuHome"
-                            Style="{StaticResource MaterialDesignFlatLightButton}"
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="50px 0px">
+                    <RadioButton x:Name="BtnMenuHome"
+                            Style="{StaticResource MaterialDesignTabRadioButton}"
                             Foreground="{StaticResource MaterialDesignLightForeground}"
-                            Margin="10px 5px" Click="MenuButtonClick" Cursor="Hand">Home
-                    </Button>
-                    <Button x:Name="BtnMenuFindRide"
-                            Style="{StaticResource MaterialDesignFlatLightButton}"
-                            Foreground="{StaticResource MaterialDesignLightForeground}"
-                            Margin="10px 5px" Click="MenuButtonClick">Find a Ride
-                    </Button>
-                    <Button x:Name="BtnMenuShareRide"
-                            Style="{StaticResource MaterialDesignFlatLightButton}"
-                            Foreground="{StaticResource MaterialDesignLightForeground}"
-                            Margin="10px 5px" Click="MenuButtonClick">Share my Ride
-                    </Button>
-                    <Button x:Name="BtnMenuVehicles"
-                            Style="{StaticResource MaterialDesignFlatLightButton}"
-                            Foreground="{StaticResource MaterialDesignLightForeground}"
-                            Margin="10px 5px" Click="MenuButtonClick">Manage Vehicles
-                    </Button>
-                    <Button x:Name="BtnMenuProfile"
-                            Style="{StaticResource MaterialDesignFlatLightButton}"
-                            Foreground="{StaticResource MaterialDesignLightForeground}"
-                            Margin="10px 5px" Click="MenuButtonClick">Profile Settings
-                    </Button>
-                    <Button x:Name="BtnMenuLogOut"
-                            Style="{StaticResource MaterialDesignFlatLightButton}"
-                            Foreground="{StaticResource MaterialDesignLightForeground}"
-                            Margin="10px 5px" Click="MenuButtonClick">Log Out
-                    </Button>
+                            Click="MenuButtonClick"
+                            Cursor="Hand"
+                            IsChecked="True">Home
+                    </RadioButton>
+                    <RadioButton x:Name="BtnMenuFindRide"
+                                 Style="{StaticResource MaterialDesignTabRadioButton}"
+                                 Foreground="{StaticResource MaterialDesignLightForeground}"
+                                 Click="MenuButtonClick"
+                                 Cursor="Hand">Find a Ride
+                    </RadioButton>
+                    <RadioButton x:Name="BtnMenuShareRide"
+                                 Style="{StaticResource MaterialDesignTabRadioButton}"
+                                 Foreground="{StaticResource MaterialDesignLightForeground}"
+                                 Click="MenuButtonClick"
+                                 Cursor="Hand">Share my Ride
+                    </RadioButton>
+                    <RadioButton x:Name="BtnMenuVehicles"
+                                 Style="{StaticResource MaterialDesignTabRadioButton}"
+                                 Foreground="{StaticResource MaterialDesignLightForeground}"
+                                 Click="MenuButtonClick"
+                                 Cursor="Hand">Manage Vehicles
+                    </RadioButton>
+                    <RadioButton x:Name="BtnMenuProfile"
+                                 Style="{StaticResource MaterialDesignTabRadioButton}"
+                                 Foreground="{StaticResource MaterialDesignLightForeground}"
+                                 Click="MenuButtonClick"
+                                 Cursor="Hand">Profile Settings
+                    </RadioButton>
+                    <RadioButton x:Name="BtnMenuLogOut"
+                                 Style="{StaticResource MaterialDesignTabRadioButton}"
+                                 Foreground="{StaticResource MaterialDesignLightForeground}"
+                                 Click="MenuButtonClick"
+                                 Cursor="Hand">Log Out
+                    </RadioButton>
                 </StackPanel>
-                <!--<Menu x:Name="MainMenu" Grid.Column="1">
-                    <Label>Home</Label>
-                    <Label>Find a Ride</Label>
-                    <Label>Share my Ride</Label>
-                    <Label>Manage Vehicles</Label>
-                    <Label>Profile Settings</Label>
-                    <Label>Log Out</Label>
-                </Menu>-->
             </Grid>
         </materialDesign:Card>
-        <materialDesign:Transitioner Grid.Row="1" x:Name="Transitioner" SelectedIndex="0" >
+        <materialDesign:Transitioner Grid.Row="1" x:Name="Transitioner" SelectedIndex="0">
             <materialDesign:TransitionerSlide>
-                <materialDesign:TransitionerSlide.OpeningEffect>
-                    <materialDesign:TransitionEffect Kind="SlideInFromBottom"/>
-                </materialDesign:TransitionerSlide.OpeningEffect>
                 <views:DashboardView x:Name="Dashboard"
                                      DataContext="{Binding DashboardViewModel}" />
             </materialDesign:TransitionerSlide>
             <materialDesign:TransitionerSlide>
-                <materialDesign:TransitionerSlide.OpeningEffect>
-                    <materialDesign:TransitionEffect Kind="SlideInFromBottom"/>
-                </materialDesign:TransitionerSlide.OpeningEffect>
+                <views:FindRideView x:Name="FindRide"
+                                    DataContext="{Binding FindRideViewModel}" />
+            </materialDesign:TransitionerSlide>
+            <materialDesign:TransitionerSlide>
                 <views:MapTestView x:Name="MapView"
                                    DataContext="{Binding MapTestVIewModel}" />
             </materialDesign:TransitionerSlide>

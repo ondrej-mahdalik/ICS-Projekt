@@ -18,21 +18,22 @@ function initMap() {
 
 function setRoute(from, to) {
 
-    var error = Document.getElementById("error");
-    var map = Document.getElementById("map");
-    error.visibility = collapsed;
-    map.visibility = visible;
+    var mapElement = document.getElementById("map");
+    var errorElement = document.getElementById("error");
+
+    errorElement.style.display = "none";
+    mapElement.style.display = "block";
 
     directionsService.route({
-        origin: {query: from},
-        destination: {query: to},
+        origin: { query: from },
+        destination: { query: to },
         travelMode: google.maps.TravelMode.DRIVING
     }).then((result) => {
         directionsRenderer.setDirections(result);
     }).catch((e) => {
-        map.visibility = collapsed;
-        error.text = "An error occured: " + e;
-        error.visibility = visible;
+        mapElement.style.display = "none";
+        errorElement.innerText = "Could not find a route.";
+        errorElement.style.display = "block";
     });
 }
 
