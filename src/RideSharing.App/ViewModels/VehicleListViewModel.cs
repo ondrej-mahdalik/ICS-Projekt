@@ -9,7 +9,7 @@ using RideSharing.App.Extensions;
 
 namespace RideSharing.App.ViewModels
 {
-    public class VehicleListViewModel : ViewModelBase // TODO add Interface
+    public class VehicleListViewModel : ViewModelBase, IVehicleListViewModel
     {
         private readonly VehicleFacade _vehicleFacade;
         // TODO Add mediator and messageService
@@ -35,8 +35,8 @@ namespace RideSharing.App.ViewModels
         public async Task LoadAsync()
         {
             Vehicles.Clear();
-            var vehicles = await _vehicleFacade.GetAsync();
-            Vehicles.AddRange(vehicles);
+           // var vehicles = await _vehicleFacade.GetByOwnerAsync(ownerId);
+           // Vehicles.AddRange(vehicles);
         }
     }
 }
