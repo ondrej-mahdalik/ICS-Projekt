@@ -17,10 +17,12 @@ namespace RideSharing.App.Views
 
         private void MenuButtonClick(object sender, RoutedEventArgs e)
         {
-            if ((Button)sender == BtnMenuHome)
+            if (sender.Equals(BtnMenuHome))
                 Transitioner.SelectedIndex = 0;
-            else if ((Button)sender == BtnMenuFindRide)
+            else if (sender.Equals(BtnMenuFindRide))
                 Transitioner.SelectedIndex = 1;
+            else if (sender.Equals(BtnMenuShareRide))
+                Transitioner.SelectedIndex = 2;
         }
     }
 }

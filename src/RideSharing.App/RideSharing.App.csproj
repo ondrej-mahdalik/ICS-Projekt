@@ -28,8 +28,6 @@
 
   <ItemGroup>
     <Folder Include="Commands\" />
-    <Folder Include="Messages\" />
-    <Folder Include="Wrappers\" />
     <Folder Include="Settings\" />
     <Folder Include="Services\" />
     <Folder Include="Resources\" />
