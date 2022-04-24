@@ -21,7 +21,7 @@ namespace RideSharing.App.ViewModels
         }
 
         // TODO Add model
-        public ICommand AddOrUpdateCommand { get; }
+        // TODO One command for adding and updating or two separate ones?
         public async Task LoadAsync(Guid id)
         {
           // Model = await _vehicleFacade.GetAsync(id);  // TODO add empty vehicleDetailModel
