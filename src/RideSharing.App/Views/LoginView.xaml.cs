@@ -1,11 +1,11 @@
 ﻿namespace RideSharing.App.Views
 {
     /// <summary>
-    /// Interakční logika pro FindRideView.xaml
+    /// Interakční logika pro LoginView.xaml
     /// </summary>
-    public partial class FindRideView
+    public partial class LoginView
     {
-        public FindRideView()
+        public LoginView()
         {
             InitializeComponent();
         }

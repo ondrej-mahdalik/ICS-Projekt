@@ -5,6 +5,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:RideSharing.App.Views"
+      xmlns:viewModels="clr-namespace:RideSharing.App.ViewModels"
+      xmlns:controls="clr-namespace:RideSharing.App.Controls"
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="900"
       FontSize="14"
@@ -97,79 +99,17 @@
                 <ListView HorizontalContentAlignment="Center"
                           Style="{StaticResource MaterialDesignListViewNoRippleEffect}">
                     <ListViewItem Padding="10px">
-                        <materialDesign:Card HorizontalContentAlignment="Stretch"
-                                             VerticalContentAlignment="Stretch"
-                                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                             Padding="10px">
-                            <Grid HorizontalAlignment="Stretch">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Label FontWeight="Bold" VerticalAlignment="Center">Joe Doe (JoDe58)</Label>
-                                <Grid Grid.Row="1" Grid.Column="0"
-                                      HorizontalAlignment="Left">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <Label FontWeight="Bold">Brno</Label>
-                                    <Label Grid.Row="1"
-                                           Grid.Column="0">16:35</Label>
-                                    <Canvas Grid.Row="0"
-                                            Grid.Column="1"
-                                            Grid.RowSpan="2"
-                                            Width="24"
-                                            Height="24">
-                                        <Path Fill="{StaticResource MaterialDesignLightForeground}"
-                                              Data="M4,15V9H12V4.16L19.84,12L12,19.84V15H4Z" />
-                                    </Canvas>
-                                    <Label Grid.Row="0"
-                                           Grid.Column="2"
-                                           FontWeight="Bold">Prague</Label>
-                                    <Label Grid.Row="1"
-                                           Grid.Column="2">18:40</Label>
-                                </Grid>
-                                <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center">Occupancy: 4/5</Label>
-                                <StackPanel Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
-                                            Orientation="Horizontal">
-                                    <materialDesign:RatingBar Value="4" VerticalAlignment="Center" />
-                                    <Label VerticalAlignment="Center">285 reviews</Label>
-                                </StackPanel>
-                                <Label Grid.Row="1"
-                                       Grid.Column="1"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       FontWeight="Bold">206 km</Label>
-                                <Canvas Grid.Row="2"
-                                        Grid.Column="1"
-                                        Width="24"
-                                        Height="24">
-                                    <Path Fill="{StaticResource MaterialDesignLightForeground}"
-                                          Data="M16,6L19,10H21C22.11,10 23,10.89 23,12V15H21A3,3 0 0,1 18,18A3,3 0 0,1 15,15H9A3,3 0 0,1 6,18A3,3 0 0,1 3,15H1V12C1,10.89 1.89,10 3,10L6,6H16M10.5,7.5H6.75L4.86,10H10.5V7.5M12,7.5V10H17.14L15.25,7.5H12M6,13.5A1.5,1.5 0 0,0 4.5,15A1.5,1.5 0 0,0 6,16.5A1.5,1.5 0 0,0 7.5,15A1.5,1.5 0 0,0 6,13.5M18,13.5A1.5,1.5 0 0,0 16.5,15A1.5,1.5 0 0,0 18,16.5A1.5,1.5 0 0,0 19.5,15A1.5,1.5 0 0,0 18,13.5Z" />
-                                </Canvas>
-                                <Label Grid.Row="1"
-                                       Grid.Column="2"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Center"
-                                       FontWeight="Bold">2h 5min</Label>
-                                <Button Grid.Row="2"
-                                        Grid.Column="2"
-                                        Style="{StaticResource MaterialDesignOutlinedButton}"
-                                        materialDesign:RippleAssist.IsDisabled="False">Details</Button>
-                            </Grid>
-                        </materialDesign:Card>
+                        <controls:FindRideItem UserName="Joe Doe (JoDe58)"
+                                               Rating="3.9"
+                                               ReviewCount="285"
+                                               From="Brno"
+                                               To="Prague"
+                                               Departure="today 16:35"
+                                               Arrival="today 18:40"
+                                               Distance="206 km"
+                                               Occupied="Occupancy: 4/5"
+                                               VehicleType="Car"
+                        />
                     </ListViewItem>
                 </ListView>
             </StackPanel>
