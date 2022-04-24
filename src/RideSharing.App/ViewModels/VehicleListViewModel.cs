@@ -10,6 +10,7 @@ using RideSharing.BL.Models;
 using RideSharing.App.Extensions;
 using RideSharing.App.Messages;
 using RideSharing.App.Services;
+using RideSharing.App.Services.MessageDialog;
 
 namespace RideSharing.App.ViewModels
 {
@@ -19,7 +20,9 @@ namespace RideSharing.App.ViewModels
         private readonly IMediator _mediator;
 
 
-        public VehicleListViewModel(VehicleFacade vehicleFacade, IMediator mediator)
+        public VehicleListViewModel(
+            VehicleFacade vehicleFacade,
+            IMediator mediator)
         {
             _vehicleFacade = vehicleFacade;
             _mediator = mediator;
@@ -30,6 +33,7 @@ namespace RideSharing.App.ViewModels
 
             mediator.Register<UpdateMessage<VehicleWrapper>>(VehicleUpdated);
             mediator.Register<DeleteMessage<VehicleWrapper>>(VehicleDeleted);
+            mediator.Register<NewMessage<VehicleWrapper>>(VehicleCreated);
 
             // TODO register mediator for creating
         }
@@ -43,6 +47,8 @@ namespace RideSharing.App.ViewModels
         private async void VehicleUpdated(UpdateMessage<VehicleWrapper> _) => await LoadAsync();
 
         private async void VehicleDeleted(DeleteMessage<VehicleWrapper> _) => await LoadAsync();
+
+        private async void VehicleCreated(NewMessage<VehicleWrapper> _) => await LoadAsync();
 
         public ObservableCollection<VehicleListModel> Vehicles { get; set; } = new();
 

@@ -2,30 +2,42 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using RideSharing.App.Commands;
 using RideSharing.App.ViewModels.Interfaces;
 using RideSharing.BL.Facades;
 using RideSharing.BL.Models;
 using RideSharing.App.Extensions;
+using RideSharing.App.Services;
+using RideSharing.App.Services.MessageDialog;
 
 namespace RideSharing.App.ViewModels
 {
-    public class VehicleDetailViewModel : ViewModelBase
+    public class VehicleDetailViewModel : ViewModelBase, IVehicleDetailViewModel
     {
-        private VehicleFacade _vehicleFacade;
-        // TODO Add mediator and messageService
+        private readonly VehicleFacade _vehicleFacade;
+        private readonly IMediator _mediator;
+        private readonly IMessageDialogService _messageDialogService;
 
         public VehicleDetailViewModel(
-            VehicleFacade vehicleFacade)
+            VehicleFacade vehicleFacade,
+            IMediator mediator,
+            IMessageDialogService messageDialogService)
         {
             _vehicleFacade = vehicleFacade;
-        }
+            _mediator = mediator;
+            _messageDialogService = messageDialogService;
 
-        // TODO Add model
+            //SaveCommand = new AsyncRelayCommand(SaveAsync, CanSave);
+        }
+        public ICommand SaveCommand { get; }
+        //public VehicleWrapper? Model { get; private set; }
         // TODO One command for adding and updating or two separate ones?
         public async Task LoadAsync(Guid id)
         {
-          // Model = await _vehicleFacade.GetAsync(id);  // TODO add empty vehicleDetailModel
+           Model = await _vehicleFacade.GetAsync(id);  // TODO add empty vehicleDetailModel
         }
+
+
 
        /* public async SaveAsync()
         {

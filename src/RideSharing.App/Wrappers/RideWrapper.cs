@@ -14,4 +14,10 @@ public class RideWrapper : ModelWrapper<RideDetailModel>
     {
         throw new NotImplementedException();
     }
+
+    public static implicit operator RideWrapper(RideDetailModel detailModel)
+        => new(detailModel);
+
+    public static implicit operator RideDetailModel(RideWrapper wrapper)
+        => wrapper.Model;
 }
