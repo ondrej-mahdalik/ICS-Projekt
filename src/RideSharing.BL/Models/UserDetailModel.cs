@@ -16,6 +16,8 @@ public record UserDetailModel(
     public List<VehicleListModel> Vehicles { get; set; } = new();
     public List<ReviewListModel> SubmittedReviews { get; set; } = new();
 
+    public static UserDetailModel Empty => new(string.Empty, string.Empty, string.Empty);
+    
     public class MapperProfile : Profile
     {
         public MapperProfile()

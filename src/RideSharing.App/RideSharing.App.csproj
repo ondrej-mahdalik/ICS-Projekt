@@ -29,7 +29,6 @@
   <ItemGroup>
     <Folder Include="Commands\" />
     <Folder Include="Settings\" />
-    <Folder Include="Services\" />
     <Folder Include="Resources\" />
   </ItemGroup>
 
