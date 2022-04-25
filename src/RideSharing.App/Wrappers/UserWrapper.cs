@@ -12,7 +12,7 @@ public class UserWrapper : ModelWrapper<UserDetailModel>
 {
     public UserWrapper(UserDetailModel model) : base(model)
     {
-    
+        InitializeCollectionProperties(model);
     }
 
     public string? Name
