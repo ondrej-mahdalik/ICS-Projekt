@@ -19,5 +19,5 @@ public class UserWrapper : ModelWrapper<UserDetailModel>
         => new(detailModel);
 
     public static implicit operator UserDetailModel(UserWrapper wrapper)
-        => wrapper.Model;
+        => wrapper.ThisModel;
 }

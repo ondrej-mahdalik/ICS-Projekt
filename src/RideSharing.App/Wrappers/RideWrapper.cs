@@ -19,5 +19,5 @@ public class RideWrapper : ModelWrapper<RideDetailModel>
         => new(detailModel);
 
     public static implicit operator RideDetailModel(RideWrapper wrapper)
-        => wrapper.Model;
+        => wrapper.ThisModel;
 }
