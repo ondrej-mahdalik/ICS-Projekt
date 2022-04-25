@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using RideSharing.BL.Models;
 using RideSharing.Common.Enums;
 
@@ -22,7 +24,7 @@ public class VehicleWrapper : ModelWrapper<VehicleDetailModel>
         set => SetValue(value);
     }
 
-    public string? Make         // TODO : Validate Make and Model
+    public string? Make        
     {
         get => GetValue<string>();
         set => SetValue(value);
@@ -52,11 +54,16 @@ public class VehicleWrapper : ModelWrapper<VehicleDetailModel>
         set => SetValue(value); 
     }
 
-    private void InitializeCollectionProperties(VehicleDetailModel model)
+    public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
-        if( model.Rides == null)
+        if (string.IsNullOrWhiteSpace(Make))
         {
-            throw new ArgumentException("VehicleDetailModel cannot be null");
+            yield return new ValidationResult($"{nameof(Make)} is required", new[] { nameof(Make) });
+        }
+
+        if (string.IsNullOrWhiteSpace(Model))
+        {
+            yield return new ValidationResult($"{nameof(Make)} is required", new[] { nameof(Make) });
         }
     }
 
