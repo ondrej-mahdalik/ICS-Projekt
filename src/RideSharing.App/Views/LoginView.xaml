@@ -7,7 +7,7 @@
       xmlns:views="clr-namespace:RideSharing.App.Views"
       xmlns:viewModels="clr-namespace:RideSharing.App.ViewModels"
       xmlns:controls="clr-namespace:RideSharing.App.Controls"
-      d:DataContext="{d:DesignInstance viewModels:LoginViewModel}"
+      d:DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=LoginViewModel}"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800">
 
@@ -21,7 +21,13 @@
                    Style="{StaticResource MaterialDesignHeadline5TextBlock}">Select a profile</TextBlock>
         <ListView Grid.Row="1"
                   Style="{StaticResource MaterialDesignListViewNoRippleEffect}"
-                  ItemsSource="{Binding Users}">
+                  ItemsSource="{Binding Users}"
+                  >
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"></StackPanel>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <controls:ProfileItem ProfileName="{Binding Name}"

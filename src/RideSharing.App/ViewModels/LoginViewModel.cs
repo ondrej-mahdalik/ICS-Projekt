@@ -1,6 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using RideSharing.App.Commands;
 using RideSharing.App.Extensions;
 using RideSharing.App.Messages;
 using RideSharing.App.Services;
@@ -29,6 +31,8 @@ public class LoginViewModel : ViewModelBase, ILoginViewModel
         mediator.Register<NewMessage<UserWrapper>>(UserAdded);
         mediator.Register<UpdateMessage<UserWrapper>>(UserUpdated);
         mediator.Register<DeleteMessage<UserWrapper>>(UserDeleted);
+        LoginCommand = new AsyncRelayCommand(Login);
+
     }
 
     public ObservableCollection<UserListModel> Users { get; set; } = new();
@@ -49,6 +53,11 @@ public class LoginViewModel : ViewModelBase, ILoginViewModel
         Users.Clear();
         var users = await _userFacade.GetAsync();
         Users.AddRange(users);
+    }
+
+    public async Task Login()
+    {
+
     }
 
     public override void LoadInDesignMode()

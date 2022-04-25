@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using RideSharing.App.Extensions;
 using RideSharing.App.Services;
+using RideSharing.App.Services.MessageDialog;
 using RideSharing.App.Settings;
 using RideSharing.App.ViewModels;
 using RideSharing.App.ViewModels.Interfaces;
@@ -64,16 +65,19 @@ namespace RideSharing.App
             services.AddSingleton<MainWindow>();
             services.AddSingleton<LoginWindow>();
 
-            services.AddSingleton<Mediator>();
-            //services.AddSingleton<>()
-            
+            services.AddSingleton<IMessageDialogService, MessageDialogService>();
+            services.AddSingleton<IMediator, Mediator>();
+
+
+
             // TODO Mediator & MessageDialogService singletons
 
             services.AddSingleton<MainViewModel>();
+
             services.AddSingleton<LoginViewModel>();
             services.AddSingleton<IDashboardViewModel, DashboardViewModel>();
 
-            services.AddFactory<IDashboardViewModel, DashboardViewModel>();
+            //services.AddFactory<IDashboardViewModel, DashboardViewModel>();
         }
 
         protected override async void OnStartup(StartupEventArgs e)
@@ -96,7 +100,7 @@ namespace RideSharing.App
                 }
             }
 
-            var mainWindow = _host.Services.GetRequiredService<MainWindow>();
+            var mainWindow = _host.Services.GetRequiredService<LoginWindow>();
             mainWindow.Show();
 
             base.OnStartup(e);
