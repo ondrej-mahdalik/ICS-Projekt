@@ -30,7 +30,8 @@
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <controls:ProfileItem ProfileName="{Binding Name}"
+                    <controls:ProfileItem ProfileId="{Binding Id}"
+                                          ProfileName="{Binding Name}"
                                           ImageUrl="{Binding ImageUrl}"
                                           OwnedVehicles="{Binding NumberOfVehicles}"
                                           UpcomingRides="{Binding UpcomingRidesCount}"

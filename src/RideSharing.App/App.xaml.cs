@@ -73,11 +73,13 @@ namespace RideSharing.App
             // TODO Mediator & MessageDialogService singletons
 
             services.AddSingleton<MainViewModel>();
-
             services.AddSingleton<LoginViewModel>();
             services.AddSingleton<IDashboardViewModel, DashboardViewModel>();
+            services.AddSingleton<IFindRideViewModel, FindRideViewModel>();
+            //services.AddSingleton<IMapTestViewModel, MapTestViewModel>();
 
-            //services.AddFactory<IDashboardViewModel, DashboardViewModel>();
+            services.AddFactory<IDashboardViewModel, DashboardViewModel>();
+            services.AddFactory<IFindRideViewModel, FindRideViewModel>();
         }
 
         protected override async void OnStartup(StartupEventArgs e)
@@ -100,9 +102,17 @@ namespace RideSharing.App
                 }
             }
 
-            var mainWindow = _host.Services.GetRequiredService<LoginWindow>();
-            mainWindow.Show();
+            var vm = _host.Services.GetRequiredService<LoginViewModel>();
+            var loginWindow = _host.Services.GetRequiredService<LoginWindow>();
+            var mainWindow = _host.Services.GetRequiredService<MainWindow>();
 
+            vm.OnRequestClose += (sender, args) =>
+            {
+                loginWindow.Close();
+                mainWindow.Show();
+            };
+
+            loginWindow.Show();
             base.OnStartup(e);
         }
 

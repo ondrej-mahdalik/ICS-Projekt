@@ -7,6 +7,7 @@ namespace RideSharing.App.Views
     /// </summary>
     public partial class LoginWindow
     {
+
         public LoginWindow(LoginViewModel loginViewModel)
         {
             InitializeComponent();

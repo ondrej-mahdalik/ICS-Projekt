@@ -16,6 +16,7 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
 {
     private readonly RideFacade _rideFacade;
     private readonly IMediator _mediator;
+    private Guid? _loggedUserid;
 
     public DashboardViewModel(RideFacade rideFacade, IMediator mediator)
     {
@@ -27,6 +28,14 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
 
         mediator.Register<UpdateMessage<RideWrapper>>(RideUpdated);
         mediator.Register<DeleteMessage<RideWrapper>>(RideDeleted);
+        mediator.Register<SelectedMessage<UserWrapper>>(UserLoggedIn);
+    }
+
+    private async void UserLoggedIn(SelectedMessage<UserWrapper> obj)
+    {
+        _loggedUserid = obj.Id;
+        if (_loggedUserid is not null)
+            await LoadAsync();
     }
 
     public ObservableCollection<RideListModel> UpcomingRides { get; set; } = new();
@@ -53,6 +62,11 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
     public async Task LoadAsync()
 #pragma warning restore CS1998 // V této asynchronní metodě chybí operátory await a spustí se synchronně.
     {
-        throw new NotImplementedException();
+        if (_loggedUserid is null)
+            return;
+
+        var rides = await _rideFacade.GetUserRidesAsync(_loggedUserid.Value);
+        if (rides is null)
+            return;
     }
 }

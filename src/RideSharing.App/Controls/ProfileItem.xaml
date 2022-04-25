@@ -31,7 +31,8 @@
                         Style="{StaticResource MaterialDesignOutlinedButton}"
                         Margin="5px"
                         Cursor="Hand"
-                        Command="{Binding LoginCommand}">Log in</Button>
+                        Command="{Binding LoginCommand}"
+                        CommandParameter="{Binding ProfileId}">Log in</Button>
                 <Button Command="{Binding DeleteCommand}" Grid.Row="4" Style="{StaticResource MaterialDesignOutlinedButton}" Grid.Column="1" Margin="5px"
                         Cursor="Hand">Delete</Button>
             </Grid>

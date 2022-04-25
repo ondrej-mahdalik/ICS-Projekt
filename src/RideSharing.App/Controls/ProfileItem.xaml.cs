@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
 
 namespace RideSharing.App.Controls
@@ -8,6 +9,12 @@ namespace RideSharing.App.Controls
     /// </summary>
     public partial class ProfileItem
     {
+        public Guid ProfileId
+        {
+            get => (Guid)GetValue(ProfileIdProperty);
+            set => SetValue(ProfileIdProperty, value);
+        }
+
         public string ProfileName
         {
             get => (string)GetValue(ProfileNameProperty);
@@ -43,6 +50,9 @@ namespace RideSharing.App.Controls
             get => (ICommand)GetValue(DeleteCommandProperty);
             set => SetValue(DeleteCommandProperty, value);
         }
+
+        public static readonly DependencyProperty ProfileIdProperty = DependencyProperty.Register(
+            nameof(ProfileId), typeof(Guid), typeof(ProfileItem), new PropertyMetadata(default));
 
         public static readonly DependencyProperty ProfileNameProperty = DependencyProperty.Register(
             nameof(ProfileName), typeof(string), typeof(ProfileItem), new PropertyMetadata(default));

@@ -8,18 +8,21 @@ using RideSharing.App.Messages;
 using RideSharing.App.Services;
 using RideSharing.App.Services.MessageDialog;
 using RideSharing.App.ViewModels.Interfaces;
+using RideSharing.App.Views;
 using RideSharing.App.Wrappers;
 using RideSharing.BL.Facades;
 using RideSharing.BL.Models;
 
 namespace RideSharing.App.ViewModels;
 
-public class LoginViewModel : ViewModelBase, ILoginViewModel
+public class LoginViewModel : ViewModelBase
 {
     private readonly IMediator _mediator;
     private readonly UserFacade _userFacade;
     //private readonly IMessageDialogService _messageDialogService;
     //private readonly UserWrapper? _model = UserDetailModel.Empty;
+
+    public event EventHandler OnRequestClose;
 
     public LoginViewModel(UserFacade userFacade,
         IMessageDialogService messageDialogService,
@@ -31,7 +34,7 @@ public class LoginViewModel : ViewModelBase, ILoginViewModel
         mediator.Register<NewMessage<UserWrapper>>(UserAdded);
         mediator.Register<UpdateMessage<UserWrapper>>(UserUpdated);
         mediator.Register<DeleteMessage<UserWrapper>>(UserDeleted);
-        LoginCommand = new AsyncRelayCommand(Login);
+        LoginCommand = new RelayCommand<Guid>(Login);
 
     }
 
@@ -55,9 +58,10 @@ public class LoginViewModel : ViewModelBase, ILoginViewModel
         Users.AddRange(users);
     }
 
-    public async Task Login()
+    public void Login(Guid userId)
     {
-
+        _mediator.Send(new SelectedMessage<UserWrapper>{Id = userId});
+        OnRequestClose(this, EventArgs.Empty);
     }
 
     public override void LoadInDesignMode()

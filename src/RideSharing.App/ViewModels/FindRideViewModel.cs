@@ -21,6 +21,6 @@ public class FindRideViewModel : ViewModelBase, IFindRideViewModel
     public async Task LoadAsync()
 #pragma warning restore CS1998 // V této asynchronní metodě chybí operátory await a spustí se synchronně.
     {
-        throw new NotImplementedException();
+       
     }
 }

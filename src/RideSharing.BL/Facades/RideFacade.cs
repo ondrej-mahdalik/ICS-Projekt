@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Runtime.InteropServices.ComTypes;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using RideSharing.BL.Models;
 using RideSharing.DAL.Entities;
@@ -42,6 +43,15 @@ public class RideFacade : CRUDFacade<RideEntity, RideListModel, RideDetailModel>
             string[] filters = cityTo.Split(new[] {' '});
             rides = rides.Where(x => filters.All(f => x.ToName.Contains((f))));
         }
+
+        return await Mapper.ProjectTo<RideListModel>(rides).ToArrayAsync().ConfigureAwait(false);
+    }
+
+    public async Task<IEnumerable<RideListModel>> GetUserRidesAsync(Guid userId)
+    {
+        await using var uow = UnitOfWorkFactory.Create();
+        var dbSet = uow.GetRepository<RideEntity>().Get();
+        var rides = dbSet.Where(x => x.Reservations.Any(y => y.ReservingUserId == userId) || x.Vehicle != null && x.Vehicle.OwnerId == userId);
 
         return await Mapper.ProjectTo<RideListModel>(rides).ToArrayAsync().ConfigureAwait(false);
     }
