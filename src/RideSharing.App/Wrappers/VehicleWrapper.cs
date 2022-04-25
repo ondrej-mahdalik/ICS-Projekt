@@ -18,6 +18,11 @@ public class VehicleWrapper : ModelWrapper<VehicleDetailModel>
         set => SetValue(value);
     }
 
+    public string? OwnerName
+    {
+        get => GetValue<string>();
+    }
+
     public VehicleType VehicleType
     {
         get => GetValue<VehicleType>();
