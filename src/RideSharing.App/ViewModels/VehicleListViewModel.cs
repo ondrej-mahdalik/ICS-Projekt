@@ -11,6 +11,7 @@ using RideSharing.App.Extensions;
 using RideSharing.App.Messages;
 using RideSharing.App.Services;
 using RideSharing.App.Services.MessageDialog;
+using RideSharing.App.Wrappers;
 
 namespace RideSharing.App.ViewModels
 {
