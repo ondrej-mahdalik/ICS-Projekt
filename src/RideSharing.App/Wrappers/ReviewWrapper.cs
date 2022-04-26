@@ -7,30 +7,11 @@ public class ReviewWrapper : ModelWrapper<ReviewDetailModel>
 {
     public ReviewWrapper(ReviewDetailModel model) : base(model)
     {
+        throw new NotImplementedException();
     }
 
-    public Guid? RideId
+    private void InitializeCollectionProperties(ReviewDetailModel model)
     {
-        get => GetValue<Guid>();
-        set => SetValue(value);
+        throw new NotImplementedException();
     }
-
-    public Guid? AuthorUserId
-    {
-        get => GetValue<Guid>();
-        set => SetValue(value);
-    }
-
-    public ushort Rating
-    {
-        get => GetValue<ushort>();
-        set => SetValue(value);
-    }
-
-    public static implicit operator ReviewWrapper(ReviewDetailModel detailModel)
-            => new(detailModel);
-
-    public static implicit operator ReviewDetailModel(ReviewWrapper wrapper)
-        => wrapper.ThisModel;
-
 }

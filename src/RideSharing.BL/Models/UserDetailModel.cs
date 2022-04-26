@@ -13,8 +13,8 @@ public record UserDetailModel(
     public string Surname { get; set; } = Surname;
     public string Phone { get; set; } = Phone;
     public string? ImageUrl { get; set; } = ImageUrl;
-    public List<VehicleDetailModel> Vehicles { get; set; } = new();
-    public List<ReviewDetailModel> SubmittedReviews { get; set; } = new();
+    public List<VehicleListModel> Vehicles { get; set; } = new();
+    public List<ReviewListModel> SubmittedReviews { get; set; } = new();
 
     public static UserDetailModel Empty => new(string.Empty, string.Empty, string.Empty);
     
