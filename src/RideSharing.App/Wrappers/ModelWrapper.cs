@@ -16,7 +16,7 @@ public abstract class ModelWrapper<T> : ViewModelBase, IModel, IValidatableObjec
         if (model == null)
             throw new ArgumentNullException(nameof(model));
 
-        Model = model;
+        ThisModel = model;
     }
 
     public Guid Id
@@ -25,23 +25,23 @@ public abstract class ModelWrapper<T> : ViewModelBase, IModel, IValidatableObjec
         set => SetValue(value);
     }
 
-    public T Model { get; }
+    public T ThisModel { get; }
 
     protected TValue? GetValue<TValue>([CallerMemberName] string? propertyName = null)
     {
-        var propertyInfo = Model.GetType().GetProperty(propertyName ?? string.Empty);
-        return (propertyInfo?.GetValue(Model) is TValue
-            ? (TValue?)propertyInfo.GetValue(Model)
+        var propertyInfo = ThisModel.GetType().GetProperty(propertyName ?? string.Empty);
+        return (propertyInfo?.GetValue(ThisModel) is TValue
+            ? (TValue?)propertyInfo.GetValue(ThisModel)
             : default);
     }
 
     protected void SetValue<TValue>(TValue value, [CallerMemberName] string? propertyName = null)
     {
-        var propertyInfo = Model.GetType().GetProperty(propertyName ?? string.Empty);
-        var currentValue = propertyInfo?.GetValue(Model);
+        var propertyInfo = ThisModel.GetType().GetProperty(propertyName ?? string.Empty);
+        var currentValue = propertyInfo?.GetValue(ThisModel);
         if (!Equals(currentValue, value))
         {
-            propertyInfo?.SetValue(Model, value);
+            propertyInfo?.SetValue(ThisModel, value);
             OnPropertyChanged(propertyName);
         }
     }
@@ -55,7 +55,7 @@ public abstract class ModelWrapper<T> : ViewModelBase, IModel, IValidatableObjec
         wrapperCollection.CollectionChanged += (s, e) =>
         {
             modelCollection.Clear();
-            foreach (var model in wrapperCollection.Select(i => i.Model))
+            foreach (var model in wrapperCollection.Select(i => i.ThisModel))
             {
                 modelCollection.Add(model);
             }
