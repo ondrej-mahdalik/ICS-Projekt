@@ -2,7 +2,9 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Microsoft.Web.WebView2.Core.Raw;
 using RideSharing.App.Commands;
+using RideSharing.App.Extensions;
 using RideSharing.App.Messages;
 using RideSharing.App.Services;
 using RideSharing.App.ViewModels.Interfaces;
@@ -38,6 +40,26 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
             await LoadAsync();
     }
 
+    private bool _upcomingDriverFilter;
+    public bool UpcomingDriverFilter 
+    {
+        get =>  _upcomingDriverFilter;
+         set{
+            _upcomingDriverFilter = value;
+            /*await*/ LoadUpcomingFilteredRides();
+        }
+    }
+
+    private bool _upcomingPassengerFilter;
+    public bool UpcomingPassengerFilter { get; set; } = false;
+
+    private bool _recentDriverFilter;
+    public bool RecentDriverFilter { get; set; } = false;
+
+    private bool _recentPassengerFilter;
+    public bool RecentPassengerFilter { get; set; } = false;
+
+
     public ObservableCollection<RideListModel> UpcomingRides { get; set; } = new();
     public ObservableCollection<RideListModel> RecentRides { get; set; } = new();
 
@@ -60,13 +82,38 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
 
 #pragma warning disable CS1998 // V této asynchronní metodě chybí operátory await a spustí se synchronně.
     public async Task LoadAsync()
-#pragma warning restore CS1998 // V této asynchronní metodě chybí operátory await a spustí se synchronně.
     {
         if (_loggedUserid is null)
             return;
 
-        var rides = await _rideFacade.GetUserRidesAsync(_loggedUserid.Value);
-        if (rides is null)
-            return;
+        UpcomingRides.Clear();
+        var upcomingRides = await _rideFacade.GetUserUpcomingRidesAsync(_loggedUserid.Value);
+        UpcomingRides.AddRange(upcomingRides);
+
+        RecentRides.Clear();
+        var recentRides = await _rideFacade.GetUserUpcomingRidesAsync(_loggedUserid.Value);
+        RecentRides.AddRange(recentRides);
     }
+
+    public async Task LoadUpcomingFilteredRides()
+    {
+        if (_loggedUserid is null)
+            return;
+
+        UpcomingRides.Clear();
+        var upcomingRides = await _rideFacade.GetUserUpcomingRidesAsync(_loggedUserid.Value, _upcomingDriverFilter, _upcomingPassengerFilter);
+        UpcomingRides.AddRange(upcomingRides);
+    }
+
+    public async Task LoadRecentFilteredRides()
+    {
+        if (_loggedUserid is null)
+            return;
+
+        RecentRides.Clear();
+        var recentRides = await _rideFacade.GetUserRecentRidesAsync(_loggedUserid.Value, _recentDriverFilter, _recentPassengerFilter);
+        RecentRides.AddRange(recentRides);
+    }
+#pragma warning restore CS1998 // V této asynchronní metodě chybí operátory await a spustí se synchronně.
+
 }

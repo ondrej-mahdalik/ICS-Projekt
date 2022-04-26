@@ -54,7 +54,7 @@ public class LoginViewModel : ViewModelBase
     public async Task LoadAsync()
     {
         Users.Clear();
-        var users = await _userFacade.GetAsync();
+        var users = await _userFacade.GetUsers();
         Users.AddRange(users);
     }
 

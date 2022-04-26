@@ -47,11 +47,48 @@ public class RideFacade : CRUDFacade<RideEntity, RideListModel, RideDetailModel>
         return await Mapper.ProjectTo<RideListModel>(rides).ToArrayAsync().ConfigureAwait(false);
     }
 
-    public async Task<IEnumerable<RideListModel>> GetUserRidesAsync(Guid userId)
+    public async Task<IEnumerable<RideListModel>> GetUserUpcomingRidesAsync(Guid userId, bool driverFilter = false, bool passengerFilter = false)
     {
         await using var uow = UnitOfWorkFactory.Create();
         var dbSet = uow.GetRepository<RideEntity>().Get();
-        var rides = dbSet.Where(x => x.Reservations.Any(y => y.ReservingUserId == userId) || x.Vehicle != null && x.Vehicle.OwnerId == userId);
+
+        IQueryable<RideEntity> rides;
+
+        if (driverFilter && !passengerFilter)
+        {
+            rides = dbSet.Where(x => x.Departure > DateTime.Now && x.Vehicle != null && x.Vehicle.OwnerId == userId);
+        }
+        else if (!driverFilter && passengerFilter)
+        {
+            rides = dbSet.Where(x => x.Departure > DateTime.Now && x.Reservations.Any(y => y.ReservingUserId == userId));
+        }
+        else
+        {
+            rides = dbSet.Where(x => x.Departure > DateTime.Now && (x.Reservations.Any(y => y.ReservingUserId == userId) || x.Vehicle != null && x.Vehicle.OwnerId == userId));
+        }
+
+        return await Mapper.ProjectTo<RideListModel>(rides).ToArrayAsync().ConfigureAwait(false);
+    }
+
+    public async Task<IEnumerable<RideListModel>> GetUserRecentRidesAsync(Guid userId, bool driverFilter = false, bool passengerFilter = false)
+    {
+        await using var uow = UnitOfWorkFactory.Create();
+        var dbSet = uow.GetRepository<RideEntity>().Get();
+
+        IQueryable<RideEntity> rides;
+
+        if (driverFilter && !passengerFilter)
+        {
+            rides = dbSet.Where(x => x.Departure <= DateTime.Now && x.Vehicle != null && x.Vehicle.OwnerId == userId);
+        }
+        else if (!driverFilter && passengerFilter)
+        {
+            rides = dbSet.Where(x => x.Departure <= DateTime.Now && x.Reservations.Any(y => y.ReservingUserId == userId));
+        }
+        else
+        {
+            rides = dbSet.Where(x => x.Departure <= DateTime.Now && (x.Reservations.Any(y => y.ReservingUserId == userId) || x.Vehicle != null && x.Vehicle.OwnerId == userId));
+        }
 
         return await Mapper.ProjectTo<RideListModel>(rides).ToArrayAsync().ConfigureAwait(false);
     }
