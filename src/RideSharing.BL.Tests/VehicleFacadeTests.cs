@@ -59,6 +59,13 @@ public sealed class VehicleFacadeTests : CRUDFacadeTestsBase
     }
 
     [Fact]
+    public async Task GetVehiclesByOwnerId()
+    {
+        var vehicles = await _vehicleFacadeSUT.GetByOwnerAsync(UserSeeds.DriverUser.Id);
+        Assert.Equal(2, vehicles.Count());
+    }
+
+    [Fact]
     public async Task SeededVehicleWithoutRide_DeleteById_DoesNotThrow()
     {
         var vehicle = _vehicleFacadeSUT.DeleteAsync(VehicleSeeds.Karosa.Id);
