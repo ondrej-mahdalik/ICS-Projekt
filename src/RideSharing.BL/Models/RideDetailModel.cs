@@ -29,7 +29,7 @@ public record RideDetailModel(
     public int Distance { get; set; } = Distance;
     public int SharedSeats { get; set; } = SharedSeats;
 
-    public List<ReservationDetailModel> Reservations { get; init; } = new();
+    public List<ReservationListModel> Reservations { get; init; } = new();
 
     public class MapperProfile : Profile
     {
