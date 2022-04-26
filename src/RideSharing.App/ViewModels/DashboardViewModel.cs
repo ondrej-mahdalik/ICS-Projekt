@@ -40,24 +40,50 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
             await LoadAsync();
     }
 
-    private bool _upcomingDriverFilter;
+    public string UserName{ get; set;}
+
+    private bool _upcomingDriverFilter = false;
     public bool UpcomingDriverFilter 
     {
         get =>  _upcomingDriverFilter;
          set{
             _upcomingDriverFilter = value;
-            /*await*/ LoadUpcomingFilteredRides();
+            _ = LoadUpcomingFilteredRides();
         }
     }
 
-    private bool _upcomingPassengerFilter;
-    public bool UpcomingPassengerFilter { get; set; } = false;
+    private bool _upcomingPassengerFilter = false;
+    public bool UpcomingPassengerFilter
+    {
+        get => _upcomingPassengerFilter;
+        set
+        {
+            _upcomingPassengerFilter = value;
+            _ = LoadUpcomingFilteredRides();
+        }
+    }
 
-    private bool _recentDriverFilter;
-    public bool RecentDriverFilter { get; set; } = false;
+    private bool _recentDriverFilter = false;
+    public bool RecentDriverFilter
+    {
+        get => _recentDriverFilter;
+        set
+        {
+            _recentDriverFilter = value;
+            _ = LoadRecentFilteredRides();
+        }
+    }
 
-    private bool _recentPassengerFilter;
-    public bool RecentPassengerFilter { get; set; } = false;
+    private bool _recentPassengerFilter = false;
+    public bool RecentPassengerFilter
+    {
+        get => _recentPassengerFilter;
+        set
+        {
+            _recentPassengerFilter = value;
+            _ = LoadRecentFilteredRides();
+        }
+    }
 
 
     public ObservableCollection<RideListModel> UpcomingRides { get; set; } = new();
@@ -80,7 +106,6 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
     }
 
 
-#pragma warning disable CS1998 // V této asynchronní metodě chybí operátory await a spustí se synchronně.
     public async Task LoadAsync()
     {
         if (_loggedUserid is null)
@@ -114,6 +139,4 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
         var recentRides = await _rideFacade.GetUserRecentRidesAsync(_loggedUserid.Value, _recentDriverFilter, _recentPassengerFilter);
         RecentRides.AddRange(recentRides);
     }
-#pragma warning restore CS1998 // V této asynchronní metodě chybí operátory await a spustí se synchronně.
-
 }
