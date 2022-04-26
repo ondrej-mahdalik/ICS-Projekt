@@ -11,6 +11,7 @@ using RideSharing.App.Extensions;
 using RideSharing.App.Messages;
 using RideSharing.App.Services;
 using RideSharing.App.Services.MessageDialog;
+using RideSharing.App.Wrappers;
 
 namespace RideSharing.App.ViewModels
 {
@@ -18,18 +19,20 @@ namespace RideSharing.App.ViewModels
     {
         private readonly VehicleFacade _vehicleFacade;
         private readonly IMediator _mediator;
-
+        private readonly IMessageDialogService _messageDialogService;
 
         public VehicleListViewModel(
             VehicleFacade vehicleFacade,
-            IMediator mediator)
+            IMediator mediator,
+            IMessageDialogService messageDialogService)
         {
             _vehicleFacade = vehicleFacade;
             _mediator = mediator;
+            _messageDialogService = messageDialogService;
 
             // TODO assign commands
             VehicleNewCommand = new RelayCommand(VehicleNew);
-            VehicleDeleteCommand = new RelayCommand(VehicleDelete);
+           // VehicleDeleteCommand = new AsyncRelayCommand(VehicleDelete);
 
             mediator.Register<UpdateMessage<VehicleWrapper>>(VehicleUpdated);
             mediator.Register<DeleteMessage<VehicleWrapper>>(VehicleDeleted);
@@ -55,20 +58,24 @@ namespace RideSharing.App.ViewModels
         public async Task LoadAsync()
         {
             Vehicles.Clear();
-            var vehicles = await _vehicleFacade.GetByOwnerAsync(ownerId);
-            Vehicles.AddRange(vehicles);
+          //  var vehicles = await _vehicleFacade.GetByOwnerAsync(ownerId);
+          //  Vehicles.AddRange(vehicles);
         }
 
-        public async Task DeleteAsync(VehicleListModel VehicleToDelete)
+        public async Task VehicleDelete(Guid id)
         {
             try
             {
-                await _vehicleFacade.DeleteAsync(VehicleToDelete.Id);
+                await _vehicleFacade.DeleteAsync(id);
             }
 
             catch
             {
-
+                var _ = _messageDialogService.Show(
+                        $"Deleting of vehicle failed!",
+                        "Deleting failed",
+                        MessageDialogButtonConfiguration.OK,
+                        MessageDialogResult.OK);
             }
         }
     }
