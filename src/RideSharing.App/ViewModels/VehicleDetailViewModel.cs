@@ -38,6 +38,10 @@ namespace RideSharing.App.ViewModels
            Model = await _vehicleFacade.GetAsync(id);  // TODO add empty vehicleDetailModel
         }
 
+        public async Task DeleteAsync()
+        {
+
+        }
 
         private bool CanSave() => Model?.IsValid ?? false;
 
@@ -49,8 +53,8 @@ namespace RideSharing.App.ViewModels
                 throw new InvalidOperationException("Cannot save null model");
             }
 
-          //  Model = await _vehicleFacade.SaveAsync(Model.Model);
-          //  _mediator.Send(new UpdateMessage<VehicleWrapper> { Model = Model });
+            Model = await _vehicleFacade.SaveAsync(Model.Model);
+            _mediator.Send(new UpdateMessage<VehicleWrapper> { Model = Model });
 
         }
     }

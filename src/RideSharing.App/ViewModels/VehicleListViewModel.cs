@@ -32,7 +32,7 @@ namespace RideSharing.App.ViewModels
 
             // TODO assign commands
             VehicleNewCommand = new RelayCommand(VehicleNew);
-           // VehicleDeleteCommand = new AsyncRelayCommand(VehicleDelete);
+            VehicleDeleteCommand = new AsyncRelayCommand(VehicleDelete);
 
             mediator.Register<UpdateMessage<VehicleWrapper>>(VehicleUpdated);
             mediator.Register<DeleteMessage<VehicleWrapper>>(VehicleDeleted);
@@ -58,7 +58,7 @@ namespace RideSharing.App.ViewModels
         public async Task LoadAsync()
         {
             Vehicles.Clear();
-          //  var vehicles = await _vehicleFacade.GetByOwnerAsync(ownerId);
+           // var vehicles = await _vehicleFacade.GetByOwnerAsync(ownerId);
           //  Vehicles.AddRange(vehicles);
         }
 

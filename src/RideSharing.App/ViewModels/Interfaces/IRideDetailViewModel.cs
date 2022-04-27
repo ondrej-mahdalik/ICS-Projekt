@@ -1,6 +1,7 @@
-﻿namespace RideSharing.App.ViewModels.Interfaces;
+﻿using RideSharing.App.Wrappers;
+namespace RideSharing.App.ViewModels.Interfaces;
 
-public interface IRideDetailViewModel : IListViewModel
+public interface IRideDetailViewModel : IDetailViewModel<RideWrapper>
 {
     
 }
