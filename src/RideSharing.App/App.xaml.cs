@@ -37,6 +37,7 @@ namespace RideSharing.App
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en");
+            Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
 
             _host = Host.CreateDefaultBuilder()
                 .ConfigureAppConfiguration(ConfigureAppConfiguration)
@@ -117,11 +118,21 @@ namespace RideSharing.App
                 loginWindow.Show();
             };
 
+            // Handle closing from login window
+            loginWindow.Closed += OnClosed;
+            mainWindow.Closed += OnClosed;
+
             loginWindow.Show();
             base.OnStartup(e);
         }
 
-        protected override async void OnExit(ExitEventArgs e)
+        private void OnClosed(object? sender, EventArgs e)
+        {
+            OnExit(default);
+            Current.Shutdown();
+        }
+
+        protected override async void OnExit(ExitEventArgs? e)
         {
             using (_host)
             {
