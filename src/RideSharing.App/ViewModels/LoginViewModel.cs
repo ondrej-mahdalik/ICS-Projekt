@@ -21,7 +21,7 @@ public class LoginViewModel : ViewModelBase
     private readonly IMediator _mediator;
     private readonly UserFacade _userFacade;
 
-    public event EventHandler OnLogin;
+    public event EventHandler? OnLogin;
 
     public LoginViewModel(UserFacade userFacade,
         IMessageDialogService messageDialogService,
@@ -73,7 +73,7 @@ public class LoginViewModel : ViewModelBase
     public void Login(Guid userId)
     {
         _mediator.Send(new SelectedMessage<UserWrapper>{Id = userId});
-        OnLogin(this, EventArgs.Empty);
+        OnLogin?.Invoke(this, EventArgs.Empty);
     }
 
     //public override void LoadInDesignMode()

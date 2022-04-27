@@ -55,17 +55,11 @@ public class RideFacade : CRUDFacade<RideEntity, RideListModel, RideDetailModel>
         IQueryable<RideEntity> rides;
 
         if (driverFilter && !passengerFilter)
-        {
             rides = dbSet.Where(x => x.Departure > DateTime.Now && x.Vehicle != null && x.Vehicle.OwnerId == userId);
-        }
         else if (!driverFilter && passengerFilter)
-        {
             rides = dbSet.Where(x => x.Departure > DateTime.Now && x.Reservations.Any(y => y.ReservingUserId == userId));
-        }
         else
-        {
             rides = dbSet.Where(x => x.Departure > DateTime.Now && (x.Reservations.Any(y => y.ReservingUserId == userId) || x.Vehicle != null && x.Vehicle.OwnerId == userId));
-        }
 
         return await Mapper.ProjectTo<RideListModel>(rides).ToArrayAsync().ConfigureAwait(false);
     }

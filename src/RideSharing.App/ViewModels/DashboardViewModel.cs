@@ -41,10 +41,11 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
     }
 
     private bool _upcomingDriverFilter;
-    public bool UpcomingDriverFilter 
+    public bool UpcomingDriverFilter
     {
-        get =>  _upcomingDriverFilter;
-         set{
+        get => _upcomingDriverFilter;
+        set
+        {
             _upcomingDriverFilter = value;
             _ = LoadUpcomingFilteredRides();
         }
@@ -58,7 +59,6 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
 
     private bool _recentPassengerFilter;
     public bool RecentPassengerFilter { get; set; } = false;
-
 
     public ObservableCollection<RideListModel> UpcomingRides { get; set; } = new();
     public ObservableCollection<RideListModel> RecentRides { get; set; } = new();
@@ -79,19 +79,17 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
             _mediator.Send(new SelectedMessage<RideWrapper> { Id = rideListModel.Id});
     }
 
-
-#pragma warning disable CS1998 // V této asynchronní metodě chybí operátory await a spustí se synchronně.
     public async Task LoadAsync()
     {
+        UpcomingRides.Clear();
+        RecentRides.Clear();
         if (_loggedUserid is null)
             return;
 
-        UpcomingRides.Clear();
         var upcomingRides = await _rideFacade.GetUserUpcomingRidesAsync(_loggedUserid.Value);
         UpcomingRides.AddRange(upcomingRides);
 
-        RecentRides.Clear();
-        var recentRides = await _rideFacade.GetUserUpcomingRidesAsync(_loggedUserid.Value);
+        var recentRides = await _rideFacade.GetUserRecentRidesAsync(_loggedUserid.Value);
         RecentRides.AddRange(recentRides);
     }
 
@@ -114,6 +112,4 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
         var recentRides = await _rideFacade.GetUserRecentRidesAsync(_loggedUserid.Value, _recentDriverFilter, _recentPassengerFilter);
         RecentRides.AddRange(recentRides);
     }
-#pragma warning restore CS1998 // V této asynchronní metodě chybí operátory await a spustí se synchronně.
-
 }

@@ -27,5 +27,13 @@ namespace RideSharing.App.Views
             // TODO Add remaining slides
         }
 
+        private void StackPanel_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (MenuStackPanel.IsEnabled)
+            {
+                BtnMenuHome.IsChecked = true;
+                Transitioner.SelectedIndex = 0;
+            }
+        }
     }
 }
