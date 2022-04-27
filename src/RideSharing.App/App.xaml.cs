@@ -62,15 +62,11 @@ namespace RideSharing.App
                     dalSettings.SkipMigrationAndSeedDemoData);
             });
 
-            services.AddSingleton<MainWindow>();
             services.AddSingleton<LoginWindow>();
+            services.AddSingleton<MainWindow>();
 
             services.AddSingleton<IMessageDialogService, MessageDialogService>();
             services.AddSingleton<IMediator, Mediator>();
-
-
-
-            // TODO Mediator & MessageDialogService singletons
 
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<LoginViewModel>();
@@ -102,14 +98,23 @@ namespace RideSharing.App
                 }
             }
 
-            var vm = _host.Services.GetRequiredService<LoginViewModel>();
+            var loginViewModel = _host.Services.GetRequiredService<LoginViewModel>();
+            var mainViewModel = _host.Services.GetRequiredService<MainViewModel>();
             var loginWindow = _host.Services.GetRequiredService<LoginWindow>();
             var mainWindow = _host.Services.GetRequiredService<MainWindow>();
 
-            vm.OnRequestClose += (sender, args) =>
+            // Login
+            loginViewModel.OnLogin += (sender, args) =>
             {
-                loginWindow.Close();
+                loginWindow.Hide();
                 mainWindow.Show();
+            };
+
+            // Logout
+            mainViewModel.OnLogout += (sender, args) =>
+            {
+                mainWindow.Hide();
+                loginWindow.Show();
             };
 
             loginWindow.Show();

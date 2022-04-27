@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
 using RideSharing.App.ViewModels;
 
 namespace RideSharing.App.Views
@@ -23,6 +22,10 @@ namespace RideSharing.App.Views
                 Transitioner.SelectedIndex = 1;
             else if (sender.Equals(BtnMenuShareRide))
                 Transitioner.SelectedIndex = 2;
+            else if (sender.Equals(BtnMenuVehicles))
+                Transitioner.SelectedIndex = 3;
+            // TODO Add remaining slides
         }
+
     }
 }

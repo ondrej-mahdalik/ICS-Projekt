@@ -20,10 +20,8 @@ public class LoginViewModel : ViewModelBase
 {
     private readonly IMediator _mediator;
     private readonly UserFacade _userFacade;
-    //private readonly IMessageDialogService _messageDialogService;
-    //private readonly UserWrapper? _model = UserDetailModel.Empty;
 
-    public event EventHandler OnRequestClose;
+    public event EventHandler OnLogin;
 
     public LoginViewModel(UserFacade userFacade,
         IMessageDialogService messageDialogService,
@@ -75,7 +73,7 @@ public class LoginViewModel : ViewModelBase
     public void Login(Guid userId)
     {
         _mediator.Send(new SelectedMessage<UserWrapper>{Id = userId});
-        OnRequestClose(this, EventArgs.Empty);
+        OnLogin(this, EventArgs.Empty);
     }
 
     //public override void LoadInDesignMode()

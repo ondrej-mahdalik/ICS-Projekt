@@ -67,7 +67,7 @@
                     <RadioButton x:Name="BtnMenuLogOut"
                                  Style="{StaticResource MaterialDesignTabRadioButton}"
                                  Foreground="{StaticResource MaterialDesignLightForeground}"
-                                 Click="MenuButtonClick"
+                                 Command="{Binding LogOutCommand}"
                                  Cursor="Hand">Log Out
                     </RadioButton>
                 </StackPanel>

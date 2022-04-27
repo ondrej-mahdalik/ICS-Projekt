@@ -12,7 +12,8 @@
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14"
         mc:Ignorable="d"
-        Title="LoginWindow" Height="450" Width="800">
+        Title="LoginWindow" Height="450" Width="800"
+        Closing="Window_Closing">
     <Grid Margin="30px">
         <views:LoginView DataContext="{Binding}" />
     </Grid>
