@@ -39,4 +39,15 @@ public class UserFacade : CRUDFacade<UserEntity, UserListModel, UserDetailModel>
         }
         return users;
     }
+
+    public override async Task DeleteAsync(Guid id)
+    {
+        // Manually delete any rides where the user is a driver
+        await using var uow = UnitOfWorkFactory.Create();
+        var rides = uow.GetRepository<VehicleEntity>().Get().Where(x => x.OwnerId == id).SelectMany(x => x.Rides);
+        uow.GetRepository<RideEntity>().DeleteRange(rides.Select(x => x.Id));
+        await uow.CommitAsync().ConfigureAwait(false);
+
+        await base.DeleteAsync(id);
+    }
 }

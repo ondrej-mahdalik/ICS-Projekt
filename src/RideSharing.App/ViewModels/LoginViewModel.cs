@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using RideSharing.App.Commands;
+using Microsoft.Toolkit.Mvvm.Input;
 using RideSharing.App.Extensions;
 using RideSharing.App.Messages;
 using RideSharing.App.Services;
@@ -31,11 +32,28 @@ public class LoginViewModel : ViewModelBase
         _userFacade = userFacade;
         _mediator = mediator;
 
+        DeleteUserCommand = new Commands.AsyncRelayCommand<UserListModel>(DeleteUserAsync);
+        NewUserCommand = new RelayCommand(NewUser);
+
         mediator.Register<NewMessage<UserWrapper>>(UserAdded);
         mediator.Register<UpdateMessage<UserWrapper>>(UserUpdated);
-        mediator.Register<DeleteMessage<UserWrapper>>(UserDeleted);
-        LoginCommand = new RelayCommand<Guid>(Login);
+        LoginCommand = new Commands.RelayCommand<Guid>(Login);
 
+    }
+
+    private void NewUser()
+    {
+        // TODO Open new user view
+        throw new NotImplementedException();
+    }
+
+    private async Task DeleteUserAsync(UserListModel? arg1)
+    {
+        if (arg1 is null)
+            return;
+
+        await _userFacade.DeleteAsync(arg1.Id);
+        await LoadAsync();
     }
 
     public ObservableCollection<UserListModel> Users { get; set; } = new();
@@ -44,12 +62,8 @@ public class LoginViewModel : ViewModelBase
     public ICommand NewUserCommand { get; }
     public ICommand DeleteUserCommand { get; }
 
-    private void NewUser() => _mediator.Send(new NewMessage<UserWrapper>());
-    private void DeleteUser() => _mediator.Send(new DeleteMessage<UserWrapper>());
-
     private async void UserAdded(NewMessage<UserWrapper> _) => await LoadAsync();
     private async void UserUpdated(UpdateMessage<UserWrapper> _) => await LoadAsync();
-    private async void UserDeleted(DeleteMessage<UserWrapper> _) => await LoadAsync();
 
     public async Task LoadAsync()
     {
@@ -64,8 +78,8 @@ public class LoginViewModel : ViewModelBase
         OnRequestClose(this, EventArgs.Empty);
     }
 
-    public override void LoadInDesignMode()
-    {
-        Users.Add(new UserListModel("John", "Smith", "700 858 999", "https://ownhubb.com/wp-content/uploads/2021/05/team.jpg"));
-    }
+    //public override void LoadInDesignMode()
+    //{
+    //    Users.Add(new UserListModel("John", "Smith", "700 858 999", "https://ownhubb.com/wp-content/uploads/2021/05/team.jpg"));
+    //}
 }

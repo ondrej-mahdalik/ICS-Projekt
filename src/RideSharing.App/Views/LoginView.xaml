@@ -13,13 +13,25 @@
 
     <Grid
           x:Name="Root">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <TextBlock TextAlignment="Center"
+        <TextBlock Grid.Column="1" TextAlignment="Center"
                    Style="{StaticResource MaterialDesignHeadline5TextBlock}">Select a profile</TextBlock>
-        <ListView Grid.Row="1"
+        <Button Style="{StaticResource MaterialDesignOutlinedButton}"
+                HorizontalAlignment="Right"
+                Grid.Column="2"
+                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}},
+                        Path=DataContext.NewUserCommand}">Add New User</Button>
+        <ListView x:Name="UserListView"
+                  Grid.Row="1"
+                  Grid.ColumnSpan="3"
                   Style="{StaticResource MaterialDesignListViewNoRippleEffect}"
                   ItemsSource="{Binding Users}"
                   >
@@ -30,15 +42,63 @@
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <controls:ProfileItem ProfileId="{Binding Id}"
+                    <materialDesign:Card>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.ColumnSpan="2"
+                                   Height="150px"
+                                   Source="{Binding ImageUrl}" />
+                            <TextBlock Grid.ColumnSpan="2"
+                                       Grid.Row="1"
+                                       HorizontalAlignment="Center"
+                                       Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                       Text="{Binding Name}" />
+                            <TextBlock TextAlignment="Center"
+                                   Grid.ColumnSpan="2"
+                                   Grid.Row="2"
+                                   Text="{Binding StringFormat='Vehicles: {0}', Path=NumberOfVehicles}" />
+                            <TextBlock TextAlignment="Center"
+                                   Grid.ColumnSpan="2"
+                                   Grid.Row="3"
+                                   Text="{Binding Path=UpcomingRidesCount, StringFormat='Upcoming Rides: {0}'}" />
+                            <Button Grid.Row="4"
+                                    Style="{StaticResource MaterialDesignOutlinedButton}"
+                                    materialDesign:RippleAssist.IsDisabled="False"
+                                    Margin="5px"
+                                    Cursor="Hand"
+                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}},
+                        Path=DataContext.LoginCommand}"
+                                    CommandParameter="{Binding Id}">Log in</Button>
+                            <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}},
+                        Path=DataContext.DeleteUserCommand}"
+                                    CommandParameter="{Binding}"
+                                    Grid.Row="4"
+                                    Style="{StaticResource MaterialDesignOutlinedButton}"
+                                    materialDesign:RippleAssist.IsDisabled="False"
+                                    Grid.Column="1"
+                                    Margin="5px"
+                                    Cursor="Hand">Delete</Button>
+                        </Grid>
+                    </materialDesign:Card>
+                    <!--<controls:ProfileItem ProfileId="{Binding Id}"
                                           ProfileName="{Binding Name}"
                                           ImageUrl="{Binding ImageUrl}"
-                                          OwnedVehicles="{Binding NumberOfVehicles}"
-                                          UpcomingRides="{Binding UpcomingRidesCount}"
+                                          OwnedVehicles="{Binding Path=NumberOfVehicles, StringFormat='Vehicles: {0}'}"
+                                          UpcomingRides="{Binding Path=UpcomingRidesCount, StringFormat='Upcoming Rides: {0}'}"
                                           LoginCommand="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}},
                         Path=DataContext.LoginCommand}"
                                           DeleteCommand="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}},
-                        Path=DataContext.DeleteUserCommand}" />
+                        Path=DataContext.DeleteUserCommand}" />-->
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
