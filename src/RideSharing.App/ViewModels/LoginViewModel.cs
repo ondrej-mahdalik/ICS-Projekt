@@ -70,9 +70,11 @@ public class LoginViewModel : ViewModelBase
         Users.AddRange(users);
     }
 
-    public void Login(Guid userId)
+    public UserWrapper? Model { get; private set; }
+    public async void Login(Guid userId)
     {
-        _mediator.Send(new SelectedMessage<UserWrapper>{Id = userId});
+        Model = await _userFacade.GetAsync(userId);
+        _mediator.Send(new SelectedMessage<UserWrapper> { Model = Model });
         OnLogin?.Invoke(this, EventArgs.Empty);
     }
 

@@ -10,14 +10,14 @@
       d:DesignHeight="450" d:DesignWidth="800"
       FontSize="14"
       Background="{StaticResource MaterialDesignLightBackground}"
-      d:DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=DashboardViewModel}">
+      d:DataContext="{d:DesignInstance viewModels:DashboardViewModel}">
 
     <Grid x:Name="Root">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock TextAlignment="Center" Padding="20px" Style="{StaticResource MaterialDesignHeadline4TextBlock}">Welcome, user!</TextBlock>
+        <TextBlock TextAlignment="Center" Padding="20px" Style="{StaticResource MaterialDesignHeadline4TextBlock}" Text="{Binding UserName, StringFormat='Welcome, {0}!'}"/>
         <Grid Grid.Row="1" Margin="20px">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -38,10 +38,12 @@
                 <CheckBox x:Name="CheckBoxUpcomingDriver"
                           VerticalAlignment="Center"
                           Style="{StaticResource MaterialDesignFilterChipPrimaryCheckBox}"
-                          Cursor="Hand">Driver</CheckBox>
+                          Cursor="Hand"
+                          IsChecked="{Binding UpcomingDriverFilter, Mode=TwoWay}">Driver</CheckBox>
                 <CheckBox x:Name="CheckBoxUpcomingPassenger"
                           VerticalAlignment="Center"
-                          Style="{StaticResource MaterialDesignFilterChipPrimaryCheckBox}">Passenger</CheckBox>
+                          Style="{StaticResource MaterialDesignFilterChipPrimaryCheckBox}"
+                          IsChecked="{Binding UpcomingPassengerFilter, Mode=TwoWay}">Passenger</CheckBox>
             </StackPanel>
             <StackPanel Grid.Row="1"
                         Grid.Column="1"
@@ -50,10 +52,12 @@
                 <Label VerticalAlignment="Center">Filter:</Label>
                 <CheckBox x:Name="CheckBoxRecentDriver"
                           VerticalAlignment="Center"
-                          Style="{StaticResource MaterialDesignFilterChipPrimaryCheckBox}">Driver</CheckBox>
+                          Style="{StaticResource MaterialDesignFilterChipPrimaryCheckBox}"
+                          IsChecked="{Binding RecentDriverFilter, Mode=TwoWay}">Driver</CheckBox>
                 <CheckBox x:Name="CheckBoxRecentPassenger"
                           VerticalAlignment="Center"
-                          Style="{StaticResource MaterialDesignFilterChipPrimaryCheckBox}">Passenger</CheckBox>
+                          Style="{StaticResource MaterialDesignFilterChipPrimaryCheckBox}"
+                          IsChecked="{Binding RecentPassengerFilter, Mode=TwoWay}">Passenger</CheckBox>
             </StackPanel>
             <ListView Style="{StaticResource MaterialDesignListViewNoRippleEffect}"
                       Grid.Row="2" Grid.Column="0"
@@ -139,7 +143,89 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Label Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">No rides matching selected filters found.</Label>
-        </Grid>
+            <ListView Style="{StaticResource MaterialDesignListViewNoRippleEffect}"
+                      Grid.Row="2" Grid.Column="1"
+                      Background="{StaticResource MaterialDesignLightBackground}"
+                      materialDesign:ListViewAssist.ListViewItemPadding="10px"
+                      ScrollViewer.VerticalScrollBarVisibility="Visible"
+                      VerticalContentAlignment="Top"
+                      HorizontalContentAlignment="Center"
+                      ItemsSource="{Binding RecentRides}"
+            >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <materialDesign:Card HorizontalContentAlignment="Stretch"
+                                         VerticalContentAlignment="Stretch"
+                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                         Padding="10px">
+                            <Grid HorizontalAlignment="Stretch"
+                                  Width="300px">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Grid HorizontalAlignment="Left">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock FontWeight="Bold"
+                                               Text="{Binding FromName}" />
+                                    <TextBlock Grid.Row="1"
+                                               Grid.Column="0"
+                                               Text="{Binding Path=Departure, StringFormat=t}"/>
+                                    <Canvas Grid.Row="0"
+                                            Grid.Column="1"
+                                            Grid.RowSpan="2"
+                                            Width="24"
+                                            Height="24">
+                                        <Path Fill="{StaticResource MaterialDesignLightForeground}"
+                                              Data="M4,15V9H12V4.16L19.84,12L12,19.84V15H4Z" />
+                                    </Canvas>
+                                    <TextBlock Grid.Row="0"
+                                               Grid.Column="2"
+                                               FontWeight="Bold"
+                                               Text="{Binding ToName}"/>
+                                    <TextBlock Grid.Row="1"
+                                               Grid.Column="2"
+                                               Text="{Binding StringFormat=t, Path=Arrival }"/>
+                                </Grid>
+                                <TextBlock Grid.Row="1"
+                                           Grid.Column="0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Bottom">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="Occupancy: {0}/{1}">
+                                            <Binding Path="SharedSeats" />
+                                            <Binding Path="Vehicle.Seats" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Grid.Row="0"
+                                           Grid.Column="1"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Text="{Binding StringFormat=d, Path=Departure}"/>
+                                <Button Grid.Row="1"
+                                        Grid.Column="1"
+                                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                                        materialDesign:RippleAssist.IsDisabled="False"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}},
+                                        Path=DataContext.RideDetailClickedCommand}"
+                                        CommandParameter="{Binding Id}">Details</Button>
+                            </Grid>
+                        </materialDesign:Card>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>        </Grid>
     </Grid>
 </local:UserControlBase>

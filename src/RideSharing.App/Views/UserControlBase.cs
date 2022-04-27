@@ -14,9 +14,9 @@ public abstract class UserControlBase : UserControl
 
     private async void OnLoaded(object sender, RoutedEventArgs e)
     {
-        if (DataContext is IListViewModel viewModel)
-            await viewModel.LoadAsync();
-        else if (DataContext is LoginViewModel loginViewModel)
+        //if (DataContext is IListViewModel viewModel)
+        //    await viewModel.LoadAsync();
+        if (DataContext is LoginViewModel loginViewModel)
             await loginViewModel.LoadAsync();
     }
 }

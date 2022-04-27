@@ -33,14 +33,18 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
         mediator.Register<SelectedMessage<UserWrapper>>(UserLoggedIn);
     }
 
+    public string? UserName { get; set; } = "User";
     private async void UserLoggedIn(SelectedMessage<UserWrapper> obj)
     {
         _loggedUserid = obj.Id;
-        if (_loggedUserid is not null)
+        if (obj.Model is not null)
+        {
+            UserName = obj.Model.Name;
             await LoadAsync();
+        }
     }
 
-    private bool _upcomingDriverFilter;
+    private bool _upcomingDriverFilter = false;
     public bool UpcomingDriverFilter
     {
         get => _upcomingDriverFilter;
@@ -51,14 +55,38 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
         }
     }
 
-    private bool _upcomingPassengerFilter;
-    public bool UpcomingPassengerFilter { get; set; } = false;
+    private bool _upcomingPassengerFilter = false;
+    public bool UpcomingPassengerFilter
+    {
+        get => _upcomingPassengerFilter;
+        set
+        {
+            _upcomingPassengerFilter = value;
+            _ = LoadUpcomingFilteredRides();
+        }
+    }
 
-    private bool _recentDriverFilter;
-    public bool RecentDriverFilter { get; set; } = false;
+    private bool _recentDriverFilter = false;
+    public bool RecentDriverFilter
+    {
+        get => _recentDriverFilter;
+        set
+        {
+            _recentDriverFilter = value;
+            _ = LoadRecentFilteredRides();
+        }
+    }
 
-    private bool _recentPassengerFilter;
-    public bool RecentPassengerFilter { get; set; } = false;
+    private bool _recentPassengerFilter = false;
+    public bool RecentPassengerFilter
+    {
+        get => _recentPassengerFilter;
+        set
+        {
+            _recentPassengerFilter = value;
+            _ = LoadRecentFilteredRides();
+        }
+    }
 
     public ObservableCollection<RideListModel> UpcomingRides { get; set; } = new();
     public ObservableCollection<RideListModel> RecentRides { get; set; } = new();
@@ -81,14 +109,14 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
 
     public async Task LoadAsync()
     {
-        UpcomingRides.Clear();
-        RecentRides.Clear();
         if (_loggedUserid is null)
             return;
 
+        UpcomingRides.Clear();
         var upcomingRides = await _rideFacade.GetUserUpcomingRidesAsync(_loggedUserid.Value);
         UpcomingRides.AddRange(upcomingRides);
 
+        RecentRides.Clear();
         var recentRides = await _rideFacade.GetUserRecentRidesAsync(_loggedUserid.Value);
         RecentRides.AddRange(recentRides);
     }
