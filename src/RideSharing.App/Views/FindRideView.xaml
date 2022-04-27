@@ -11,7 +11,7 @@
       d:DesignHeight="450" d:DesignWidth="900"
       FontSize="14"
       Background="{StaticResource MaterialDesignLightBackground}"
-      d:DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=FindRideViewModel}">
+      d:DataContext="{d:DesignInstance viewModels:FindRideViewModel}">
 
     <Grid x:Name="Root">
         <Grid.RowDefinitions>
@@ -37,12 +37,14 @@
                 <TextBox x:Name="TxtFilterFrom"
                          materialDesign:HintAssist.Hint="From"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                         Margin="10px"/>
+                         Margin="10px"
+                         Text="{Binding SelFrom}"/>
                 <TextBox Grid.Row="1"
                          x:Name="TxtFilterTo"
                          materialDesign:HintAssist.Hint="To"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                         Margin="10px"/>
+                         Margin="10px"
+                         Text="{Binding SelTo}"/>
                 <Grid Grid.Row="2" Margin="5px 0px">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -59,7 +61,8 @@
                                 Margin="5px"
                                 FirstDayOfWeek="Monday"
                                 Width="120px"
-                                materialDesign:HintAssist.Hint="Date"/>
+                                materialDesign:HintAssist.Hint="Date"
+                                SelectedDate="{Binding SelDate}"/>
                     <materialDesign:TimePicker Grid.Column="1"
                                                Grid.Row="0"
                                                Grid.RowSpan="2"
@@ -69,12 +72,13 @@
                                                Width="80px"
                                                ClockStyle="{StaticResource MaterialDesignClockVertical}"
                                                Is24Hours="True"
-                                               materialDesign:HintAssist.Hint="Time"/>
+                                               materialDesign:HintAssist.Hint="Time"
+                                               SelectedTime="{Binding SelTime}"/>
                     <RadioButton Grid.Row="0"
                                  Grid.Column="2"
                                  x:Name="DepartureFilter"
                                  Margin="5px 0px"
-                                 IsChecked="True">Departure</RadioButton>
+                                 IsChecked="{Binding SelDeparture}">Departure</RadioButton>
                     <RadioButton Grid.Row="1"
                                  Grid.Column="2"
                                  x:Name="ArrivalFilter"
