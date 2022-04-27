@@ -104,14 +104,14 @@ namespace RideSharing.App
             var mainWindow = _host.Services.GetRequiredService<MainWindow>();
 
             // Login
-            loginViewModel.OnLogin += (sender, args) =>
+            loginViewModel.OnLogin += (_, _) =>
             {
                 loginWindow.Hide();
                 mainWindow.Show();
             };
 
             // Logout
-            mainViewModel.OnLogout += (sender, args) =>
+            mainViewModel.OnLogout += (_, _) =>
             {
                 mainWindow.Hide();
                 loginWindow.Show();
