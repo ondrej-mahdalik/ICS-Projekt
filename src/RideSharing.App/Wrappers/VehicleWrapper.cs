@@ -8,7 +8,7 @@ namespace RideSharing.App.Wrappers;
 
 public class VehicleWrapper : ModelWrapper<VehicleDetailModel>
 {
-    public VehicleWrapper(VehicleDetailModel model) : base(model)
+    public VehicleWrapper(VehicleDetailModel? model) : base(model)
     {
     }
 
@@ -72,7 +72,7 @@ public class VehicleWrapper : ModelWrapper<VehicleDetailModel>
         }
     }
 
-    public static implicit operator VehicleWrapper(VehicleDetailModel detailModel)
+    public static implicit operator VehicleWrapper(VehicleDetailModel? detailModel)
             => new(detailModel);
 
     public static implicit operator VehicleDetailModel(VehicleWrapper wrapper)

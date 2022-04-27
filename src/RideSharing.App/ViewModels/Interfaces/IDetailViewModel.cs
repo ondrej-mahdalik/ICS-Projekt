@@ -5,7 +5,7 @@ namespace RideSharing.App.ViewModels.Interfaces
 {
     public interface IDetailViewModel<out TDetail> : IViewModel
     {
-        TDetail? Model { get; }
+        TDetail? Vehicle { get; }
         Task LoadAsync(Guid id);
         Task DeleteAsync();
         Task SaveAsync();

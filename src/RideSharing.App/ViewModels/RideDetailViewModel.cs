@@ -29,7 +29,7 @@ namespace RideSharing.App.ViewModels
             DeleteRideCommand = new AsyncRelayCommand(DeleteAsync);
             SaveCommand = new AsyncRelayCommand(SaveAsync, CanSave);
         }
-        public RideWrapper? Model { get; private set; }
+        public RideWrapper? Vehicle { get; private set; }
 
         public ICommand SaveCommand { get; }
         public ICommand DeleteRideCommand { get; }

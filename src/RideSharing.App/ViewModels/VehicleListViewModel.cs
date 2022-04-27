@@ -32,10 +32,9 @@ namespace RideSharing.App.ViewModels
 
             // TODO assign commands
             VehicleNewCommand = new RelayCommand(VehicleNew);
-            VehicleDeleteCommand = new AsyncRelayCommand(VehicleDelete);
+            VehicleDeleteCommand = new AsyncRelayCommand<VehicleListModel>(VehicleDelete);
 
             mediator.Register<UpdateMessage<VehicleWrapper>>(VehicleUpdated);
-            mediator.Register<DeleteMessage<VehicleWrapper>>(VehicleDeleted);
             mediator.Register<NewMessage<VehicleWrapper>>(VehicleCreated);
 
             // TODO register mediator for creating
@@ -49,8 +48,6 @@ namespace RideSharing.App.ViewModels
 
         private async void VehicleUpdated(UpdateMessage<VehicleWrapper> _) => await LoadAsync();
 
-        private async void VehicleDeleted(DeleteMessage<VehicleWrapper> _) => await LoadAsync();
-
         private async void VehicleCreated(NewMessage<VehicleWrapper> _) => await LoadAsync();
 
         public ObservableCollection<VehicleListModel> Vehicles { get; set; } = new();
@@ -62,20 +59,24 @@ namespace RideSharing.App.ViewModels
           //  Vehicles.AddRange(vehicles);
         }
 
-        public async Task VehicleDelete(Guid id)
+        public async Task VehicleDelete(VehicleListModel? vehicle)
         {
             try
             {
-                await _vehicleFacade.DeleteAsync(id);
+                await _vehicleFacade.DeleteAsync(vehicle!.Id);
             }
 
             catch
             {
                 var _ = _messageDialogService.Show(
-                        $"Deleting of vehicle failed!",
-                        "Deleting failed",
-                        MessageDialogButtonConfiguration.OK,
-                        MessageDialogResult.OK);
+                    $"Deleting of vehicle failed!",
+                    "Deleting failed",
+                    MessageDialogButtonConfiguration.OK,
+                    MessageDialogResult.OK);
+            }
+            finally
+            {
+                await LoadAsync();
             }
         }
     }
