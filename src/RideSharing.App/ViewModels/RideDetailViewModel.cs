@@ -28,6 +28,7 @@ namespace RideSharing.App.ViewModels
 
             DeleteRideCommand = new AsyncRelayCommand(DeleteAsync);
             SaveCommand = new AsyncRelayCommand(SaveAsync, CanSave);
+            UserReservationCommand = new AsyncRelayCommand<int>(CreateReservationAsync);
         }
         public RideWrapper? Vehicle { get; private set; }
 
@@ -89,6 +90,11 @@ namespace RideSharing.App.ViewModels
             {
                 Model = Ride
             });
+        }
+
+        public async Task CreateReservationAsync(int seats)
+        {
+            throw new NotImplementedException();
         }
     }
 }

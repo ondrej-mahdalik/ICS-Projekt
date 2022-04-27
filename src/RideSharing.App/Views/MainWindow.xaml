@@ -32,7 +32,13 @@
                            VerticalAlignment="Center"
                            Padding="10px 0px">RideSharing
                 </TextBlock>
-                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="50px 0px">
+                <StackPanel x:Name="MenuStackPanel"
+                            Grid.Column="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            Margin="50px 0px"
+                            IsEnabled="{Binding IsLoggedIn}"
+                            IsEnabledChanged="StackPanel_IsEnabledChanged">
                     <RadioButton x:Name="BtnMenuHome"
                             Style="{StaticResource MaterialDesignTabRadioButton}"
                             Foreground="{StaticResource MaterialDesignLightForeground}"

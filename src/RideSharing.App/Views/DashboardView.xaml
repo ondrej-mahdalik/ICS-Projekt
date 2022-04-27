@@ -61,55 +61,83 @@
                       materialDesign:ListViewAssist.ListViewItemPadding="10px"
                       ScrollViewer.VerticalScrollBarVisibility="Visible"
                       VerticalContentAlignment="Top"
-                      HorizontalContentAlignment="Center">
-                <ListViewItem Padding="10px">
-                    <materialDesign:Card HorizontalContentAlignment="Stretch"
+                      HorizontalContentAlignment="Center"
+                      ItemsSource="{Binding UpcomingRides}"
+            >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <materialDesign:Card HorizontalContentAlignment="Stretch"
                                          VerticalContentAlignment="Stretch"
                                          ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                          Padding="10px">
-                        <Grid HorizontalAlignment="Stretch" Width="300px">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <Grid HorizontalAlignment="Left">
+                            <Grid HorizontalAlignment="Stretch"
+                                  Width="300px">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition />
+                                    <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <Label FontWeight="Bold" >Brno</Label>
-                                <Label Grid.Row="1" Grid.Column="0">16:35</Label>
-                                <Canvas Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Width="24" Height="24">
-                                    <Path Fill="{StaticResource MaterialDesignLightForeground}"
-                                          Data="M4,15V9H12V4.16L19.84,12L12,19.84V15H4Z" />
-                                </Canvas>
-                                <Label Grid.Row="0" Grid.Column="2" FontWeight="Bold">Prague</Label>
-                                <Label Grid.Row="1" Grid.Column="2">18:40</Label>
+                                <Grid HorizontalAlignment="Left">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock FontWeight="Bold"
+                                               Text="{Binding FromName}" />
+                                    <TextBlock Grid.Row="1"
+                                               Grid.Column="0"
+                                               Text="{Binding Path=Departure, StringFormat=t}"/>
+                                    <Canvas Grid.Row="0"
+                                            Grid.Column="1"
+                                            Grid.RowSpan="2"
+                                            Width="24"
+                                            Height="24">
+                                        <Path Fill="{StaticResource MaterialDesignLightForeground}"
+                                              Data="M4,15V9H12V4.16L19.84,12L12,19.84V15H4Z" />
+                                    </Canvas>
+                                    <TextBlock Grid.Row="0"
+                                               Grid.Column="2"
+                                               FontWeight="Bold"
+                                               Text="{Binding ToName}"/>
+                                    <TextBlock Grid.Row="1"
+                                               Grid.Column="2"
+                                               Text="{Binding StringFormat=t, Path=Arrival }"/>
+                                </Grid>
+                                <TextBlock Grid.Row="1"
+                                           Grid.Column="0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Bottom">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="Occupancy: {0}/{1}">
+                                            <Binding Path="SharedSeats" />
+                                            <Binding Path="Vehicle.Seats" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock Grid.Row="0"
+                                           Grid.Column="1"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Text="{Binding StringFormat=d, Path=Departure}"/>
+                                <Button Grid.Row="1"
+                                        Grid.Column="1"
+                                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                                        materialDesign:RippleAssist.IsDisabled="False"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}},
+                                        Path=DataContext.RideDetailClickedCommand}"
+                                        CommandParameter="{Binding Id}">Details</Button>
                             </Grid>
-                            <Grid Grid.Row="1"
-                                  Grid.Column="0"
-                                  HorizontalAlignment="Left">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Label>Occupancy: 4/5</Label>
-                                <Label Grid.Row="1" FontSize="10px">(You are the driver)</Label>
-                            </Grid>
-                            <Label Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">Tomorrow</Label>
-                            <Button Grid.Row="1" Grid.Column="1" Style="{StaticResource MaterialDesignOutlinedButton}" materialDesign:RippleAssist.IsDisabled="False">Manage</Button>
-                        </Grid>
-                    </materialDesign:Card>
-                </ListViewItem>
+                        </materialDesign:Card>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
             <Label Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">No rides matching selected filters found.</Label>
         </Grid>
