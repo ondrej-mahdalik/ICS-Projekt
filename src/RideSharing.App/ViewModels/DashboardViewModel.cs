@@ -46,7 +46,7 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
         get =>  _upcomingDriverFilter;
          set{
             _upcomingDriverFilter = value;
-            /*await*/ LoadUpcomingFilteredRides();
+            _ = LoadUpcomingFilteredRides();
         }
     }
 

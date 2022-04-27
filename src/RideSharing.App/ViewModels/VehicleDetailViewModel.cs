@@ -40,7 +40,7 @@ namespace RideSharing.App.ViewModels
 
         public async Task DeleteAsync()
         {
-
+            throw new NotImplementedException();
         }
 
         private bool CanSave() => Vehicle?.IsValid ?? false;

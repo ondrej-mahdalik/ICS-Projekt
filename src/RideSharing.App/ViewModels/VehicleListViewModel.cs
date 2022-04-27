@@ -20,6 +20,7 @@ namespace RideSharing.App.ViewModels
         private readonly VehicleFacade _vehicleFacade;
         private readonly IMediator _mediator;
         private readonly IMessageDialogService _messageDialogService;
+        private Guid? _userId;
 
         public VehicleListViewModel(
             VehicleFacade vehicleFacade,
@@ -33,11 +34,18 @@ namespace RideSharing.App.ViewModels
             // TODO assign commands
             VehicleNewCommand = new RelayCommand(VehicleNew);
             VehicleDeleteCommand = new AsyncRelayCommand<VehicleListModel>(VehicleDelete);
+            VehicleEditCommand = new RelayCommand(VehicleEdit);
 
             mediator.Register<UpdateMessage<VehicleWrapper>>(VehicleUpdated);
             mediator.Register<NewMessage<VehicleWrapper>>(VehicleCreated);
+            mediator.Register<SelectedMessage<UserWrapper>>(UserLogged);
 
             // TODO register mediator for creating
+        }
+
+        private void UserLogged(SelectedMessage<UserWrapper> obj)
+        {
+            _userId = obj.Id;
         }
 
         public ICommand VehicleNewCommand { get; }
@@ -45,6 +53,8 @@ namespace RideSharing.App.ViewModels
         public ICommand VehicleEditCommand { get; }
 
         private void VehicleNew() => _mediator.Send(new NewMessage<VehicleWrapper>());
+
+        private void VehicleEdit() => _mediator.Send(new SelectedMessage<VehicleWrapper>());
 
         private async void VehicleUpdated(UpdateMessage<VehicleWrapper> _) => await LoadAsync();
 
@@ -55,8 +65,11 @@ namespace RideSharing.App.ViewModels
         public async Task LoadAsync()
         {
             Vehicles.Clear();
-           // var vehicles = await _vehicleFacade.GetByOwnerAsync(ownerId);
-          //  Vehicles.AddRange(vehicles);
+            if (_userId is null)
+                return;
+
+            var vehicles = await _vehicleFacade.GetByOwnerAsync(_userId.Value);
+            Vehicles.AddRange(vehicles);
         }
 
         public async Task VehicleDelete(VehicleListModel? vehicle)
