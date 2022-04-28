@@ -7,7 +7,7 @@ using RideSharing.App.Commands;
 using RideSharing.App.Extensions;
 using RideSharing.App.Messages;
 using RideSharing.App.Services;
-using RideSharing.App.ViewModels.Interfaces;
+using RideSharing.App.ViewModels;
 using RideSharing.App.Wrappers;
 using RideSharing.BL.Facades;
 using RideSharing.BL.Models;

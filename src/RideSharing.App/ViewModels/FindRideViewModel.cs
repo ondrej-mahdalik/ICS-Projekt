@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using RideSharing.App.Commands;
 using RideSharing.App.Extensions;
 using RideSharing.App.Messages;
 using RideSharing.App.Services;
-using RideSharing.App.ViewModels.Interfaces;
+using RideSharing.App.ViewModels;
 using RideSharing.App.Wrappers;
 using RideSharing.BL.Facades;
 using RideSharing.BL.Models;
@@ -65,7 +66,7 @@ public class FindRideViewModel : ViewModelBase, IFindRideViewModel
         }
 
         FoundRides.Clear();
-       var foundRides = await _rideFacade.GetFilteredAsync(deprartTime, arrivalTime, SelFrom, SelTo, SelSeats);
+        var foundRides = await _rideFacade.GetFilteredAsync(deprartTime, arrivalTime, SelFrom, SelTo, SelSeats);
        FoundRides.AddRange(foundRides);
 
     }

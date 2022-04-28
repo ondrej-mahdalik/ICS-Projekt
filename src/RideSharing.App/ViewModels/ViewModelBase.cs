@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using RideSharing.App.ViewModels.Interfaces;
+using RideSharing.App.ViewModels;
 
 namespace RideSharing.App.ViewModels;
 

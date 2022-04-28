@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using RideSharing.App.ViewModels;
-using RideSharing.App.ViewModels.Interfaces;
 
 namespace RideSharing.App.Views;
 

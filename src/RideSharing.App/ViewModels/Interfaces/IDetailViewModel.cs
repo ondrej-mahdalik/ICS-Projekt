@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace RideSharing.App.ViewModels.Interfaces
+namespace RideSharing.App.ViewModels
 {
     public interface IDetailViewModel<out TDetail> : IViewModel
     {

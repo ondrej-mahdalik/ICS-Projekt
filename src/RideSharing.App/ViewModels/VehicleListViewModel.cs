@@ -2,9 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Toolkit.Mvvm.Input;
-using RideSharing.App.ViewModels.Interfaces;
 using RideSharing.BL.Facades;
 using RideSharing.BL.Models;
 using RideSharing.App.Extensions;

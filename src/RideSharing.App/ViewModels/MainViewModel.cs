@@ -5,7 +5,7 @@ using Microsoft.Toolkit.Mvvm.Input;
 using RideSharing.App.Factories;
 using RideSharing.App.Messages;
 using RideSharing.App.Services;
-using RideSharing.App.ViewModels.Interfaces;
+using RideSharing.App.ViewModels;
 using RideSharing.App.Wrappers;
 
 namespace RideSharing.App.ViewModels;

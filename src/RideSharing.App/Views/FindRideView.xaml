@@ -106,17 +106,72 @@
                           ItemsSource="{Binding FoundRides}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <controls:FindRideItem UserName="{Binding Vehicle.Owner.Name }"
-                                                   UserSurname="{Binding Vehicle.Owner.Surname}"
-                                                   Rating="3.9"
-                                                   ReviewCount="285"
-                                                   From="{Binding FromName}"
-                                                   To="{Binding ToName}"
-                                                   Departure="{Binding Departure}"
-                                                   Arrival="{Binding Arrival}"
-                                                   Distance="{Binding Distance}"
-                                                   Occupied="Occupancy: 4/5"
-                                                   VehicleType="{Binding Vehicle.VehicleType}"/>
+                            <materialDesign:Card HorizontalContentAlignment="Stretch"
+                                                 VerticalContentAlignment="Stretch"
+                                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                                 Padding="10px">
+                                <Grid HorizontalAlignment="Stretch">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock FontWeight="Bold">
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0} {1}">
+                                                <Binding Path="Vehicle.Owner.Name" />
+                                                <Binding Path="Vehicle.Owner.Surname" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                    <StackPanel Grid.Row="0"
+                                                Grid.Column="1"
+                                                Grid.ColumnSpan="2"
+                                                HorizontalAlignment="Right"
+                                                Orientation="Horizontal">
+                                        <Label Content="{Binding Rating}" />
+                                        <materialDesign:RatingBar Value="{Binding Rating}"
+                                                                  IsReadOnly="True" />
+                                        <TextBlock Text="{Binding ReviewCount, StringFormat='{}{0} reviews'}" />
+                                    </StackPanel>
+                                    <controls:FromToBlock Grid.Row="1"
+                                                          Grid.Column="0"
+                                                          FromName="{Binding FromName}"
+                                                          ToName="{Binding ToName}"
+                                                          Departure="{Binding Distance}"
+                                                          Arrival="{Binding Arrival}"
+                                    />
+                                    <TextBlock Grid.Row="1"
+                                           Grid.Column="1"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Text="{Binding Distance, StringFormat='{}{0} km'}" />
+                                    <TextBlock Grid.Row="1"
+                                           Grid.Column="2"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center"
+                                           Text="{Binding Duration, Converter={StaticResource TimespanToStringConverter}}" />
+                                    <TextBlock Grid.Row="2"
+                                               Grid.Column="0"
+                                               VerticalAlignment="Bottom">
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="Occupancy: xxx/{0}">
+                                                <Binding Path="SharedSeats" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                           <!--TODO: Vehicle Icon-->
+                                    <Button Grid.Row="2"
+                                            Grid.Column="2"
+                                            Style="{StaticResource MaterialDesignOutlinedButton}"
+                                            Command="{Binding Command}">Details</Button>
+                                </Grid>
+                            </materialDesign:Card>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>

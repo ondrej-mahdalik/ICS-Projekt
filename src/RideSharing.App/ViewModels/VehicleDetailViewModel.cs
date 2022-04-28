@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using RideSharing.App.Commands;
-using RideSharing.App.ViewModels.Interfaces;
+using RideSharing.App.ViewModels;
 using RideSharing.BL.Facades;
-using RideSharing.BL.Models;
-using RideSharing.App.Extensions;
 using RideSharing.App.Services;
 using RideSharing.App.Services.MessageDialog;
 using RideSharing.App.Wrappers;
