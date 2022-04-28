@@ -1,23 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.Globalization;
-using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using RideSharing.App.Extensions;
 using RideSharing.App.Services;
 using RideSharing.App.Services.MessageDialog;
 using RideSharing.App.Settings;
-using RideSharing.App.ViewModels;
 using RideSharing.App.ViewModels;
 using RideSharing.App.Views;
 using RideSharing.BL;
@@ -29,7 +22,7 @@ namespace RideSharing.App
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App
     {
         private readonly IHost _host;
 
@@ -73,7 +66,6 @@ namespace RideSharing.App
             services.AddSingleton<LoginViewModel>();
             services.AddSingleton<IDashboardViewModel, DashboardViewModel>();
             services.AddSingleton<IFindRideViewModel, FindRideViewModel>();
-            //services.AddSingleton<IMapTestViewModel, MapTestViewModel>();
 
             services.AddFactory<IDashboardViewModel, DashboardViewModel>();
             services.AddFactory<IFindRideViewModel, FindRideViewModel>();

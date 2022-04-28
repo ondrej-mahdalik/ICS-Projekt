@@ -85,7 +85,6 @@
                                  Margin="5px 0px">Arrival</RadioButton>
                 </Grid>
                 <Button Grid.Row="3"
-                        x:Name="BtnSearch"
                         Style="{StaticResource MaterialDesignOutlinedButton}"
                         Margin="10px 20px"
                         Padding="30px 0px"
@@ -134,16 +133,16 @@
                                                 Grid.ColumnSpan="2"
                                                 HorizontalAlignment="Right"
                                                 Orientation="Horizontal">
-                                        <Label Content="{Binding Rating}" />
-                                        <materialDesign:RatingBar Value="{Binding Rating}"
-                                                                  IsReadOnly="True" />
+                                        <materialDesign:RatingBar Value="{Binding Rating, Converter={StaticResource FloatToIntConverter}}"
+                                                                  IsReadOnly="True"
+                                                                  Margin="5px -5px 5px 0px"/>
                                         <TextBlock Text="{Binding ReviewCount, StringFormat='{}{0} reviews'}" />
                                     </StackPanel>
                                     <controls:FromToBlock Grid.Row="1"
                                                           Grid.Column="0"
                                                           FromName="{Binding FromName}"
                                                           ToName="{Binding ToName}"
-                                                          Departure="{Binding Distance}"
+                                                          Departure="{Binding Departure}"
                                                           Arrival="{Binding Arrival}"
                                     />
                                     <TextBlock Grid.Row="1"
@@ -158,7 +157,7 @@
                                            Text="{Binding Duration, Converter={StaticResource TimespanToStringConverter}}" />
                                     <TextBlock Grid.Row="2"
                                                Grid.Column="0"
-                                               VerticalAlignment="Bottom">
+                                               VerticalAlignment="Center">
                                         <TextBlock.Text>
                                             <MultiBinding StringFormat="Occupancy: xxx/{0}">
                                                 <Binding Path="SharedSeats" />

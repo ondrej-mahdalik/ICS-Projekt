@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Drawing.Text;
 using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.Input;
 using RideSharing.App.Factories;
 using RideSharing.App.Messages;
 using RideSharing.App.Services;
-using RideSharing.App.ViewModels;
 using RideSharing.App.Wrappers;
 
 namespace RideSharing.App.ViewModels;
@@ -33,14 +31,21 @@ public class MainViewModel : ViewModelBase
         FindRideViewModel = findRideViewModel;
 
         LogOutCommand = new RelayCommand(LogOut);
+        MenuTabCommand = new RelayCommand<string>(MenuTab);
 
         mediator.Register<NewMessage<UserWrapper>>(OnNewUserMessage);
         mediator.Register<SelectedMessage<UserWrapper>>(LoggedIn);
     }
 
+    private void MenuTab(string? selectedIndex)
+    {
+        TransitionerSelectedIndex = selectedIndex ?? "0";
+    }
+
     private void LoggedIn(SelectedMessage<UserWrapper> obj)
     {
         _loggedUserId = obj.Id;
+        TransitionerSelectedIndex = "0";
         IsLoggedIn = true;
     }
 
@@ -56,6 +61,18 @@ public class MainViewModel : ViewModelBase
     public IFindRideViewModel FindRideViewModel { get; }
 
     public ICommand LogOutCommand { get; }
+    public ICommand MenuTabCommand { get; }
+
+    /// <summary>
+    /// 0 - Home
+    /// 1 - Find ride
+    /// 2 - Share ride
+    /// 3 - Manage vehicles
+    /// 4 - Profile settings
+    /// 5 - Ride detail (non-driver)
+    /// 6 - Rude detail (driver)
+    /// </summary>
+    public string TransitionerSelectedIndex { get; set; } = "0";
 
     private void OnNewUserMessage(NewMessage<UserWrapper> _)
     {

@@ -1,4 +1,4 @@
-﻿using System.Windows;
+﻿using System.Windows.Controls;
 using RideSharing.App.ViewModels;
 
 namespace RideSharing.App.Views
@@ -14,25 +14,25 @@ namespace RideSharing.App.Views
             DataContext = mainViewModel;
         }
 
-        private void MenuButtonClick(object sender, RoutedEventArgs e)
+        private void Transitioner_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender.Equals(BtnMenuHome))
-                Transitioner.SelectedIndex = 0;
-            else if (sender.Equals(BtnMenuFindRide))
-                Transitioner.SelectedIndex = 1;
-            else if (sender.Equals(BtnMenuShareRide))
-                Transitioner.SelectedIndex = 2;
-            else if (sender.Equals(BtnMenuVehicles))
-                Transitioner.SelectedIndex = 3;
-            // TODO Add remaining slides
-        }
-
-        private void StackPanel_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (MenuStackPanel.IsEnabled)
+            switch (Transitioner.SelectedIndex)
             {
-                BtnMenuHome.IsChecked = true;
-                Transitioner.SelectedIndex = 0;
+                case 0:
+                    MenuBtnHome.IsChecked = true;
+                    break;
+                case 1:
+                    MenuBtnFindRide.IsChecked = true;
+                    break;
+                case 2:
+                    MenuBtnShareRide.IsChecked = true;
+                    break;
+                case 3:
+                    MenuBtnManageVehicles.IsChecked = true;
+                    break;
+                case 4:
+                    MenuProfileSettings.IsChecked = true;
+                    break;
             }
         }
     }
