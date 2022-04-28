@@ -61,8 +61,14 @@
                             <TextBlock Grid.ColumnSpan="2"
                                        Grid.Row="1"
                                        HorizontalAlignment="Center"
-                                       Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-                                       Text="{Binding Name}" />
+                                       Style="{StaticResource MaterialDesignHeadline6TextBlock}">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="Name"/>
+                                        <Binding Path="Surname"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
                             <TextBlock TextAlignment="Center"
                                    Grid.ColumnSpan="2"
                                    Grid.Row="2"
