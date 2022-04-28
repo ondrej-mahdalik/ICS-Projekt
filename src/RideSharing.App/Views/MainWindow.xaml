@@ -8,13 +8,14 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600"
-        Width="990"
+        Title="MainWindow"
+        Height="600"
+        Width="1000"
         Style="{StaticResource MaterialDesignWindow}"
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14"
         FontFamily="{materialDesign:MaterialDesignFont}"
-        MinWidth="900"
+        MinWidth="1000"
         MinHeight="600">
     <Grid>
         <Grid.RowDefinitions>
@@ -32,46 +33,53 @@
                            VerticalAlignment="Center"
                            Padding="10px 0px">RideSharing
                 </TextBlock>
-                <StackPanel x:Name="MenuStackPanel"
-                            Grid.Column="1"
+                <StackPanel Grid.Column="1"
                             Orientation="Horizontal"
                             VerticalAlignment="Center"
-                            Margin="50px 0px"
-                            IsEnabled="{Binding IsLoggedIn}"
-                            IsEnabledChanged="StackPanel_IsEnabledChanged">
-                    <RadioButton x:Name="BtnMenuHome"
-                            Style="{StaticResource MaterialDesignTabRadioButton}"
-                            Foreground="{StaticResource MaterialDesignLightForeground}"
-                            Click="MenuButtonClick"
-                            Cursor="Hand"
-                            IsChecked="True">Home
-                    </RadioButton>
-                    <RadioButton x:Name="BtnMenuFindRide"
+                            Margin="50px 0px">
+                    <RadioButton x:Name="MenuBtnHome"
                                  Style="{StaticResource MaterialDesignTabRadioButton}"
+                                 GroupName="Menu"
                                  Foreground="{StaticResource MaterialDesignLightForeground}"
-                                 Click="MenuButtonClick"
+                                 Command="{Binding MenuTabCommand}"
+                                 CommandParameter="0"
+                                 Cursor="Hand"
+                                 IsChecked="True">Home
+                    </RadioButton>
+                    <RadioButton x:Name="MenuBtnFindRide"
+                                 Style="{StaticResource MaterialDesignTabRadioButton}"
+                                 GroupName="Menu"
+                                 Foreground="{StaticResource MaterialDesignLightForeground}"
+                                 Command="{Binding MenuTabCommand}"
+                                 CommandParameter="1"
                                  Cursor="Hand">Find a Ride
                     </RadioButton>
-                    <RadioButton x:Name="BtnMenuShareRide"
+                    <RadioButton x:Name="MenuBtnShareRide"
                                  Style="{StaticResource MaterialDesignTabRadioButton}"
+                                 GroupName="Menu"
                                  Foreground="{StaticResource MaterialDesignLightForeground}"
-                                 Click="MenuButtonClick"
+                                 Command="{Binding MenuTabCommand}"
+                                 CommandParameter="2"
                                  Cursor="Hand">Share my Ride
                     </RadioButton>
-                    <RadioButton x:Name="BtnMenuVehicles"
+                    <RadioButton x:Name="MenuBtnManageVehicles"
                                  Style="{StaticResource MaterialDesignTabRadioButton}"
+                                 GroupName="Menu"
                                  Foreground="{StaticResource MaterialDesignLightForeground}"
-                                 Click="MenuButtonClick"
+                                 Command="{Binding MenuTabCommand}"
+                                 CommandParameter="3"
                                  Cursor="Hand">Manage Vehicles
                     </RadioButton>
-                    <RadioButton x:Name="BtnMenuProfile"
+                    <RadioButton x:Name="MenuProfileSettings"
                                  Style="{StaticResource MaterialDesignTabRadioButton}"
+                                 GroupName="Menu"
                                  Foreground="{StaticResource MaterialDesignLightForeground}"
-                                 Click="MenuButtonClick"
+                                 Command="{Binding MenuTabCommand}"
+                                 CommandParameter="4"
                                  Cursor="Hand">Profile Settings
                     </RadioButton>
-                    <RadioButton x:Name="BtnMenuLogOut"
-                                 Style="{StaticResource MaterialDesignTabRadioButton}"
+                    <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
+                                 GroupName="Menu"
                                  Foreground="{StaticResource MaterialDesignLightForeground}"
                                  Command="{Binding LogOutCommand}"
                                  Cursor="Hand">Log Out
@@ -79,7 +87,8 @@
                 </StackPanel>
             </Grid>
         </materialDesign:Card>
-        <materialDesign:Transitioner Grid.Row="1" x:Name="Transitioner" SelectedIndex="0">
+        <materialDesign:Transitioner Grid.Row="1" x:Name="Transitioner" SelectedIndex="{Binding TransitionerSelectedIndex}"
+                                     SelectionChanged="Transitioner_OnSelectionChanged">
             <materialDesign:TransitionerSlide>
                 <views:DashboardView x:Name="Dashboard"
                                      DataContext="{Binding DashboardViewModel}" />
@@ -87,10 +96,6 @@
             <materialDesign:TransitionerSlide>
                 <views:FindRideView x:Name="FindRide"
                                     DataContext="{Binding FindRideViewModel}" />
-            </materialDesign:TransitionerSlide>
-            <materialDesign:TransitionerSlide>
-                <views:MapTestView x:Name="MapView"
-                                   DataContext="{Binding MapTestVIewModel}" />
             </materialDesign:TransitionerSlide>
         </materialDesign:Transitioner>
     </Grid>

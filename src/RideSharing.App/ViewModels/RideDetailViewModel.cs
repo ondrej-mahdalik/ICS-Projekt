@@ -38,6 +38,8 @@ namespace RideSharing.App.ViewModels
 
         public RideWrapper? Ride { get; private set; }
 
+        public bool MapEnabled { get; set; }
+
         private bool CanSave() => Ride?.IsValid ?? false;
 
 
@@ -55,7 +57,9 @@ namespace RideSharing.App.ViewModels
 
         public async Task LoadAsync(Guid rideId)
         {
+            MapEnabled = false;
             Ride = await _rideFacade.GetAsync(rideId) ?? throw new InvalidOperationException("Failed to load the selected ride");
+            MapEnabled = true;
         }
 
         public async Task DeleteAsync()
