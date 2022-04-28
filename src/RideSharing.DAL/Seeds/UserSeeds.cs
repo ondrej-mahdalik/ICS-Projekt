@@ -29,7 +29,7 @@ public static class UserSeeds
     );
 
     public static readonly UserEntity JanNovotny = new(
-        Guid.Parse("f34cb46-1234-406d-971d-b5e6f748938a"),
+        Guid.Parse("f34cb461-1234-406d-971d-b5e6f748938a"),
         "Jan",
         "Novotny",
         "783721984",

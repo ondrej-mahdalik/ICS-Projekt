@@ -40,7 +40,7 @@ public static class RideSeeds
     );
 
     public static readonly RideEntity OlomoucOstrava = new(
-        Guid.Parse("42a232a6-b668-4567-9b73-71gffb64a075"),
+        Guid.Parse("42a232a6-b668-4567-9b73-71cffb64a075"),
         FromName: "Olomouc",
         FromLatitude: 49.5891231,
         FromLongitude: 17.2538600,
@@ -56,7 +56,7 @@ public static class RideSeeds
     );
 
     public static readonly RideEntity OlomoucBrno = new(
-        Guid.Parse("42a232a6-a668-abcd-1234-71gffb64a054"),
+        Guid.Parse("42a232a6-a668-abcd-1234-71affb64a054"),
         FromName: "Olomouc",
         FromLatitude: 49.5891231,
         FromLongitude: 17.2538600,

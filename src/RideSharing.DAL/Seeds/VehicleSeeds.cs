@@ -18,7 +18,7 @@ public static class VehicleSeeds
         "https://auta5p.eu/katalog/skoda/felicia_28.jpg");
 
     public static readonly VehicleEntity Karosa = new(
-        Guid.Parse("0a5ak2h1-1234-45ac-12b3-6a63b24f0654"),
+        Guid.Parse("0a5af2a1-1234-45ac-12b3-6a63b24f0654"),
         UserSeeds.ElonTusk.Id,
         VehicleType.Bus,
         "Karosa",
