@@ -4,7 +4,7 @@ using RideSharing.DAL.Entities;
 
 namespace RideSharing.BL.Models;
 
-public record FoundRideModel(
+public record RideFoundListModel(
     string FromName,
     string ToName,
     DateTime Departure,
@@ -18,10 +18,11 @@ public record FoundRideModel(
     public DateTime Arrival { get; set; } = Arrival;
     public int Distance { get; set; } = Distance;
     public int SharedSeats { get; set; } = SharedSeats;
-    public TimeSpan Duration { get; set; }
+    public TimeSpan Duration { get; set; } = Arrival - Departure;
 
     public float Rating { get; set; }
     public int ReviewCount { get; set; }
+    public int OccupiedSeats { get; set; }
 
     public VehicleDetailModel? Vehicle { get; init; }
 
@@ -29,8 +30,12 @@ public record FoundRideModel(
     {
         public MapperProfile()
         {
-            CreateMap<RideEntity, FoundRideModel>()
-                .ForMember(model => model.Duration, action => action.MapFrom(src => src.Arrival - src.Departure));
+            CreateMap<RideEntity, RideFoundListModel>()
+                .ForMember(entity => entity.Duration, action => action.Ignore())
+                .ForMember(entity => entity.Rating, action => action.Ignore())
+                .ForMember(entity => entity.ReviewCount, action => action.Ignore())
+                .ForMember(entity => entity.OccupiedSeats, action => action.Ignore());
+
         }
     }
 }

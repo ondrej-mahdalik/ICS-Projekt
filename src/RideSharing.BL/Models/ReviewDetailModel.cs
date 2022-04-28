@@ -6,7 +6,7 @@ namespace RideSharing.BL.Models;
 public record ReviewDetailModel(ushort Rating) : ModelBase
 {
     public ushort Rating { get; set; } = Rating;
-    public RideListModel? Ride { get; set; }
+    public RideRecentListModel? Ride { get; set; }
     public UserListModel? AuthorUser { get; set; }
 
     public class MapperProfile : Profile
