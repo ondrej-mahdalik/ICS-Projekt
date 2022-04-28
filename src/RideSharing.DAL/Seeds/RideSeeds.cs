@@ -39,6 +39,38 @@ public static class RideSeeds
         Note: "No eating in the car !"
     );
 
+    public static readonly RideEntity OlomoucOstrava = new(
+        Guid.Parse("42a232a6-b668-4567-9b73-71gffb64a075"),
+        FromName: "Olomouc",
+        FromLatitude: 49.5891231,
+        FromLongitude: 17.2538600,
+        ToName: "Ostrava",
+        ToLatitude: 49.8050306,
+        ToLongitude: 18.2392447,
+        Distance: 96,
+        SharedSeats: 15,
+        Departure: DateTime.Parse("01/01/2022 12:00", CultureInfo.InvariantCulture),
+        Arrival: DateTime.Parse("01/01/2022 13:00", CultureInfo.InvariantCulture),
+        VehicleId: Seeds.VehicleSeeds.Karosa.Id,
+        Note: null
+    );
+
+    public static readonly RideEntity OlomoucBrno = new(
+        Guid.Parse("42a232a6-a668-abcd-1234-71gffb64a054"),
+        FromName: "Olomouc",
+        FromLatitude: 49.5891231,
+        FromLongitude: 17.2538600,
+        ToName: "Brno",
+        ToLatitude: 49.22611604448722,
+        ToLongitude: 16.582455843955017,
+        Distance: 77,
+        SharedSeats: 1,
+        Departure: DateTime.Parse("05/21/2022 18:00", CultureInfo.InvariantCulture),
+        Arrival: DateTime.Parse("05/21/2022 18:50", CultureInfo.InvariantCulture),
+        VehicleId: Seeds.VehicleSeeds.Felicia.Id,
+        Note: "There will be a dog in the car."
+    );
+
     static RideSeeds()
     {
         //PrahaBrno.Reservations.Add(ReservationSeeds.BrnoTwoSeats);
@@ -48,8 +80,7 @@ public static class RideSeeds
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<RideEntity>().HasData(
-            PrahaBrno,
-            BrnoOstrava
+            PrahaBrno, BrnoOstrava, OlomoucOstrava, OlomoucBrno
         );
     }
 }
