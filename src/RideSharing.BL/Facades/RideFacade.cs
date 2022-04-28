@@ -68,8 +68,8 @@ public class RideFacade : CRUDFacade<RideEntity, RideListModel, RideDetailModel>
             //   ratingSum += review.Rating;
             //}
             float rating = await reviews.SumAsync(x => x.Rating) / (float) reviewCount;
-            ride.ReviewCount = reviewCount.ToString();
-            ride.Rating = rating < 1 ? "No ratings" : rating.ToString(".0#");
+            ride.ReviewCount = reviewCount;
+            ride.Rating = rating;
         }
 
         return foundRideModels;
