@@ -95,7 +95,7 @@
                                            VerticalAlignment="Bottom">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="Occupancy: {0}/{1}">
-                                            <Binding Path="SharedSeats" />
+                                            <Binding Path="OccupiedSeats" />
                                             <Binding Path="Vehicle.Seats" />
                                         </MultiBinding>
                                     </TextBlock.Text>
@@ -151,9 +151,7 @@
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Bottom">
                                     <TextBlock.Text>
-                                        <MultiBinding StringFormat="Occupancy: {0}/{1}">
-                                            <Binding Path="SharedSeats" />
-                                            <Binding Path="Vehicle.Seats" />
+                                        <MultiBinding StringFormat="TODO reviews">
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>

@@ -123,8 +123,8 @@
                                     <TextBlock FontWeight="Bold">
                                         <TextBlock.Text>
                                             <MultiBinding StringFormat="{}{0} {1}">
-                                                <Binding Path="Vehicle.Owner.Name" />
-                                                <Binding Path="Vehicle.Owner.Surname" />
+                                                <Binding Path="Vehicle!.Owner!.Name" />
+                                                <Binding Path="Vehicle!.Owner!.Surname" />
                                             </MultiBinding>
                                         </TextBlock.Text>
                                     </TextBlock>
@@ -159,8 +159,9 @@
                                                Grid.Column="0"
                                                VerticalAlignment="Center">
                                         <TextBlock.Text>
-                                            <MultiBinding StringFormat="Occupancy: xxx/{0}">
-                                                <Binding Path="SharedSeats" />
+                                            <MultiBinding StringFormat="Occupancy: {0}/{1}">
+                                                <Binding Path="OccupiedSeats" />
+                                                <Binding Path="Vehicle!.Seats" />
                                             </MultiBinding>
                                         </TextBlock.Text>
                                     </TextBlock>
