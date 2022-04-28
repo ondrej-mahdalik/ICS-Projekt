@@ -20,6 +20,22 @@ public static class UserSeeds
         "https://pbs.twimg.com/profile_images/1443129819122782209/sqba2I3D_400x400.jpg"
     );
 
+    public static readonly UserEntity PavelNovak = new(
+        Guid.Parse("606b1e64-ed3c-54a1-883e-69de32b3ca65"),
+        "Pavel",
+        "Novák",
+        "737892123",
+        null
+    );
+
+    public static readonly UserEntity JanNovotny = new(
+        Guid.Parse("f34cb46-1234-406d-971d-b5e6f748938a"),
+        "Jan",
+        "Novotny",
+        "783721984",
+        "https://i.pinimg.com/custom_covers/222x/85498161615209203_1636332751.jpg"
+    );
+
     static UserSeeds()
     {
         //JohnDoe.Vehicles.Add(VehicleSeeds.Felicia);
@@ -39,7 +55,7 @@ public static class UserSeeds
             //    ReceivedReviews = Array.Empty<ReviewEntity>(),
             //    Vehicles = Array.Empty<VehicleEntity>(),
             //}
-            JohnDoe, ElonTusk
+            JohnDoe, ElonTusk, PavelNovak, JanNovotny
         );
     }
 }
