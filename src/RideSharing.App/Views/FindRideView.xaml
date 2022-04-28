@@ -90,10 +90,11 @@
                         Margin="10px 20px"
                         Padding="30px 0px"
                         Content="Search"
-                        HorizontalAlignment="Right"/>
+                        HorizontalAlignment="Right"
+                        Command="{Binding FindRideCommand}"/>
             </Grid>
             <!--Results-->
-            <StackPanel Grid.Column="1">
+            <StackPanel Grid.Column="1" Margin="10,0,-10,0">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Label VerticalAlignment="Center">Sort by:</Label>
                     <RadioButton Style="{StaticResource MaterialDesignChoiceChipPrimaryRadioButton}" IsChecked="True">Duration</RadioButton>
@@ -101,21 +102,27 @@
                     <RadioButton Style="{StaticResource MaterialDesignChoiceChipPrimaryRadioButton}">Rating</RadioButton>
                 </StackPanel>
                 <ListView HorizontalContentAlignment="Center"
-                          Style="{StaticResource MaterialDesignListViewNoRippleEffect}">
-                    <ListViewItem Padding="10px">
-                        <controls:FindRideItem UserName="Joe Doe (JoDe58)"
-                                               Rating="3.9"
-                                               ReviewCount="285"
-                                               From="Brno"
-                                               To="Prague"
-                                               Departure="today 16:35"
-                                               Arrival="today 18:40"
-                                               Distance="206 km"
-                                               Occupied="Occupancy: 4/5"
-                                               VehicleType="Car"
-                        />
-                    </ListViewItem>
+                          Style="{StaticResource MaterialDesignListViewNoRippleEffect}"
+                          ItemsSource="{Binding FoundRides}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:FindRideItem UserName="{Binding Vehicle.Owner.Name }"
+                                                   UserSurname="{Binding Vehicle.Owner.Surname}"
+                                                   Rating="3.9"
+                                                   ReviewCount="285"
+                                                   From="{Binding FromName}"
+                                                   To="{Binding ToName}"
+                                                   Departure="{Binding Departure}"
+                                                   Arrival="{Binding Arrival}"
+                                                   Distance="{Binding Distance}"
+                                                   Occupied="Occupancy: 4/5"
+                                                   VehicleType="{Binding Vehicle.VehicleType}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
+
+
+                
             </StackPanel>
         </Grid>
     </Grid>

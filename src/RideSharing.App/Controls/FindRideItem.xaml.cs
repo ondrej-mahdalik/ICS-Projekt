@@ -16,6 +16,12 @@ public partial class FindRideItem
         set => SetValue(UserNameProperty, value);
     }
 
+    public string UserSurname
+    {
+        get => (string)GetValue(UserSurnameProperty);
+        set => SetValue(UserSurnameProperty, value);
+    }
+
     public string Rating
     {
         get => (string)GetValue(RatingProperty);
@@ -24,7 +30,7 @@ public partial class FindRideItem
 
     public string ReviewCount
     {
-        get => (string)GetValue(ReviewCountProperty) + " reviews";
+        get => (string)GetValue(ReviewCountProperty);
         set => SetValue(ReviewCountProperty, value);
     }
 
@@ -55,7 +61,7 @@ public partial class FindRideItem
     public string Distance
     {
         get => (string)GetValue(DistanceProperty);
-        set => SetValue(DistanceProperty, $"{value} km");
+        set => SetValue(DistanceProperty, value);
     }
 
     public string Occupied
@@ -78,6 +84,9 @@ public partial class FindRideItem
 
     public static readonly DependencyProperty UserNameProperty = DependencyProperty.Register(
         nameof(UserName), typeof(string), typeof(FindRideItem), new PropertyMetadata(default));
+
+    public static readonly DependencyProperty UserSurnameProperty = DependencyProperty.Register(
+        nameof(UserSurname), typeof(string), typeof(FindRideItem), new PropertyMetadata(default));
 
     public static readonly DependencyProperty RatingProperty = DependencyProperty.Register(
         nameof(Rating), typeof(string), typeof(FindRideItem), new PropertyMetadata(default));

@@ -22,29 +22,57 @@ public class RideFacade : CRUDFacade<RideEntity, RideListModel, RideDetailModel>
         return Mapper.Map<RideDetailModel>(ride);
     }
 
-    public async Task<IEnumerable<RideListModel>> GetFilteredAsync(DateTime? dateFrom = null, DateTime? dateTo = null, string? cityFrom = null, string? cityTo = null, int? seats = null)
+    public async Task<IEnumerable<FoundRideModel>> GetFilteredAsync(DateTime? dateFrom, DateTime? dateTo, string cityFrom, string cityTo, int seats)
     {
         await using var uow = UnitOfWorkFactory.Create();
         var dbSet = uow.GetRepository<RideEntity>().Get();
         var rides = dbSet.Where(x =>
             (!dateFrom.HasValue || x.Departure > dateFrom.Value) &&
             (!dateTo.HasValue || x.Departure < dateTo.Value) &&
-            (!seats.HasValue || x.SharedSeats >= seats.Value)
+            (x.SharedSeats >= seats)
         );
 
-        if (cityFrom != null)
+        //if (cityFrom != "")
+        //{
+        //    string[] filters = cityFrom.Split(new [] {' '});
+        //    rides = rides.Where(x => filters.All(f => x.FromName.Contains(f)));
+        //}
+
+        //if (cityTo != "")
+        //{
+        //    string[] filters = cityTo.Split(new[] { ' ' });
+        //    rides = rides.Where(x => filters.All(f => x.ToName.Contains(f)));
+        //}
+
+
+        if (cityFrom != "")
         {
-            string[] filters = cityFrom.Split(new [] {' '});
-            rides = rides.Where(x => filters.All(f => x.FromName.Contains(f)));
+            rides = rides.Where(x =>  x.FromName.Equals(cityFrom));
         }
 
-        if (cityTo != null)
+        if (cityTo != "")
         {
-            string[] filters = cityTo.Split(new[] {' '});
-            rides = rides.Where(x => filters.All(f => x.ToName.Contains((f))));
+            rides = rides.Where(x => x.ToName.Equals(cityTo));
         }
 
-        return await Mapper.ProjectTo<RideListModel>(rides).ToArrayAsync().ConfigureAwait(false);
+        rides = rides.Include(ride => ride.Vehicle)
+                     .ThenInclude(vehicle => vehicle.Owner);
+        var foundRideModels = await Mapper.ProjectTo<FoundRideModel>(rides).ToArrayAsync().ConfigureAwait(false);
+        foreach (var ride in foundRideModels)
+        {
+            var reviews = uow.GetRepository<ReviewEntity>().Get().Where(x => x.RideId == ride.Id);
+            int reviewCount = await reviews.CountAsync();
+            int ratingSum = 0;
+            //foreach (var review in reviews)
+            //{
+            //   ratingSum += review.Rating;
+            //}
+            float rating = await reviews.SumAsync(x => x.Rating) / (float) reviewCount;
+            ride.ReviewCount = reviewCount.ToString();
+            ride.Rating = rating < 1 ? "No ratings" : rating.ToString(".0#");
+        }
+
+        return foundRideModels;
     }
 
     public async Task<IEnumerable<RideListModel>> GetUserUpcomingRidesAsync(Guid userId, bool driverFilter = false, bool passengerFilter = false)

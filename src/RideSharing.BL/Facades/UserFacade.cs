@@ -32,10 +32,10 @@ public class UserFacade : CRUDFacade<UserEntity, UserListModel, UserDetailModel>
 
         foreach (var user in users)
         {
-            user.NumberOfVehicles = uow.GetRepository<VehicleEntity>().Get().Where(x => x.OwnerId == user.Id).Count();
-            user.UpcomingRidesCount = uow.GetRepository<RideEntity>().Get().Where(x => x.Departure > DateTime.Now &&
+            user.NumberOfVehicles = await uow.GetRepository<VehicleEntity>().Get().CountAsync(x => x.OwnerId == user.Id);
+            user.UpcomingRidesCount = await uow.GetRepository<RideEntity>().Get().CountAsync(x => x.Departure > DateTime.Now &&
                 (x.Reservations.Any(y => y.ReservingUserId == user.Id) ||
-                x.Vehicle != null && x.Vehicle.OwnerId == user.Id )).Count();
+                 x.Vehicle != null && x.Vehicle.OwnerId == user.Id));
         }
         return users;
     }

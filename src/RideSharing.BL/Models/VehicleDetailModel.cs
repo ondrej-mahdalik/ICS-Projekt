@@ -21,6 +21,8 @@ public record VehicleDetailModel(
     public ushort Seats { get; set; } = Seats;
     public string? ImageUrl { get; set; } = ImageUrl;
 
+    public UserListModel? Owner { get; init; }
+
     public class MapperProfile : Profile
     {
         public MapperProfile()
