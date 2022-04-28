@@ -6,6 +6,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:RideSharing.App.Views"
       xmlns:viewModels="clr-namespace:RideSharing.App.ViewModels"
+      xmlns:controls="clr-namespace:RideSharing.App.Controls"
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
       FontSize="14"
@@ -84,37 +85,10 @@
                                     <RowDefinition />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <Grid HorizontalAlignment="Left">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <TextBlock FontWeight="Bold"
-                                               Text="{Binding FromName}" />
-                                    <TextBlock Grid.Row="1"
-                                               Grid.Column="0"
-                                               Text="{Binding Path=Departure, StringFormat=t}"/>
-                                    <Canvas Grid.Row="0"
-                                            Grid.Column="1"
-                                            Grid.RowSpan="2"
-                                            Width="24"
-                                            Height="24">
-                                        <Path Fill="{StaticResource MaterialDesignLightForeground}"
-                                              Data="M4,15V9H12V4.16L19.84,12L12,19.84V15H4Z" />
-                                    </Canvas>
-                                    <TextBlock Grid.Row="0"
-                                               Grid.Column="2"
-                                               FontWeight="Bold"
-                                               Text="{Binding ToName}"/>
-                                    <TextBlock Grid.Row="1"
-                                               Grid.Column="2"
-                                               Text="{Binding StringFormat=t, Path=Arrival }"/>
-                                </Grid>
+                                <controls:FromToBlock FromName="{Binding FromName}"
+                                                      ToName="{Binding ToName}"
+                                                      Departure="{Binding Departure}"
+                                                      Arrival="{Binding Arrival}"/>
                                 <TextBlock Grid.Row="1"
                                            Grid.Column="0"
                                            HorizontalAlignment="Left"
@@ -168,37 +142,10 @@
                                     <RowDefinition />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <Grid HorizontalAlignment="Left">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <TextBlock FontWeight="Bold"
-                                               Text="{Binding FromName}" />
-                                    <TextBlock Grid.Row="1"
-                                               Grid.Column="0"
-                                               Text="{Binding Path=Departure, StringFormat=t}"/>
-                                    <Canvas Grid.Row="0"
-                                            Grid.Column="1"
-                                            Grid.RowSpan="2"
-                                            Width="24"
-                                            Height="24">
-                                        <Path Fill="{StaticResource MaterialDesignLightForeground}"
-                                              Data="M4,15V9H12V4.16L19.84,12L12,19.84V15H4Z" />
-                                    </Canvas>
-                                    <TextBlock Grid.Row="0"
-                                               Grid.Column="2"
-                                               FontWeight="Bold"
-                                               Text="{Binding ToName}"/>
-                                    <TextBlock Grid.Row="1"
-                                               Grid.Column="2"
-                                               Text="{Binding StringFormat=t, Path=Arrival }"/>
-                                </Grid>
+                                <controls:FromToBlock FromName="{Binding FromName}"
+                                                      ToName="{Binding ToName}"
+                                                      Departure="{Binding Departure}"
+                                                      Arrival="{Binding Arrival}"/>
                                 <TextBlock Grid.Row="1"
                                            Grid.Column="0"
                                            HorizontalAlignment="Left"

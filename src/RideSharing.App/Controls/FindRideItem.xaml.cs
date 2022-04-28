@@ -1,6 +1,4 @@
-﻿using System;
-using System.CodeDom;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using RideSharing.Common.Enums;
 
