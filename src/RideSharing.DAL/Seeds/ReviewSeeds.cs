@@ -7,15 +7,29 @@ public static class ReviewSeeds
 {
     public static readonly ReviewEntity Perfect = new(
         Guid.Parse("e6364fdc-2f2a-46a4-bd7f-1016096801fd"),
-        Guid.Parse("42b612c1-b668-4168-9b73-71acfb64f094"),
-        Guid.Parse("f34cd643-1226-406d-971d-b5e6f745938e"),
+        RideSeeds.PrahaBrno.Id,
+        UserSeeds.JohnDoe.Id,
         5
+    );
+
+    public static readonly ReviewEntity Bad = new(
+        Guid.Parse("4d809131-db36-47ed-8f95-3292ba018635"),
+        RideSeeds.OlomoucOstrava.Id,
+        UserSeeds.JanNovotny.Id,
+        1
+    );
+
+    public static readonly ReviewEntity Average = new(
+        Guid.Parse("62b2073d-4797-4548-9185-2aa54dc32956"),
+        RideSeeds.OlomoucOstrava.Id,
+        UserSeeds.PavelNovak.Id,
+        2
     );
 
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ReviewEntity>().HasData(
-            Perfect
+            Perfect, Bad, Average
         );
     }
 }
