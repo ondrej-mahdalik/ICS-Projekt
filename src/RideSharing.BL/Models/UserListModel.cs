@@ -6,11 +6,10 @@ namespace RideSharing.BL.Models;
 public record UserListModel(
     string Name,
     string Surname,
-    string Phone,
     string? ImageUrl = null) : ModelBase
 {
-    public string FullName { get;} = Name + " " + Surname;
-    public string Phone { get; set; } = Phone;
+    public string Name { get; set; } = Name;
+    public string Surname { get; set; } = Surname;
     public string? ImageUrl { get; set; } = ImageUrl;
     public int NumberOfVehicles { get; set; }
     public int UpcomingRidesCount { get; set; }
@@ -20,8 +19,9 @@ public record UserListModel(
         public MapperProfile()
         {
             CreateMap<UserEntity, UserListModel>()
-                .ForMember(dst => dst.NumberOfVehicles, action => action.Ignore())
-                .ForMember(dst => dst.UpcomingRidesCount, action => action.Ignore());
+                .ForMember(entity => entity.NumberOfVehicles, action => action.Ignore())
+                .ForMember(entity => entity.UpcomingRidesCount, action => action.Ignore());
+                
         }
     }
 }

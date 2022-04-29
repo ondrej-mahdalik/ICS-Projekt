@@ -18,6 +18,8 @@ public class FindRideViewModel : ViewModelBase, IFindRideViewModel
 {
     private readonly RideFacade _rideFacade;
     private readonly IMediator _mediator;
+    private Guid? _loggedUserid;
+
 
     public FindRideViewModel(RideFacade rideFacade, IMediator mediator)
     {
@@ -30,6 +32,13 @@ public class FindRideViewModel : ViewModelBase, IFindRideViewModel
         mediator.Register<UpdateMessage<RideWrapper>>(RideUpdated);
         mediator.Register<NewMessage<RideWrapper>>(RideNew);
         mediator.Register<DeleteMessage<RideWrapper>>(RideDeleted);
+        mediator.Register<SelectedMessage<UserWrapper>>(UserLoggedIn);
+
+    }
+
+    private void UserLoggedIn(SelectedMessage<UserWrapper> obj)
+    {
+        _loggedUserid = obj.Id;
     }
 
     public string SelFrom { get; set; } = "";
@@ -37,9 +46,6 @@ public class FindRideViewModel : ViewModelBase, IFindRideViewModel
     public DateTime? SelDate { get; set; } = null;
     public TimeSpan? SelTime { get; set; } = null;
     public bool SelDeparture { get; set; } = true;
-    public int SelSeats { get; set; } = 1;
-
-
 
     public ICommand FindRideCommand { get; }
     private async void FindRides() => await LoadAsync();
@@ -48,17 +54,17 @@ public class FindRideViewModel : ViewModelBase, IFindRideViewModel
     private async void RideNew(NewMessage<RideWrapper> _) => await LoadAsync();
     private async void RideDeleted(DeleteMessage<RideWrapper> _) => await LoadAsync();
 
-    public ObservableCollection<FoundRideModel> FoundRides { get; set; } = new();
+    public ObservableCollection<RideFoundListModel> FoundRides { get; set; } = new();
     
 #pragma warning disable CS1998 // V této asynchronní metodě chybí operátory await a spustí se synchronně.
     public async Task LoadAsync()
 #pragma warning restore CS1998 // V této asynchronní metodě chybí operátory await a spustí se synchronně.
     {
-        DateTime? deprartTime = null;
+        DateTime? departTime = null;
         DateTime? arrivalTime = null;
         if (SelDeparture)
         {
-            deprartTime = SelDate + SelTime;
+            departTime = SelDate + SelTime;
         }
         else
         {
@@ -66,8 +72,8 @@ public class FindRideViewModel : ViewModelBase, IFindRideViewModel
         }
 
         FoundRides.Clear();
-        var foundRides = await _rideFacade.GetFilteredAsync(deprartTime, arrivalTime, SelFrom, SelTo, SelSeats);
-       FoundRides.AddRange(foundRides);
+        var foundRides = await _rideFacade.GetFilteredAsync(_loggedUserid, departTime, arrivalTime, SelFrom, SelTo);
+        FoundRides.AddRange(foundRides);
 
     }
 }

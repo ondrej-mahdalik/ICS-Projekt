@@ -16,8 +16,6 @@ public record UserDetailModel(
     public List<VehicleDetailModel> Vehicles { get; set; } = new();
     public List<ReviewDetailModel> SubmittedReviews { get; set; } = new();
 
-    public static UserDetailModel Empty => new(string.Empty, string.Empty, string.Empty);
-    
     public class MapperProfile : Profile
     {
         public MapperProfile()
@@ -26,6 +24,9 @@ public record UserDetailModel(
                 .ReverseMap()
                 .ForMember(entity => entity.Vehicles, action => action.Ignore())
                 .ForMember(entity => entity.SubmittedReviews, action => action.Ignore());
+
         }
     }
+    public static UserDetailModel Empty => new(string.Empty, string.Empty, string.Empty);
+
 }

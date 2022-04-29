@@ -73,14 +73,12 @@ public sealed class ReviewFacadeTests : CRUDFacadeTestsBase
             AuthorUser = new UserListModel(
                 UserSeeds.ReservationUser1.Name,
                 UserSeeds.ReservationUser1.Surname,
-                UserSeeds.ReservationUser1.Phone,
                 UserSeeds.ReservationUser1.ImageUrl
             ) { Id = UserSeeds.ReservationUser1.Id },
-            Ride = new RideListModel(
+            Ride = new RideRecentListModel(
                 RideSeeds.JustReviewRide.FromName,
                 RideSeeds.JustReviewRide.ToName,
-                Distance: RideSeeds.JustReviewRide.Distance,
-                SharedSeats: RideSeeds.JustReviewRide.SharedSeats,
+
                 Departure: RideSeeds.JustReviewRide.Departure,
                 Arrival: RideSeeds.JustReviewRide.Arrival
             ) { Id = RideSeeds.JustReviewRide.Id }
@@ -91,7 +89,7 @@ public sealed class ReviewFacadeTests : CRUDFacadeTestsBase
         var reviewFromDb = await dbxAssert.ReviewEntities.SingleAsync(i => i.Id == review.Id);
         DeepAssert.Equal(review, Mapper.Map<ReviewDetailModel>(reviewFromDb), "AuthorUser", "Ride");
         DeepAssert.Equal(review.AuthorUser, Mapper.Map<UserListModel>(UserSeeds.ReservationUser1));
-        DeepAssert.Equal(review.Ride, Mapper.Map<RideListModel>(RideSeeds.JustReviewRide), "Vehicle");
+        DeepAssert.Equal(review.Ride, Mapper.Map<RideRecentListModel>(RideSeeds.JustReviewRide), "Vehicle");
     }
 
     [Fact]
@@ -105,14 +103,11 @@ public sealed class ReviewFacadeTests : CRUDFacadeTestsBase
             AuthorUser = new UserListModel(
                 UserSeeds.ReservationUser1.Name,
                 UserSeeds.ReservationUser1.Surname,
-                UserSeeds.ReservationUser1.Phone,
                 UserSeeds.ReservationUser1.ImageUrl
             ) { Id = UserSeeds.ReservationUser1.Id },
-            Ride = new RideListModel(
+            Ride = new RideRecentListModel(
                 RideSeeds.JustReviewRide.FromName,
                 RideSeeds.JustReviewRide.ToName,
-                Distance: RideSeeds.JustReviewRide.Distance,
-                SharedSeats: RideSeeds.JustReviewRide.SharedSeats,
                 Departure: RideSeeds.JustReviewRide.Departure,
                 Arrival: RideSeeds.JustReviewRide.Arrival
             ) { Id = RideSeeds.JustReviewRide.Id }

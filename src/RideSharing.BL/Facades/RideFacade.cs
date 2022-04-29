@@ -7,7 +7,7 @@ using RideSharing.DAL.UnitOfWork;
 
 namespace RideSharing.BL.Facades;
 
-public class RideFacade : CRUDFacade<RideEntity, RideListModel, RideDetailModel>
+public class RideFacade : CRUDFacade<RideEntity, RideRecentListModel, RideDetailModel>
 {
     public RideFacade(IUnitOfWorkFactory unitOfWorkFactory, IMapper mapper) : base(unitOfWorkFactory, mapper) { }
 
@@ -22,96 +22,113 @@ public class RideFacade : CRUDFacade<RideEntity, RideListModel, RideDetailModel>
         return Mapper.Map<RideDetailModel>(ride);
     }
 
-    public async Task<IEnumerable<FoundRideModel>> GetFilteredAsync(DateTime? dateFrom, DateTime? dateTo, string cityFrom, string cityTo, int seats)
+    public async Task<IEnumerable<RideFoundListModel>> GetFilteredAsync(Guid? userId, DateTime? dateFrom, DateTime? dateTo, string cityFrom, string cityTo)
     {
+        if (userId == null)
+        {
+            return new List<RideFoundListModel>();
+        }
+
+        dateFrom ??= DateTime.Now;
+
         await using var uow = UnitOfWorkFactory.Create();
         var dbSet = uow.GetRepository<RideEntity>().Get();
         var rides = dbSet.Where(x =>
-            (!dateFrom.HasValue || x.Departure > dateFrom.Value) &&
-            (!dateTo.HasValue || x.Departure < dateTo.Value) &&
-            (x.SharedSeats >= seats)
-        );
+            x.Departure > dateFrom.Value &&
+            (!dateTo.HasValue || x.Departure < dateTo.Value));
 
+        // Not working probably due to EF bug
         //if (cityFrom != "")
         //{
         //    string[] filters = cityFrom.Split(new [] {' '});
         //    rides = rides.Where(x => filters.All(f => x.FromName.Contains(f)));
         //}
-
+        //
         //if (cityTo != "")
         //{
         //    string[] filters = cityTo.Split(new[] { ' ' });
         //    rides = rides.Where(x => filters.All(f => x.ToName.Contains(f)));
         //}
 
-
         if (cityFrom != "")
         {
             rides = rides.Where(x =>  x.FromName.Equals(cityFrom));
         }
-
         if (cityTo != "")
         {
             rides = rides.Where(x => x.ToName.Equals(cityTo));
         }
 
-        rides = rides.Include(ride => ride.Vehicle)
-                     .ThenInclude(vehicle => vehicle.Owner);
-        var foundRideModels = await Mapper.ProjectTo<FoundRideModel>(rides).ToArrayAsync().ConfigureAwait(false);
-        foreach (var ride in foundRideModels)
+        rides = rides.Include(ride => ride.Vehicle).ThenInclude(vehicle => vehicle!.Owner).Where(x => x.Vehicle!.OwnerId != userId);
+        var rideModels = await Mapper.ProjectTo<RideFoundListModel>(rides).ToArrayAsync().ConfigureAwait(false);
+
+        foreach (var ride in rideModels)
         {
             var reviews = uow.GetRepository<ReviewEntity>().Get().Where(x => x.RideId == ride.Id);
-            int reviewCount = await reviews.CountAsync();
-            int ratingSum = 0;
-            //foreach (var review in reviews)
-            //{
-            //   ratingSum += review.Rating;
-            //}
-            float rating = await reviews.SumAsync(x => x.Rating) / (float) reviewCount;
-            ride.ReviewCount = reviewCount;
-            ride.Rating = rating;
+            ride.ReviewCount = await reviews.CountAsync();
+            ride.Rating = await reviews.SumAsync(x => x.Rating) / (float) ride.ReviewCount;
+            ride.OccupiedSeats = await uow.GetRepository<ReservationEntity>().Get().Where(x => x.RideId == ride.Id).SumAsync(x => x.Seats) + ride.Vehicle!.Seats - ride.SharedSeats;
         }
-
-        return foundRideModels;
+        return rideModels;
     }
 
-    public async Task<IEnumerable<RideListModel>> GetUserUpcomingRidesAsync(Guid userId, bool driverFilter = false, bool passengerFilter = false)
+    public async Task<IEnumerable<RideUpcomingListModel>> GetUserUpcomingRidesAsync(Guid? userId, bool driverFilter = false, bool passengerFilter = false)
     {
+        if (userId == null)
+        {
+            return new List<RideUpcomingListModel>();
+        }
+
         await using var uow = UnitOfWorkFactory.Create();
         var dbSet = uow.GetRepository<RideEntity>().Get();
 
-        IQueryable<RideEntity> rides;
+        IQueryable<RideEntity> rides = driverFilter switch
+        {
+            true when !passengerFilter => dbSet.Where(x =>
+                x.Departure > DateTime.Now && x.Vehicle != null && x.Vehicle.OwnerId == userId),
+            false when passengerFilter => dbSet.Where(x =>
+                x.Departure > DateTime.Now && x.Reservations.Any(y => y.ReservingUserId == userId)),
+            _ => dbSet.Where(x => x.Departure > DateTime.Now && (x.Reservations.Any(y => y.ReservingUserId == userId) ||
+                                                                 x.Vehicle != null && x.Vehicle.OwnerId == userId))
+        };
 
-        if (driverFilter && !passengerFilter)
-            rides = dbSet.Where(x => x.Departure > DateTime.Now && x.Vehicle != null && x.Vehicle.OwnerId == userId);
-        else if (!driverFilter && passengerFilter)
-            rides = dbSet.Where(x => x.Departure > DateTime.Now && x.Reservations.Any(y => y.ReservingUserId == userId));
-        else
-            rides = dbSet.Where(x => x.Departure > DateTime.Now && (x.Reservations.Any(y => y.ReservingUserId == userId) || x.Vehicle != null && x.Vehicle.OwnerId == userId));
+        var rideModels = await Mapper.ProjectTo<RideUpcomingListModel>(rides.Include(x=>x.Vehicle)).ToArrayAsync().ConfigureAwait(false);
 
-        return await Mapper.ProjectTo<RideListModel>(rides).ToArrayAsync().ConfigureAwait(false);
+        foreach (var ride in rideModels)
+        {
+            ride.OccupiedSeats = await uow.GetRepository<ReservationEntity>().Get().Where(x => x.RideId == ride.Id).SumAsync(x => x.Seats) + ride.Vehicle.Seats - ride.SharedSeats;
+            ride.IsDriver = await dbSet.Include(x => x.Vehicle).AnyAsync(x => x.Id == ride.Id && x.Vehicle!.OwnerId == userId);
+        }
+        return rideModels;
     }
 
-    public async Task<IEnumerable<RideListModel>> GetUserRecentRidesAsync(Guid userId, bool driverFilter = false, bool passengerFilter = false)
+    public async Task<IEnumerable<RideRecentListModel>> GetUserRecentRidesAsync(Guid? userId, bool driverFilter = false, bool passengerFilter = false)
     {
+        if (userId == null)
+        {
+            return new List<RideRecentListModel>();
+        }
+
         await using var uow = UnitOfWorkFactory.Create();
         var dbSet = uow.GetRepository<RideEntity>().Get();
 
-        IQueryable<RideEntity> rides;
+        IQueryable<RideEntity> rides = driverFilter switch
+        {
+            true when !passengerFilter => dbSet.Where(x =>
+                x.Departure <= DateTime.Now && x.Vehicle != null && x.Vehicle.OwnerId == userId),
+            false when passengerFilter => dbSet.Where(x =>
+                x.Departure <= DateTime.Now && x.Reservations.Any(y => y.ReservingUserId == userId)),
+            _ => dbSet.Where(x =>
+                x.Departure <= DateTime.Now && (x.Reservations.Any(y => y.ReservingUserId == userId) ||
+                                                x.Vehicle != null && x.Vehicle.OwnerId == userId))
+        };
+        var rideModels = await Mapper.ProjectTo<RideRecentListModel>(rides).ToArrayAsync().ConfigureAwait(false);
 
-        if (driverFilter && !passengerFilter)
+        foreach (var ride in rideModels)
         {
-            rides = dbSet.Where(x => x.Departure <= DateTime.Now && x.Vehicle != null && x.Vehicle.OwnerId == userId);
+            ride.IsDriver = await dbSet.Include(x => x.Vehicle).AnyAsync(x => x.Id == ride.Id && x.Vehicle!.OwnerId == userId);
+            ride.HasReviewed = await uow.GetRepository<ReviewEntity>().Get().AnyAsync(x => x.RideId == ride.Id && x.AuthorUserId == userId);
         }
-        else if (!driverFilter && passengerFilter)
-        {
-            rides = dbSet.Where(x => x.Departure <= DateTime.Now && x.Reservations.Any(y => y.ReservingUserId == userId));
-        }
-        else
-        {
-            rides = dbSet.Where(x => x.Departure <= DateTime.Now && (x.Reservations.Any(y => y.ReservingUserId == userId) || x.Vehicle != null && x.Vehicle.OwnerId == userId));
-        }
-
-        return await Mapper.ProjectTo<RideListModel>(rides).ToArrayAsync().ConfigureAwait(false);
+        return rideModels;
     }
 }

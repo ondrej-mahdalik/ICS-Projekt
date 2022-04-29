@@ -26,7 +26,7 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
         _mediator = mediator;
 
         ReviewSubmittedCommand = new RelayCommand(ReviewSubmitted);
-        RideDetailClickedCommand = new RelayCommand<RideListModel>(RideDetailClicked);
+        RideDetailClickedCommand = new RelayCommand<RideRecentListModel>(RideDetailClicked);
 
         mediator.Register<UpdateMessage<RideWrapper>>(RideUpdated);
         mediator.Register<DeleteMessage<RideWrapper>>(RideDeleted);
@@ -88,8 +88,8 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
         }
     }
 
-    public ObservableCollection<RideListModel> UpcomingRides { get; set; } = new();
-    public ObservableCollection<RideListModel> RecentRides { get; set; } = new();
+    public ObservableCollection<RideUpcomingListModel> UpcomingRides { get; set; } = new();
+    public ObservableCollection<RideRecentListModel> RecentRides { get; set; } = new();
 
     public ICommand ReviewSubmittedCommand { get; }
     public ICommand RideDetailClickedCommand { get; } // Same for ride detail and manage buttons
@@ -99,7 +99,7 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
 
     private void ReviewSubmitted() => _mediator.Send(new NewMessage<ReviewWrapper>());
 
-    private void RideDetailClicked(RideListModel? rideListModel)
+    private void RideDetailClicked(RideRecentListModel? rideListModel)
     {
         // TODO choose between Ride Detail and Manage Ride
 

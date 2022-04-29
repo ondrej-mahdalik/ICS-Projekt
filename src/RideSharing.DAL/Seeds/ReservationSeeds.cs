@@ -43,7 +43,7 @@ public static class ReservationSeeds
         Guid.Parse("0edec00c-3973-457c-a0a3-31de8dd15219"),
         Seeds.UserSeeds.PavelNovak.Id,
         RideSeeds.PrahaBrno.Id,
-        3,
+        2,
         DateTime.Parse("01/01/2022 12:55", CultureInfo.InvariantCulture)
     );
 

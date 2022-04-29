@@ -50,4 +50,5 @@ public class UserFacade : CRUDFacade<UserEntity, UserListModel, UserDetailModel>
 
         await base.DeleteAsync(id);
     }
+
 }
