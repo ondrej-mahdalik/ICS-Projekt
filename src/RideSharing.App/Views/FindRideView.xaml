@@ -123,8 +123,8 @@
                                     <TextBlock FontWeight="Bold">
                                         <TextBlock.Text>
                                             <MultiBinding StringFormat="{}{0} {1}">
-                                                <Binding Path="Vehicle!.Owner!.Name" />
-                                                <Binding Path="Vehicle!.Owner!.Surname" />
+                                                <Binding Path="Vehicle.Owner.Name" />
+                                                <Binding Path="Vehicle.Owner.Surname" />
                                             </MultiBinding>
                                         </TextBlock.Text>
                                     </TextBlock>
