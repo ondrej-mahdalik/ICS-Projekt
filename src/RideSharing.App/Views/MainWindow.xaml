@@ -82,7 +82,8 @@
                                  GroupName="Menu"
                                  Foreground="{StaticResource MaterialDesignLightForeground}"
                                  Command="{Binding LogOutCommand}"
-                                 Cursor="Hand">Log Out
+                                 Cursor="Hand"
+                                 Click="RadioButton_Click">Log Out
                     </RadioButton>
                 </StackPanel>
             </Grid>

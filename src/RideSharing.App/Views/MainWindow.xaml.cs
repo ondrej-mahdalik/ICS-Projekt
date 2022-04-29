@@ -35,5 +35,10 @@ namespace RideSharing.App.Views
                     break;
             }
         }
+
+        private void RadioButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            MenuBtnHome.IsChecked = true;
+        }
     }
 }
