@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices.ComTypes;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using RideSharing.BL.Models;
 using RideSharing.DAL.Entities;
@@ -17,9 +16,15 @@ public class RideFacade : CRUDFacade<RideEntity, RideRecentListModel, RideDetail
         var dbSet = uow.GetRepository<RideEntity>().Get();
         var ride = await dbSet
             .Include(ride => ride.Vehicle)
-            //.ThenInclude(vehicle => vehicle.Owner)
+            .Include(ride => ride.Reservations)
             .SingleOrDefaultAsync(ride => ride.Id == id);
-        return Mapper.Map<RideDetailModel>(ride);
+        var model = Mapper.Map<RideDetailModel>(ride);
+        if (ride is null)
+            return null;
+
+        model.OccupiedSeats = ride.Reservations.Sum(x => x.Seats);
+
+        return model;
     }
 
     public async Task<IEnumerable<RideFoundListModel>> GetFilteredAsync(Guid? userId, DateTime? dateFrom, DateTime? dateTo, string cityFrom, string cityTo)
@@ -35,7 +40,7 @@ public class RideFacade : CRUDFacade<RideEntity, RideRecentListModel, RideDetail
         var dbSet = uow.GetRepository<RideEntity>().Get();
         var rides = dbSet.Where(x =>
             x.Departure > dateFrom.Value &&
-            (!dateTo.HasValue || x.Departure < dateTo.Value));
+            (!dateTo.HasValue || x.Departure < dateTo.Value) );
 
         // Not working probably due to EF bug
         //if (cityFrom != "")
@@ -50,11 +55,11 @@ public class RideFacade : CRUDFacade<RideEntity, RideRecentListModel, RideDetail
         //    rides = rides.Where(x => filters.All(f => x.ToName.Contains(f)));
         //}
 
-        if (cityFrom != "")
+        if (cityFrom != string.Empty)
         {
             rides = rides.Where(x =>  x.FromName.Equals(cityFrom));
         }
-        if (cityTo != "")
+        if (cityTo != string.Empty)
         {
             rides = rides.Where(x => x.ToName.Equals(cityTo));
         }
