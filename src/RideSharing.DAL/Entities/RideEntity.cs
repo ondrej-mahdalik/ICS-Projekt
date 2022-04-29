@@ -9,11 +9,7 @@ public record RideEntity(
     Guid? VehicleId,
     string? Note,
     string FromName,
-    double FromLatitude,
-    double FromLongitude,
-    string ToName,
-    double ToLatitude,
-    double ToLongitude
+    string ToName
 ) : IEntity
 {
     public VehicleEntity? Vehicle { get; init; }

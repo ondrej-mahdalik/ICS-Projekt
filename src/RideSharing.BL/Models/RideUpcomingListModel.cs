@@ -17,7 +17,7 @@ public record RideUpcomingListModel(
     public int SharedSeats { get; set; } = SharedSeats;
     public int OccupiedSeats { get; set; }
     public bool IsDriver { get; set; }
-    public VehicleListModel Vehicle { get; set; }
+    public VehicleListModel? Vehicle { get; set; }
 
     public class MapperProfile : Profile
     {

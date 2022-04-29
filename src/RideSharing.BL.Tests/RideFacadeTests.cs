@@ -25,11 +25,7 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
     {
         var ride = new RideDetailModel(
             "Praha",
-            50.073658,
-            14.418540,
             "Brno",
-            49.195061,
-            16.606836,
             203,
             4,
             new DateTime(2022, 3, 25, 09, 04, 00),
@@ -74,11 +70,7 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
     {
         var ride = new RideDetailModel(
             "Wien",
-            48.20849,
-            16.37208,
             "Milan",
-            45.464664,
-            9.188540,
             861,
             3,
             new DateTime(2022, 03, 26, 11, 40, 00),
@@ -108,11 +100,7 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
         // Arrange
         var ride = new RideDetailModel(
             RideSeeds.BrnoBratislava.FromName,
-            RideSeeds.BrnoBratislava.FromLatitude,
-            RideSeeds.BrnoBratislava.FromLongitude,
             RideSeeds.BrnoBratislava.ToName,
-            RideSeeds.BrnoBratislava.ToLatitude,
-            RideSeeds.BrnoBratislava.ToLongitude,
             RideSeeds.BrnoBratislava.Distance,
             Departure: RideSeeds.BrnoBratislava.Departure,
             Arrival: RideSeeds.BrnoBratislava.Arrival,
@@ -133,8 +121,6 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
 
         // Act
         ride.ToName = "Ostrava";
-        ride.ToLatitude = 49.820923;
-        ride.ToLongitude = 18.262524;
         await _rideFacadeSUT.SaveAsync(ride);
 
         // Assert

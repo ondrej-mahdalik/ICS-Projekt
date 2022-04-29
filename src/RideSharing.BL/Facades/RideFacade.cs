@@ -15,14 +15,14 @@ public class RideFacade : CRUDFacade<RideEntity, RideRecentListModel, RideDetail
         await using var uow = UnitOfWorkFactory.Create();
         var dbSet = uow.GetRepository<RideEntity>().Get();
         var ride = await dbSet
-            .Include(ride => ride.Vehicle)
-            .Include(ride => ride.Reservations)
-            .SingleOrDefaultAsync(ride => ride.Id == id);
+            .Include(x => x.Vehicle)
+            .SingleOrDefaultAsync(x => x.Id == id);
         var model = Mapper.Map<RideDetailModel>(ride);
-        if (ride is null)
+        if (model?.Vehicle is null)
             return null;
 
-        model.OccupiedSeats = ride.Reservations.Sum(x => x.Seats);
+        var reservations = await uow.GetRepository<ReservationEntity>().Get().Where(x => x.RideId == id).ToListAsync();
+        model.OccupiedSeats = reservations.Sum(x => x.Seats);
 
         return model;
     }
@@ -101,7 +101,7 @@ public class RideFacade : CRUDFacade<RideEntity, RideRecentListModel, RideDetail
 
         foreach (var ride in rideModels)
         {
-            ride.OccupiedSeats = await uow.GetRepository<ReservationEntity>().Get().Where(x => x.RideId == ride.Id).SumAsync(x => x.Seats) + ride.Vehicle.Seats - ride.SharedSeats;
+            ride.OccupiedSeats = await uow.GetRepository<ReservationEntity>().Get().Where(x => x.RideId == ride.Id).SumAsync(x => x.Seats);
             ride.IsDriver = await dbSet.Include(x => x.Vehicle).AnyAsync(x => x.Id == ride.Id && x.Vehicle!.OwnerId == userId);
         }
         return rideModels;
