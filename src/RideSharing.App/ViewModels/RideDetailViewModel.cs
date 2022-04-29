@@ -63,14 +63,14 @@ namespace RideSharing.App.ViewModels
         {
             ReservationDetailModel Reservation = new ReservationDetailModel(DateTime.Now, seats)
             {
-                ReservingUser = await _userFacade.GetAsync(userId),
+              //  ReservingUser = await _userFacade.GetAsync(userId),
                 Ride = DetailModel
             };
 
-            if (DetailModel.SharedSeats - DetailModel.)
-            {
+            //if (DetailModel.SharedSeats - DetailModel.)
+            //{
 
-            }
+            //}
             throw new NotImplementedException();
         }
     }
