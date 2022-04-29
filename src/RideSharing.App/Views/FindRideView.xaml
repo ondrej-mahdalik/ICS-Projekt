@@ -111,6 +111,7 @@
                                                  Padding="10px">
                                 <Grid HorizontalAlignment="Stretch">
                                     <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
                                         <RowDefinition />
                                         <RowDefinition />
                                         <RowDefinition />
@@ -120,7 +121,8 @@
                                         <ColumnDefinition />
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock FontWeight="Bold">
+                                    <TextBlock Grid.ColumnSpan="3" Style="{StaticResource MaterialDesignCaptionTextBlock}" Margin="0 0 0 5px" Text="{Binding Departure, StringFormat=D}"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="0" FontWeight="Bold">
                                         <TextBlock.Text>
                                             <MultiBinding StringFormat="{}{0} {1}">
                                                 <Binding Path="Vehicle.Owner.Name" />
@@ -128,7 +130,7 @@
                                             </MultiBinding>
                                         </TextBlock.Text>
                                     </TextBlock>
-                                    <StackPanel Grid.Row="0"
+                                    <StackPanel Grid.Row="1"
                                                 Grid.Column="1"
                                                 Grid.ColumnSpan="2"
                                                 HorizontalAlignment="Right"
@@ -138,35 +140,37 @@
                                                                   Margin="5px -5px 5px 0px"/>
                                         <TextBlock Text="{Binding ReviewCount, StringFormat='{}{0} reviews'}" />
                                     </StackPanel>
-                                    <controls:FromToBlock Grid.Row="1"
+                                    <controls:FromToBlock Grid.Row="2"
                                                           Grid.Column="0"
                                                           FromName="{Binding FromName}"
                                                           ToName="{Binding ToName}"
                                                           Departure="{Binding Departure}"
                                                           Arrival="{Binding Arrival}"
                                     />
-                                    <TextBlock Grid.Row="1"
+                                    
+                                    <TextBlock Grid.Row="2"
                                            Grid.Column="1"
-                                           VerticalAlignment="Center"
-                                           HorizontalAlignment="Center"
-                                           Text="{Binding Distance, StringFormat='{}{0} km'}" />
-                                    <TextBlock Grid.Row="1"
-                                           Grid.Column="2"
                                            VerticalAlignment="Center"
                                            HorizontalAlignment="Center"
                                            Text="{Binding Duration, Converter={StaticResource TimespanToStringConverter}}" />
                                     <TextBlock Grid.Row="2"
+                                               Grid.Column="2"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Center"
+                                               Text="{Binding Distance, StringFormat='{}{0} km'}" />
+                                    <TextBlock Grid.Row="3"
                                                Grid.Column="0"
                                                VerticalAlignment="Center">
                                         <TextBlock.Text>
                                             <MultiBinding StringFormat="Occupancy: {0}/{1}">
                                                 <Binding Path="OccupiedSeats" />
-                                                <Binding Path="Vehicle!.Seats" />
+                                                <Binding Path="Vehicle.Seats" />
                                             </MultiBinding>
                                         </TextBlock.Text>
                                     </TextBlock>
-                                           <!--TODO: Vehicle Icon-->
-                                    <Button Grid.Row="2"
+                                    <controls:VehicleIcon Grid.Column="1" Grid.Row="3" VehicleType="{Binding Vehicle.VehicleType}"/>
+                                    <TextBlock Grid.Row="3" Grid.Column="0"/>
+                                    <Button Grid.Row="3"
                                             Grid.Column="2"
                                             Style="{StaticResource MaterialDesignOutlinedButton}"
                                             Command="{Binding Command}">Details</Button>
