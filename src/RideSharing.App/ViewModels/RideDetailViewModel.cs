@@ -8,96 +8,69 @@ using RideSharing.App.Services.MessageDialog;
 using RideSharing.App.ViewModels;
 using RideSharing.App.Wrappers;
 using RideSharing.BL.Facades;
+using RideSharing.BL.Models;
 
 namespace RideSharing.App.ViewModels
 {
     public class RideDetailViewModel : ViewModelBase, IRideDetailViewModel
     {
         private readonly RideFacade _rideFacade;
+        private readonly UserFacade _userFacade;
         private readonly IMediator _mediator;
         private readonly IMessageDialogService _messageDialogService;
 
         public RideDetailViewModel(
             RideFacade rideFacade,
+            UserFacade userFacade,
             IMediator mediator,
             IMessageDialogService messageDialogService)
         {
             _rideFacade = rideFacade;
+            _userFacade = userFacade;
             _mediator = mediator;
             _messageDialogService = messageDialogService;
 
-            DeleteRideCommand = new AsyncRelayCommand(DeleteAsync);
-            SaveCommand = new AsyncRelayCommand(SaveAsync, CanSave);
-            UserReservationCommand = new AsyncRelayCommand<int>(CreateReservationAsync);
+            UserReservationCommand = new AsyncRelayCommand<ushort>(CreateReservationAsync);
         }
-        public RideWrapper? Vehicle { get; private set; }
+        public RideWrapper? DetailModel { get; private set; }
 
-        public ICommand SaveCommand { get; }
-        public ICommand DeleteRideCommand { get; }
         public ICommand UserReservationCommand { get; }
 
-        public RideWrapper? Ride { get; private set; }
 
         public bool MapEnabled { get; set; }
 
-        private bool CanSave() => Ride?.IsValid ?? false;
 
 
-        public async Task SaveAsync()
+        public Task SaveAsync()
         {
-            if (Ride == null)
-            {
-                throw new InvalidOperationException("Cannot save null model");
-            }
-
-            Ride = await _rideFacade.SaveAsync(Ride);
-             _mediator.Send(new UpdateMessage<RideWrapper> { Model = Ride });
+            throw new NotImplementedException();
 
         }
 
         public async Task LoadAsync(Guid rideId)
         {
             MapEnabled = false;
-            Ride = await _rideFacade.GetAsync(rideId) ?? throw new InvalidOperationException("Failed to load the selected ride");
+            DetailModel = await _rideFacade.GetAsync(rideId) ?? throw new InvalidOperationException("Failed to load the selected ride");
             MapEnabled = true;
         }
 
-        public async Task DeleteAsync()
+        public Task DeleteAsync()
         {
-            if (Ride == null)
-            {
-                throw new InvalidOperationException("Null model cannot be deleted");
-            }
-
-            var delete = _messageDialogService.Show(
-                    $"Delete",
-                    $"Do you want to delete this ride?.",
-                    MessageDialogButtonConfiguration.YesNo,
-                    MessageDialogResult.No);
-
-            if (delete == MessageDialogResult.No) return;
-
-            try
-            {
-                await _rideFacade.DeleteAsync(Ride!.Id);
-            }
-            catch
-            {
-                var _ = _messageDialogService.Show(
-                       $"Deleting of the ride failed!",
-                       "Deleting failed",
-                       MessageDialogButtonConfiguration.OK,
-                       MessageDialogResult.OK);
-            }
-
-            _mediator.Send(new DeleteMessage<RideWrapper>
-            {
-                Model = Ride
-            });
+            throw new NotImplementedException();
         }
 
-        public async Task CreateReservationAsync(int seats)
+        public async Task CreateReservationAsync(ushort seats)
         {
+            ReservationDetailModel Reservation = new ReservationDetailModel(DateTime.Now, seats)
+            {
+                ReservingUser = await _userFacade.GetAsync(userId),
+                Ride = DetailModel
+            };
+
+            if (DetailModel.SharedSeats - DetailModel.)
+            {
+
+            }
             throw new NotImplementedException();
         }
     }
