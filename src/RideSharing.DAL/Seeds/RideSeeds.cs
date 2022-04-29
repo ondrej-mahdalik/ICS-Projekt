@@ -55,6 +55,30 @@ public static class RideSeeds
         Note: "There will be a dog in the car."
     );
 
+    public static readonly RideEntity TynecOlomouc = new(
+        Guid.Parse("31fa8947-bc4e-4316-aa5b-d0bbf879b5ee"),
+        FromName: "Velký Týnec",
+        ToName: "Olomouc",
+        Distance: 15,
+        SharedSeats: 1,
+        Departure: DateTime.Parse("06/04/2020 15:00", CultureInfo.InvariantCulture),
+        Arrival: DateTime.Parse("06/04/2020 18:00", CultureInfo.InvariantCulture),
+        VehicleId: VehicleSeeds.Bicycle.Id,
+        Note: "Take your own bicycle helmet."
+    );
+
+    public static readonly RideEntity TynecPraha = new(
+        Guid.Parse("28cd9961-b5bb-4064-88fa-2bc907f69b06"),
+        FromName: "Velký Týnec",
+        ToName: "Praha",
+        Distance: 288,
+        SharedSeats: 7,
+        Departure: DateTime.Parse("2021-02-05 12:00", CultureInfo.InvariantCulture),
+        Arrival: DateTime.Parse("2021-02-15 14:00", CultureInfo.InvariantCulture),
+        VehicleId: VehicleSeeds.Van.Id,
+        Note: "We may need to do some repairs on the way. Bring a screwdriver and a hammer."
+    );
+
     static RideSeeds()
     {
         //PrahaBrno.Reservations.Add(ReservationSeeds.BrnoTwoSeats);
@@ -64,7 +88,7 @@ public static class RideSeeds
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<RideEntity>().HasData(
-            PrahaBrno, BrnoOstrava, OlomoucOstrava, OlomoucBrno
+            PrahaBrno, BrnoOstrava, OlomoucOstrava, OlomoucBrno, TynecOlomouc, TynecPraha
         );
     }
 }

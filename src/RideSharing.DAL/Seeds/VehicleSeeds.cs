@@ -27,10 +27,40 @@ public static class VehicleSeeds
         20,
         "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Jablonec_nad_Nisou%2C_autobusov%C3%A9_n%C3%A1dra%C5%BE%C3%AD%2C_bus_Karosa.jpg/800px-Jablonec_nad_Nisou%2C_autobusov%C3%A9_n%C3%A1dra%C5%BE%C3%AD%2C_bus_Karosa.jpg?20080920210004");
 
+    public static readonly VehicleEntity YBR125 = new(
+        Guid.Parse("3a58f7bf-458a-4115-9c74-a7f0f0c4b7c7"),
+        UserSeeds.JohnDoe.Id,
+        VehicleType.Motorcycle,
+        "Yamaha",
+        "YBR125",
+        DateTime.Parse("04/16/2004", CultureInfo.InvariantCulture),
+        2,
+        "http://img.motorkari.cz/upload/images/bazar/2022-04-0/8956720.jpg" );
+
+    public static readonly VehicleEntity Bicycle = new(
+        Guid.Parse("4202e1f6-81ff-4938-84a6-9398b162c69a"),
+        UserSeeds.PavelNovak.Id,
+        VehicleType.Bicycle,
+        "Favorit",
+        "F7",
+        DateTime.Parse("06/11/1986", CultureInfo.InvariantCulture),
+        2,
+        "https://cdn.aukro.cz/images/sk1640886041602/730x548/jizdni-kolo-favorit-114653837.jpeg" );
+
+    public static readonly VehicleEntity Van = new(
+        Guid.Parse("3fa8a24e-a370-48ad-91f1-5f3713828d20"),
+        UserSeeds.PavelNovak.Id,
+        VehicleType.Van,
+        "Volkswagen",
+        "T1",
+        DateTime.Parse("06/11/1968", CultureInfo.InvariantCulture),
+        8,
+        "https://www.bazos.cz/img/1/430/151570430.jpg");
+
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<VehicleEntity>().HasData(
-            Felicia, Karosa
+            Felicia, Karosa, YBR125, Bicycle, Van
         );
     }
 }

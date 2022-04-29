@@ -55,11 +55,44 @@ public static class ReservationSeeds
         DateTime.Parse("12/25/2021 12:00", CultureInfo.InvariantCulture)
     );
 
+    public static readonly ReservationEntity TynecOlomoucElonTusk = new(
+        Guid.Parse("573c268e-296e-43fa-bb5b-83da3b250416"),
+        UserSeeds.ElonTusk.Id,
+        RideSeeds.TynecOlomouc.Id,
+        1,
+        DateTime.Parse("06/03/2020 15:00", CultureInfo.InvariantCulture)
+    );
+
+    public static readonly ReservationEntity TynecPrahaElonTusk = new(
+        Id: Guid.Parse("70a1898b-6d84-458e-aa02-ccfa09856fb6"),
+        UserSeeds.ElonTusk.Id,
+        RideSeeds.TynecPraha.Id,
+        2,
+        DateTime.Parse("2021-02-02 12:00", CultureInfo.InvariantCulture)
+    );
+
+    public static readonly ReservationEntity TynecPrahaJohnDoe = new(
+        Id: Guid.Parse("d3c0e43e-e695-484f-b15e-9d9ccc86b85a"),
+        UserSeeds.JohnDoe.Id,
+        RideSeeds.TynecPraha.Id,
+        1,
+        DateTime.Parse("2021-02-01 18:25", CultureInfo.InvariantCulture)
+    );
+
+    public static readonly ReservationEntity TynecPrahaJanNovotny = new(
+        Id: Guid.Parse("1fc8fb6a-22f7-41c0-b355-3f343a9db1c8"),
+        UserSeeds.JanNovotny.Id,
+        RideSeeds.TynecPraha.Id,
+        1,
+        DateTime.Parse("2021-02-02 11:00", CultureInfo.InvariantCulture)
+    );
+
+
 
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ReservationEntity>().HasData(
-            BrnoTwoSeats, OlomoucOstravaJohnDoe, OlomoucBrnoJohnDoe, OlomoucOstravaJanNovotny, PrahaBrnoPavelNovak, OlomoucOstravaPavelNovak
+            BrnoTwoSeats, OlomoucOstravaJohnDoe, OlomoucBrnoJohnDoe, OlomoucOstravaJanNovotny, PrahaBrnoPavelNovak, OlomoucOstravaPavelNovak, TynecOlomoucElonTusk, TynecPrahaElonTusk, TynecPrahaJohnDoe, TynecPrahaJanNovotny
         );
     }
 }
