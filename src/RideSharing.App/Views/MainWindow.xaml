@@ -9,7 +9,7 @@
         d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
         mc:Ignorable="d"
         Title="MainWindow"
-        Height="600"
+        Height="660"
         Width="1000"
         Style="{StaticResource MaterialDesignWindow}"
         TextElement.FontWeight="Medium"
@@ -82,7 +82,8 @@
                                  GroupName="Menu"
                                  Foreground="{StaticResource MaterialDesignLightForeground}"
                                  Command="{Binding LogOutCommand}"
-                                 Cursor="Hand">Log Out
+                                 Cursor="Hand"
+                                 Click="RadioButton_Click">Log Out
                     </RadioButton>
                 </StackPanel>
             </Grid>

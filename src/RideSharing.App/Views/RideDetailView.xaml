@@ -10,37 +10,133 @@
                        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
                        mc:Ignorable="d"
                        FontSize="14"
-                       d:DesignHeight="450" d:DesignWidth="800"
+                       d:DesignHeight="600" d:DesignWidth="1000"
                        Background="{StaticResource MaterialDesignLightBackground}"
                        d:DataContext="{d:DesignInstance viewModels:RideDetailViewModel}">
 
     <Grid x:Name="Root">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.ColumnSpan="2" TextAlignment="Center" Style="{StaticResource MaterialDesignHeadline4TextBlock}">Detail of upcoming ride</TextBlock>
-        <materialDesign:Card Grid.Row="1" Grid.Column="0" Padding="20px">
-            <StackPanel>
-                <controls:FromToBlock x:Name="FromToBlock"
-                                      FromName="Brno"
-                                      ToName="Prague"
-                                      Departure="12:00"
-                                      Arrival="14:00"
-                                      FontSize="20px"
-                                      HorizontalAlignment="Center"/>
-                <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-                           HorizontalAlignment="Center"
-                           Padding="0px 20px">Route Map</TextBlock>
-                <wv2:WebView2 x:Name="MapView"
-                              Source="https://ondrej-mahdalik.github.io/ridesharing-cdn/EmbedMap/"
-                              IsEnabled="{Binding MapEnabled}"
-                              IsEnabledChanged="MapView_OnIsEnabledChanged"/>
-            </StackPanel>
-        </materialDesign:Card>
+        <TextBlock TextAlignment="Center" Style="{StaticResource MaterialDesignHeadline4TextBlock}">Detail of upcoming ride</TextBlock>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="4*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <materialDesign:Card Grid.RowSpan="2" Padding="20px" Margin="20px 20px 10px 20px">
+                <StackPanel>
+                    <controls:FromToBlock x:Name="FromToBlock"
+                                          FromName="Brno"
+                                          ToName="Prague"
+                                          Departure="12:00"
+                                          Arrival="14:00"
+                                          FontSize="20px"
+                                          HorizontalAlignment="Center"/>
+                    <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                               HorizontalAlignment="Center"
+                               Padding="0px 20px">Route Map</TextBlock>
+                    <wv2:WebView2 x:Name="MapView"
+                                  Height="150px"
+                                  Source="https://ondrej-mahdalik.github.io/ridesharing-cdn/EmbedMap/"
+                                  IsEnabled="{Binding MapEnabled}"
+                                  IsEnabledChanged="MapView_OnIsEnabledChanged"/>
+                    <Grid Margin="0px 40px">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock FontWeight="Bold"
+                                   Text="Distance: 200 km" />
+                        <TextBlock Grid.Column="1" FontWeight="Bold"
+                                   HorizontalAlignment="Right"
+                                   Text="Duration: 2 h" />
+                    </Grid>
+                    <TextBlock FontWeight="Bold" Text="Driver's note:"/>
+                    <materialDesign:Chip HorizontalAlignment="Stretch">
+                        <TextBlock TextAlignment="Center" Text="You can take your cat on board."/>
+                    </materialDesign:Chip>
+                </StackPanel>
+            </materialDesign:Card>
+            <materialDesign:Card Grid.Row="0" Grid.Column="1"
+                                 Padding="20px"
+                                 Margin="10px 20px 20px 10px">
+                <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                    <Image Width="150px" Height="150px"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Stretch="UniformToFill"
+                           Source="https://pbs.twimg.com/profile_images/1443129819122782209/sqba2I3D_400x400.jpg" />
+                        <Grid Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Margin="20px 0px" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Text="John Smith"/>
+                            <StackPanel Grid.Row="1" Margin="20px 20px 20px 0px" Orientation="Horizontal">
+                                <materialDesign:RatingBar  Value="4" Margin="0px -3px 5px 0px"/>
+                                <TextBlock Text="15 reviews"/>
+                            </StackPanel>
+                        </Grid>
+                        <Button Grid.Row="1" Grid.Column="2" VerticalAlignment="Bottom" Style="{StaticResource MaterialDesignOutlinedButton}">Contact driver</Button>
+                    </Grid>
+            </materialDesign:Card>
+            <materialDesign:Card Grid.Row="1"
+                                 Grid.Column="1"
+                                 Padding="20px"
+                                 Margin="10px 10px 20px 20px">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Image Width="150px" HorizontalAlignment="Left" Height="150px" Stretch="UniformToFill"
+                           VerticalAlignment="Top"
+                           Source="https://auta5p.eu/katalog/skoda/felicia_28.jpg" />
+                    <Grid Grid.Column="1"
+                          Grid.ColumnSpan="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <StackPanel>
+                            <TextBlock Margin="20px 0px"
+                                       Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                       Text="Mercedes C-class Silver"></TextBlock>
+                            <TextBlock  Margin="20px 0px"
+                                        Text="Available seats: 3" />
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="20px 0px">
+                            <TextBlock Text="Select number of seats to reserve:"/>
+                            <Slider Minimum="1" Maximum="3" Value="1" Width="150px" HorizontalAlignment="Left" Orientation="Horizontal"/>
+                        </StackPanel>
+                    </Grid>
+                    
+                    <Button Grid.Row="2"
+                            Grid.Column="2"
+                            VerticalAlignment="Bottom"
+                            Style="{StaticResource MaterialDesignOutlinedButton}">Reserve</Button>
+                </Grid>
+            </materialDesign:Card>
+        </Grid>
     </Grid>
 </local:UserControlBase>

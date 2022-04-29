@@ -8,7 +8,7 @@
       xmlns:viewModels="clr-namespace:RideSharing.App.ViewModels"
       xmlns:controls="clr-namespace:RideSharing.App.Controls"
       mc:Ignorable="d"
-      d:DesignHeight="450" d:DesignWidth="900"
+      d:DesignHeight="600" d:DesignWidth="900"
       FontSize="14"
       Background="{StaticResource MaterialDesignLightBackground}"
       d:DataContext="{d:DesignInstance viewModels:FindRideViewModel}">
@@ -123,8 +123,8 @@
                                     <TextBlock FontWeight="Bold">
                                         <TextBlock.Text>
                                             <MultiBinding StringFormat="{}{0} {1}">
-                                                <Binding Path="Vehicle!.Owner!.Name" />
-                                                <Binding Path="Vehicle!.Owner!.Surname" />
+                                                <Binding Path="Vehicle.Owner.Name" />
+                                                <Binding Path="Vehicle.Owner.Surname" />
                                             </MultiBinding>
                                         </TextBlock.Text>
                                     </TextBlock>
