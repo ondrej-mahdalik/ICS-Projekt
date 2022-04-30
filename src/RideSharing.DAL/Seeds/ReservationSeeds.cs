@@ -7,9 +7,9 @@ namespace RideSharing.DAL.Seeds;
 
 public static class ReservationSeeds
 {
-    public static readonly ReservationEntity BrnoTwoSeats = new(
+    public static readonly ReservationEntity PrahaBrnoJanNovotnny = new(
         Guid.Parse("7c6cdd3e-481d-427a-a971-ae306aba8c95"),
-        Seeds.UserSeeds.JohnDoe.Id,
+        Seeds.UserSeeds.JanNovotny.Id,
         RideSeeds.PrahaBrno.Id,
         2,
         DateTime.Parse("03/02/2022 00:00", CultureInfo.InvariantCulture)
@@ -23,9 +23,9 @@ public static class ReservationSeeds
         DateTime.Parse("12/03/2021 12:30", CultureInfo.InvariantCulture)
     );
 
-    public static readonly ReservationEntity OlomoucBrnoJohnDoe = new(
+    public static readonly ReservationEntity OlomoucBrnoJanNovotny = new(
         Guid.Parse("35773f2e-3dfa-415d-8440-e637a09ac7d1"),
-        Seeds.UserSeeds.JohnDoe.Id,
+        Seeds.UserSeeds.JanNovotny.Id,
         RideSeeds.OlomoucBrno.Id,
         1,
         DateTime.Parse("05/02/2022 13:36", CultureInfo.InvariantCulture)
@@ -92,7 +92,7 @@ public static class ReservationSeeds
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ReservationEntity>().HasData(
-            BrnoTwoSeats, OlomoucOstravaJohnDoe, OlomoucBrnoJohnDoe, OlomoucOstravaJanNovotny, PrahaBrnoPavelNovak, OlomoucOstravaPavelNovak, TynecOlomoucElonTusk, TynecPrahaElonTusk, TynecPrahaJohnDoe, TynecPrahaJanNovotny
+            PrahaBrnoJanNovotnny, OlomoucOstravaJohnDoe, OlomoucBrnoJanNovotny, OlomoucOstravaJanNovotny, PrahaBrnoPavelNovak, OlomoucOstravaPavelNovak, TynecOlomoucElonTusk, TynecPrahaElonTusk, TynecPrahaJohnDoe, TynecPrahaJanNovotny
         );
     }
 }

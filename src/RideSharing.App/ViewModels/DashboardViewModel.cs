@@ -30,11 +30,13 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
 
         mediator.Register<UpdateMessage<RideWrapper>>(RideUpdated);
         mediator.Register<DeleteMessage<RideWrapper>>(RideDeleted);
-        mediator.Register<SelectedMessage<UserWrapper>>(UserLoggedIn);
+        mediator.Register<LoginMessage<UserWrapper>>(UserLoggedIn);
+        mediator.Register<LogoutMessage<UserWrapper>>(ResetViewModel);
+
     }
 
     public string? UserName { get; set; } = "User";
-    private async void UserLoggedIn(SelectedMessage<UserWrapper> obj)
+    private async void UserLoggedIn(LoginMessage<UserWrapper> obj)
     {
         _loggedUserid = obj.Id;
         if (obj.Model is not null)
@@ -105,6 +107,15 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
 
         if (rideListModel is not null)
             _mediator.Send(new SelectedMessage<RideWrapper> { Id = rideListModel.Id});
+    }
+
+    private void ResetViewModel(LogoutMessage<UserWrapper> obj)
+    {
+        _loggedUserid = null;
+        RecentDriverFilter = false;
+        RecentPassengerFilter = false;
+        UpcomingDriverFilter = false;
+        UpcomingPassengerFilter = false;
     }
 
     public async Task LoadAsync()

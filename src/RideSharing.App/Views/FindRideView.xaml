@@ -7,6 +7,7 @@
       xmlns:local="clr-namespace:RideSharing.App.Views"
       xmlns:viewModels="clr-namespace:RideSharing.App.ViewModels"
       xmlns:controls="clr-namespace:RideSharing.App.Controls"
+      xmlns:enums="clr-namespace:RideSharing.Common.Enums;assembly=RideSharing.Common"
       mc:Ignorable="d"
       d:DesignHeight="600" d:DesignWidth="900"
       FontSize="14"
@@ -96,9 +97,30 @@
             <StackPanel Grid.Column="1" Margin="10,0,-10,0">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Label VerticalAlignment="Center">Sort by:</Label>
-                    <RadioButton Style="{StaticResource MaterialDesignChoiceChipPrimaryRadioButton}" IsChecked="True">Duration</RadioButton>
-                    <RadioButton Style="{StaticResource MaterialDesignChoiceChipPrimaryRadioButton}">Distance</RadioButton>
-                    <RadioButton Style="{StaticResource MaterialDesignChoiceChipPrimaryRadioButton}">Rating</RadioButton>
+                    <RadioButton Style="{StaticResource MaterialDesignChoiceChipPrimaryRadioButton}"
+                                 IsChecked="{Binding RideOrder, 
+                                             Converter={StaticResource RideFilterEnumToBoolConverter}, 
+                                             ConverterParameter={x:Static enums:RideSortType.Departure}}">
+                        Departure
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource MaterialDesignChoiceChipPrimaryRadioButton}"
+                                 IsChecked="{Binding RideOrder, 
+                                             Converter={StaticResource RideFilterEnumToBoolConverter}, 
+                                             ConverterParameter={x:Static enums:RideSortType.Duration}}">
+                        Duration
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource MaterialDesignChoiceChipPrimaryRadioButton}"
+                                 IsChecked="{Binding RideOrder, 
+                                             Converter={StaticResource RideFilterEnumToBoolConverter}, 
+                                             ConverterParameter={x:Static enums:RideSortType.Distance}}">
+                        Distance
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource MaterialDesignChoiceChipPrimaryRadioButton}"
+                                 IsChecked="{Binding RideOrder, 
+                                             Converter={StaticResource RideFilterEnumToBoolConverter}, 
+                                             ConverterParameter={x:Static enums:RideSortType.Rating}}">
+                        Rating
+                    </RadioButton>               
                 </StackPanel>
                 <ListView HorizontalContentAlignment="Center"
                           Style="{StaticResource MaterialDesignListViewNoRippleEffect}"
@@ -164,7 +186,7 @@
                                         <TextBlock.Text>
                                             <MultiBinding StringFormat="Occupancy: {0}/{1}">
                                                 <Binding Path="OccupiedSeats" />
-                                                <Binding Path="Vehicle.Seats" />
+                                                <Binding Path="SharedSeats" />
                                             </MultiBinding>
                                         </TextBlock.Text>
                                     </TextBlock>

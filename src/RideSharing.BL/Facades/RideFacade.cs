@@ -65,14 +65,14 @@ public class RideFacade : CRUDFacade<RideEntity, RideRecentListModel, RideDetail
         }
 
         rides = rides.Include(ride => ride.Vehicle).ThenInclude(vehicle => vehicle!.Owner).Where(x => x.Vehicle!.OwnerId != userId);
-        var rideModels = await Mapper.ProjectTo<RideFoundListModel>(rides).ToArrayAsync().ConfigureAwait(false);
+        var rideModels = await Mapper.ProjectTo<RideFoundListModel>(rides.OrderBy(x=>x.Departure)).ToArrayAsync().ConfigureAwait(false);
 
         foreach (var ride in rideModels)
         {
             var reviews = uow.GetRepository<ReviewEntity>().Get().Where(x => x.RideId == ride.Id);
             ride.ReviewCount = await reviews.CountAsync();
             ride.Rating = await reviews.SumAsync(x => x.Rating) / (float) ride.ReviewCount;
-            ride.OccupiedSeats = await uow.GetRepository<ReservationEntity>().Get().Where(x => x.RideId == ride.Id).SumAsync(x => x.Seats) + ride.Vehicle!.Seats - ride.SharedSeats;
+            ride.OccupiedSeats = await uow.GetRepository<ReservationEntity>().Get().Where(x => x.RideId == ride.Id).SumAsync(x => x.Seats);
         }
         return rideModels;
     }
@@ -97,12 +97,12 @@ public class RideFacade : CRUDFacade<RideEntity, RideRecentListModel, RideDetail
                                                                  x.Vehicle != null && x.Vehicle.OwnerId == userId))
         };
 
-        var rideModels = await Mapper.ProjectTo<RideUpcomingListModel>(rides.Include(x=>x.Vehicle)).ToArrayAsync().ConfigureAwait(false);
+        var rideModels = await Mapper.ProjectTo<RideUpcomingListModel>(rides.OrderBy(x => x.Departure)).ToArrayAsync().ConfigureAwait(false);
 
         foreach (var ride in rideModels)
         {
             ride.OccupiedSeats = await uow.GetRepository<ReservationEntity>().Get().Where(x => x.RideId == ride.Id).SumAsync(x => x.Seats);
-            ride.IsDriver = await dbSet.Include(x => x.Vehicle).AnyAsync(x => x.Id == ride.Id && x.Vehicle!.OwnerId == userId);
+            ride.IsDriver = await dbSet.AnyAsync(x => x.Id == ride.Id && x.Vehicle!.OwnerId == userId);
         }
         return rideModels;
     }
@@ -127,11 +127,11 @@ public class RideFacade : CRUDFacade<RideEntity, RideRecentListModel, RideDetail
                 x.Departure <= DateTime.Now && (x.Reservations.Any(y => y.ReservingUserId == userId) ||
                                                 x.Vehicle != null && x.Vehicle.OwnerId == userId))
         };
-        var rideModels = await Mapper.ProjectTo<RideRecentListModel>(rides).ToArrayAsync().ConfigureAwait(false);
+        var rideModels = await Mapper.ProjectTo<RideRecentListModel>(rides.OrderBy(x => x.Departure)).ToArrayAsync().ConfigureAwait(false);
 
         foreach (var ride in rideModels)
         {
-            ride.IsDriver = await dbSet.Include(x => x.Vehicle).AnyAsync(x => x.Id == ride.Id && x.Vehicle!.OwnerId == userId);
+            ride.IsDriver = await dbSet.AnyAsync(x => x.Id == ride.Id && x.Vehicle!.OwnerId == userId);
             ride.HasReviewed = await uow.GetRepository<ReviewEntity>().Get().AnyAsync(x => x.RideId == ride.Id && x.AuthorUserId == userId);
         }
         return rideModels;

@@ -15,6 +15,7 @@
 
             <converters:TimespanToStringConverter x:Key="TimespanToStringConverter"/>
             <converters:FloatToIntConverter x:Key="FloatToIntConverter"/>
+            <converters:RideFilterEnumToBoolConverter x:Key="RideFilterEnumToBoolConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

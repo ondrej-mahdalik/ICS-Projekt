@@ -21,7 +21,7 @@ public static class RideSeeds
 
     public static readonly RideEntity BrnoOstrava = new(
         Guid.Parse("a29fd7d3-bba1-496c-bcbb-5df70a575a9c"),
-        FromName: "Prague",
+        FromName: "Brno",
         ToName: "Ostrava",
         Distance: 350,
         SharedSeats: 4,
@@ -30,6 +30,43 @@ public static class RideSeeds
         VehicleId: VehicleSeeds.Felicia.Id,
         Note: "No eating in the car !"
     );
+
+    public static readonly RideEntity BrnoOstrava2 = new(
+        Guid.Parse("c025a59b-e7a6-45a8-8c73-81eea2780615"),
+        FromName: "Brno",
+        ToName: "Ostrava",
+        Distance: 169,
+        SharedSeats: 4,
+        Departure: DateTime.Parse("11/22/2022 16:00", CultureInfo.InvariantCulture),
+        Arrival: DateTime.Parse("11/22/2022 18:00", CultureInfo.InvariantCulture),
+        VehicleId: VehicleSeeds.Felicia.Id,
+        Note: "No eating in the car !"
+    );
+
+    public static readonly RideEntity BrnoPrague = new(
+        Guid.Parse("49ba15a1-0ce2-43db-bf39-c4bcb9202f60"),
+        FromName: "Brno",
+        ToName: "Prague",
+        Distance: 234,
+        SharedSeats: 4,
+        Departure: DateTime.Parse("10/22/2022 13:00", CultureInfo.InvariantCulture),
+        Arrival: DateTime.Parse("10/22/2022 15:40", CultureInfo.InvariantCulture),
+        VehicleId: VehicleSeeds.Felicia.Id,
+        Note: "No eating in the car !"
+    );
+
+    public static readonly RideEntity BrnoOlomouc = new(
+        Guid.Parse("ddd2cb70-6d85-4e77-8eeb-2e6cccca6b62"),
+        FromName: "Brno",
+        ToName: "Olomouc",
+        Distance: 79,
+        SharedSeats: 4,
+        Departure: DateTime.Parse("9/15/2022 10:00", CultureInfo.InvariantCulture),
+        Arrival: DateTime.Parse("9/15/2022 10:57", CultureInfo.InvariantCulture),
+        VehicleId: VehicleSeeds.Felicia.Id,
+        Note: "No eating in the car !"
+    );
+
 
     public static readonly RideEntity OlomoucOstrava = new(
         Guid.Parse("42a232a6-b668-4567-9b73-71cffb64a075"),
@@ -88,7 +125,7 @@ public static class RideSeeds
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<RideEntity>().HasData(
-            PrahaBrno, BrnoOstrava, OlomoucOstrava, OlomoucBrno, TynecOlomouc, TynecPraha
+            PrahaBrno, BrnoOstrava, OlomoucOstrava, OlomoucBrno, TynecOlomouc, TynecPraha, BrnoOlomouc, BrnoPrague, BrnoOstrava2
         );
     }
 }

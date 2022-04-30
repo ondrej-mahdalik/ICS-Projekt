@@ -11,6 +11,8 @@ namespace RideSharing.App.ViewModels;
 public class MainViewModel : ViewModelBase
 {
     public event EventHandler? OnLogout;
+    private readonly IMediator _mediator;
+
 
     private readonly IFactory<IDashboardViewModel> _dashboardViewModelFactory;
     private readonly IFactory<IFindRideViewModel> _findRideViewModelFactory;
@@ -33,6 +35,7 @@ public class MainViewModel : ViewModelBase
         LogOutCommand = new RelayCommand(LogOut);
         MenuTabCommand = new RelayCommand<string>(MenuTab);
 
+        _mediator = mediator;
         mediator.Register<NewMessage<UserWrapper>>(OnNewUserMessage);
         mediator.Register<SelectedMessage<UserWrapper>>(LoggedIn);
     }
@@ -54,6 +57,7 @@ public class MainViewModel : ViewModelBase
     private void LogOut()
     {
         IsLoggedIn = false;
+        _mediator.Send(new LogoutMessage<UserWrapper>{});
         OnLogout?.Invoke(this, EventArgs.Empty);
     }
 

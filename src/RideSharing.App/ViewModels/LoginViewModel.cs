@@ -32,6 +32,7 @@ public class LoginViewModel : ViewModelBase
 
         mediator.Register<NewMessage<UserWrapper>>(UserAdded);
         mediator.Register<UpdateMessage<UserWrapper>>(UserUpdated);
+
         LoginCommand = new Commands.RelayCommand<Guid>(Login);
 
     }
@@ -71,7 +72,7 @@ public class LoginViewModel : ViewModelBase
     public async void Login(Guid userId)
     {
         Model = await _userFacade.GetAsync(userId);
-        _mediator.Send(new SelectedMessage<UserWrapper> { Model = Model });
+        _mediator.Send(new LoginMessage<UserWrapper> { Model = Model });
         OnLogin?.Invoke(this, EventArgs.Empty);
     }
 
