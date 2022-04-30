@@ -37,7 +37,9 @@ public class MainViewModel : ViewModelBase
 
         _mediator = mediator;
         mediator.Register<NewMessage<UserWrapper>>(OnNewUserMessage);
-        mediator.Register<SelectedMessage<UserWrapper>>(LoggedIn);
+        mediator.Register<LoginMessage<UserWrapper>>(LoggedIn);
+        mediator.Register<LogoutMessage<UserWrapper>>(LoggedOut);
+
     }
 
     private void MenuTab(string? selectedIndex)
@@ -45,11 +47,18 @@ public class MainViewModel : ViewModelBase
         TransitionerSelectedIndex = selectedIndex ?? "0";
     }
 
-    private void LoggedIn(SelectedMessage<UserWrapper> obj)
+    private void LoggedIn(LoginMessage<UserWrapper> obj)
     {
         _loggedUserId = obj.Id;
         TransitionerSelectedIndex = "0";
-        IsLoggedIn = true;
+            IsLoggedIn = true;
+    }
+
+    private void LoggedOut(LogoutMessage<UserWrapper> obj)
+    {
+        _loggedUserId =null;
+        TransitionerSelectedIndex = "0";
+        IsLoggedIn = false;
     }
 
     public bool IsLoggedIn { get; private set; }
