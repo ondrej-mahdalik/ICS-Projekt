@@ -40,6 +40,7 @@ namespace RideSharing.App.ViewModels
         public UserWrapper? Driver { get; private set; }
         public float DriverRating { get; private set; }
         public int TotalNumberOfReviews { get; private set; }
+        public int AvailableSeats { get; private set; }
         public VehicleWrapper? Vehicle { get; private set; }
         public ICommand UserReservationCommand { get; }
 
@@ -63,6 +64,8 @@ namespace RideSharing.App.ViewModels
             var currentRide = await _rideFacade.GetAsync(DetailModel.Id);
             Vehicle = await _vehicleFacade.GetAsync(currentRide.Vehicle.Id);
             Driver = await _userFacade.GetAsync(currentRide.Vehicle.OwnerId);
+
+            AvailableSeats = DetailModel.SharedSeats - DetailModel.OccupiedSeats;
         }
 
         public Task DeleteAsync()
