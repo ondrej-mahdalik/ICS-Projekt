@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using RideSharing.App.Commands;
@@ -16,23 +17,30 @@ namespace RideSharing.App.ViewModels
     {
         private readonly RideFacade _rideFacade;
         private readonly UserFacade _userFacade;
+        private readonly VehicleFacade _vehicleFacade;
         private readonly IMediator _mediator;
         private readonly IMessageDialogService _messageDialogService;
 
         public RideDetailViewModel(
             RideFacade rideFacade,
             UserFacade userFacade,
+            VehicleFacade vehicleFacade,
             IMediator mediator,
             IMessageDialogService messageDialogService) : base(mediator)
         {
             _rideFacade = rideFacade;
             _userFacade = userFacade;
+            _vehicleFacade = vehicleFacade;
             _mediator = mediator;
             _messageDialogService = messageDialogService;
 
             UserReservationCommand = new AsyncRelayCommand<ushort>(CreateReservationAsync);
         }
         public RideWrapper? DetailModel { get; private set; }
+
+        public UserWrapper? Driver { get; private set; }
+
+        public VehicleWrapper? Vehicle { get; private set; }
 
         public ICommand UserReservationCommand { get; }
 
@@ -53,6 +61,9 @@ namespace RideSharing.App.ViewModels
             DetailModel = await _rideFacade.GetAsync(rideId) ?? throw new InvalidOperationException("Failed to load the selected ride");
             Duration = DetailModel.Arrival - DetailModel.Departure;
             MapEnabled = true;
+            var currentRide = await _rideFacade.GetAsync(DetailModel.Id);
+            Vehicle = await _vehicleFacade.GetAsync(currentRide.Vehicle.Id);
+            Driver = await _userFacade.GetAsync(currentRide.Vehicle.OwnerId);
         }
 
         public Task DeleteAsync()
@@ -64,7 +75,7 @@ namespace RideSharing.App.ViewModels
         {
             ReservationDetailModel Reservation = new ReservationDetailModel(DateTime.Now, seats)
             {
-              //  ReservingUser = await _userFacade.GetAsync(userId),
+                ReservingUser = await _userFacade.GetAsync(LoggedUser.Id),
                 Ride = DetailModel
             };
 

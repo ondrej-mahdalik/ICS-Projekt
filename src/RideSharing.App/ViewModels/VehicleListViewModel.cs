@@ -27,15 +27,12 @@ namespace RideSharing.App.ViewModels
             _mediator = mediator;
             _messageDialogService = messageDialogService;
 
-            // TODO assign commands
             VehicleNewCommand = new RelayCommand(VehicleNew);
             VehicleDeleteCommand = new AsyncRelayCommand<VehicleListModel>(VehicleDelete);
             VehicleEditCommand = new RelayCommand(VehicleEdit);
 
             mediator.Register<UpdateMessage<VehicleWrapper>>(VehicleUpdated);
             mediator.Register<NewMessage<VehicleWrapper>>(VehicleCreated);
-
-            // TODO register mediator for creating
         }
 
         public ICommand VehicleNewCommand { get; }
