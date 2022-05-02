@@ -32,6 +32,9 @@ namespace RideSharing.App.ViewModels
             _messageDialogService = messageDialogService;
 
             UserReservationCommand = new AsyncRelayCommand<ushort>(CreateReservationAsync);
+            ContactDriverCommand = new AsyncRelayCommand(ContactDriver);
+
+            
         }
         public RideWrapper? DetailModel { get; private set; }
         public UserWrapper? Driver { get; private set; }
@@ -40,11 +43,17 @@ namespace RideSharing.App.ViewModels
         public int AvailableSeats { get; private set; }
         public VehicleWrapper? Vehicle { get; private set; }
         public ICommand UserReservationCommand { get; }
+        public ICommand ContactDriverCommand { get; }
 
 
         public bool MapEnabled { get; set; }
 
         public TimeSpan? Duration { get; private set; }
+
+        public void ContactDriver()
+        {
+            throw new NotImplementedException();
+        }
 
         public Task SaveAsync()
         {
