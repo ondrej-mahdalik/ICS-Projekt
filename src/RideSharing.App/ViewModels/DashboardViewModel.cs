@@ -17,16 +17,19 @@ namespace RideSharing.App.ViewModels;
 public class DashboardViewModel : ViewModelBase, IDashboardViewModel
 {
     private readonly RideFacade _rideFacade;
+    private readonly ReviewFacade _reviewFacade;
     private readonly IMediator _mediator;
     private Guid? _loggedUserid;
 
-    public DashboardViewModel(RideFacade rideFacade, IMediator mediator)
+    public DashboardViewModel(RideFacade rideFacade, ReviewFacade reviewFacade, IMediator mediator)
     {
         _rideFacade = rideFacade;
+        _reviewFacade = reviewFacade;
         _mediator = mediator;
 
-        ReviewSubmittedCommand = new RelayCommand(ReviewSubmitted);
-        RideDetailClickedCommand = new RelayCommand<RideRecentListModel>(RideDetailClicked);
+        ReviewSubmittedCommand = new RelayCommand<RideRecentListModel>(ReviewSubmitted);
+        UpcomingRideDetailClickedCommand = new RelayCommand<RideUpcomingListModel>(UpcomingRideDetailClicked);
+        RecentRideDetailClickedCommand = new RelayCommand<RideRecentListModel>(RecentRideDetailClicked);
 
         mediator.Register<UpdateMessage<RideWrapper>>(RideUpdated);
         mediator.Register<DeleteMessage<RideWrapper>>(RideDeleted);
@@ -94,19 +97,31 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
     public ObservableCollection<RideRecentListModel> RecentRides { get; set; } = new();
 
     public ICommand ReviewSubmittedCommand { get; }
-    public ICommand RideDetailClickedCommand { get; } // Same for ride detail and manage buttons
+    public ICommand UpcomingRideDetailClickedCommand { get; }
+    public ICommand RecentRideDetailClickedCommand { get; }
+
 
     private async void RideUpdated(UpdateMessage<RideWrapper> _) => await LoadAsync();
     private async void RideDeleted(DeleteMessage<RideWrapper> _) => await LoadAsync();
 
-    private void ReviewSubmitted() => _mediator.Send(new NewMessage<ReviewWrapper>());
-
-    private void RideDetailClicked(RideRecentListModel? rideListModel)
+    private async void ReviewSubmitted(RideRecentListModel? rideListModel)
     {
-        // TODO choose between Ride Detail and Manage Ride
+        if (rideListModel is null) 
+            return;
 
+        var review = new ReviewDetailModel(rideListModel.Id, _loggedUserid, rideListModel.UserRating);
+        await _reviewFacade.SaveAsync(review);
+    }
+
+    private void UpcomingRideDetailClicked(RideUpcomingListModel? rideListModel)
+    {
         if (rideListModel is not null)
             _mediator.Send(new SelectedMessage<RideWrapper> { Id = rideListModel.Id});
+    }
+    private void RecentRideDetailClicked(RideRecentListModel? rideListModel)
+    {
+        if (rideListModel is not null)
+            _mediator.Send(new SelectedMessage<RideWrapper> { Id = rideListModel.Id });
     }
 
     private void ResetViewModel(LogoutMessage<UserWrapper> obj)

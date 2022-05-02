@@ -109,9 +109,9 @@
                                         Grid.Column="1"
                                         Style="{StaticResource MaterialDesignOutlinedButton}"
                                         materialDesign:RippleAssist.IsDisabled="False"
-                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}},
-                                        Path=DataContext.RideDetailClickedCommand}"
-                                        CommandParameter="{Binding Id}">Details</Button>
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:DashboardView}},
+                                        Path=DataContext.UpcomingRideDetailClickedCommand}"
+                                        CommandParameter="{Binding }">Details</Button>
                             </Grid>
                         </materialDesign:Card>
                     </DataTemplate>
@@ -156,6 +156,21 @@
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
+                                <materialDesign:RatingBar Grid.Row="1"
+                                                          Grid.Column="0"
+                                                          HorizontalAlignment="Left"
+                                                          VerticalAlignment="Bottom"
+                                                          Margin="5px -5px 5px 0px"
+                                                          Value="{Binding UserRating, Mode=TwoWay}"/>
+                                <Button Grid.Row="1"
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Right"
+                                        Margin="0,0,20,0"
+                                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                                        materialDesign:RippleAssist.IsDisabled="False"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:DashboardView}},
+                                        Path=DataContext.ReviewSubmittedCommand}"
+                                        CommandParameter="{Binding }">Submit</Button>
                                 <TextBlock Grid.Row="0"
                                            Grid.Column="1"
                                            VerticalAlignment="Center"
@@ -165,9 +180,9 @@
                                         Grid.Column="1"
                                         Style="{StaticResource MaterialDesignOutlinedButton}"
                                         materialDesign:RippleAssist.IsDisabled="False"
-                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}},
-                                        Path=DataContext.RideDetailClickedCommand}"
-                                        CommandParameter="{Binding Id}">Details</Button>
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:DashboardView}},
+                                        Path=DataContext.RecentRideDetailClickedCommand}"
+                                        CommandParameter="{Binding }">Details</Button>
                             </Grid>
                         </materialDesign:Card>
                     </DataTemplate>

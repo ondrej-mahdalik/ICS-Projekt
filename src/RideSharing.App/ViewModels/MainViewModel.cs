@@ -54,19 +54,15 @@ public class MainViewModel : ViewModelBase
             IsLoggedIn = true;
     }
 
-    private void LoggedOut(LogoutMessage<UserWrapper> obj)
-    {
-        _loggedUserId =null;
-        TransitionerSelectedIndex = "0";
-        IsLoggedIn = false;
-    }
+    private void LoggedOut(LogoutMessage<UserWrapper> obj) => LogOut();
 
     public bool IsLoggedIn { get; private set; }
 
     private void LogOut()
     {
         IsLoggedIn = false;
-        _mediator.Send(new LogoutMessage<UserWrapper>{});
+        TransitionerSelectedIndex = "0";
+        _loggedUserId = null;
         OnLogout?.Invoke(this, EventArgs.Empty);
     }
 

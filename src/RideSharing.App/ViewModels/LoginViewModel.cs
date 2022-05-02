@@ -32,8 +32,9 @@ public class LoginViewModel : ViewModelBase
 
         mediator.Register<NewMessage<UserWrapper>>(UserAdded);
         mediator.Register<UpdateMessage<UserWrapper>>(UserUpdated);
+        mediator.Register<DeleteMessage<UserWrapper>>(UserDeleted);
 
-        LoginCommand = new Commands.RelayCommand<Guid>(Login);
+            LoginCommand = new Commands.RelayCommand<Guid>(Login);
 
     }
 
@@ -60,6 +61,7 @@ public class LoginViewModel : ViewModelBase
 
     private async void UserAdded(NewMessage<UserWrapper> _) => await LoadAsync();
     private async void UserUpdated(UpdateMessage<UserWrapper> _) => await LoadAsync();
+    private async void UserDeleted(DeleteMessage<UserWrapper> _) => await LoadAsync();
 
     public async Task LoadAsync()
     {
