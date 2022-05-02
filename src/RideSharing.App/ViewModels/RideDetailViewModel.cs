@@ -18,7 +18,6 @@ namespace RideSharing.App.ViewModels
         private readonly RideFacade _rideFacade;
         private readonly UserFacade _userFacade;
         private readonly VehicleFacade _vehicleFacade;
-        private readonly ReviewFacade _reviewFacade;
         private readonly IMediator _mediator;
         private readonly IMessageDialogService _messageDialogService;
 
@@ -26,14 +25,12 @@ namespace RideSharing.App.ViewModels
             RideFacade rideFacade,
             UserFacade userFacade,
             VehicleFacade vehicleFacade,
-            ReviewFacade reviewFacade,
             IMediator mediator,
             IMessageDialogService messageDialogService) : base(mediator)
         {
             _rideFacade = rideFacade;
             _userFacade = userFacade;
             _vehicleFacade = vehicleFacade;
-            _reviewFacade = reviewFacade;
             _mediator = mediator;
             _messageDialogService = messageDialogService;
 
