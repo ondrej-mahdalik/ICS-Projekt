@@ -17,10 +17,13 @@ namespace RideSharing.App.Views
 
         private void RatingBar_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<int> e)
         {
-            var ride = (RideRecentListModel)((RatingBar)sender).Tag;
+            var ratingBar = (RatingBar)sender;
+            var ride = (RideRecentListModel)ratingBar.Tag;
             var viewModel = (DashboardViewModel)DataContext;
             if (viewModel.ReviewSubmittedCommand.CanExecute(ride))
+            {
                 viewModel.ReviewSubmittedCommand.Execute(ride);
+            }
         }
     }
 }

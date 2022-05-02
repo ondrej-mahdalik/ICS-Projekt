@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Microsoft.Web.WebView2.Core.Raw;
 using RideSharing.App.Commands;
 using RideSharing.App.Extensions;
 using RideSharing.App.Messages;
 using RideSharing.App.Services;
-using RideSharing.App.ViewModels;
 using RideSharing.App.Wrappers;
 using RideSharing.BL.Facades;
 using RideSharing.BL.Models;
@@ -35,7 +34,6 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
         mediator.Register<DeleteMessage<RideWrapper>>(RideDeleted);
         mediator.Register<LoginMessage<UserWrapper>>(UserLoggedIn);
         mediator.Register<LogoutMessage<UserWrapper>>(ResetViewModel);
-
     }
 
     public string? UserName { get; set; } = "User";
@@ -109,8 +107,12 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
         if (rideListModel is null) 
             return;
 
+        RecentRides.FirstOrDefault(rideListModel).HasReviewed = true;
+
         var review = new ReviewDetailModel(rideListModel.Id, _loggedUserid, rideListModel.UserRating);
         await _reviewFacade.SaveAsync(review);
+
+        await LoadAsync();
     }
 
     private void UpcomingRideDetailClicked(RideUpcomingListModel? rideListModel)
