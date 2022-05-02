@@ -16,6 +16,7 @@
             <converters:TimespanToStringConverter x:Key="TimespanToStringConverter"/>
             <converters:FloatToIntConverter x:Key="FloatToIntConverter"/>
             <converters:RideFilterEnumToBoolConverter x:Key="RideFilterEnumToBoolConverter"/>
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             <BitmapImage x:Key="ProfileDefault"
                          UriSource="Resources/profile_default.png" />
         </ResourceDictionary>

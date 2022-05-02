@@ -161,16 +161,13 @@
                                                           HorizontalAlignment="Left"
                                                           VerticalAlignment="Bottom"
                                                           Margin="5px -5px 5px 0px"
-                                                          Value="{Binding UserRating, Mode=TwoWay}"/>
-                                <Button Grid.Row="1"
-                                        Grid.Column="0"
-                                        HorizontalAlignment="Right"
-                                        Margin="0,0,20,0"
-                                        Style="{StaticResource MaterialDesignOutlinedButton}"
-                                        materialDesign:RippleAssist.IsDisabled="False"
-                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:DashboardView}},
-                                        Path=DataContext.ReviewSubmittedCommand}"
-                                        CommandParameter="{Binding }">Submit</Button>
+                                                          Visibility="{Binding HasReviewed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}"
+                                                          Value="{Binding UserRating, UpdateSourceTrigger=PropertyChanged}"
+                                                          ValueChanged="RatingBar_OnValueChanged"
+                                                          Tag="{Binding}"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0"
+                                           VerticalAlignment="Bottom" Margin="5px 0px" Visibility="{Binding HasReviewed, Converter={StaticResource BoolToVisibilityConverter}}"
+                                           Text="Review submitted."/>
                                 <TextBlock Grid.Row="0"
                                            Grid.Column="1"
                                            VerticalAlignment="Center"
