@@ -19,6 +19,8 @@
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             <BitmapImage x:Key="ProfileDefault"
                          UriSource="Resources/profile_default.png" />
+            <BitmapImage x:Key="VehicleDefault"
+                         UriSource="Resources/vehicle_default.png"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

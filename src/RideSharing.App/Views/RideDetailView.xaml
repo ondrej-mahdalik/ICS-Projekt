@@ -80,7 +80,7 @@
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            Stretch="UniformToFill"
-                           Source="{Binding DetailModel.Driver.ImageUrl, FallbackValue='{StaticResource ProfileDefault}', TargetNullValue='{StaticResource ProfileDefault}'}" />
+                           Source="{Binding Driver.ImageUrl, FallbackValue='{StaticResource ProfileDefault}', TargetNullValue='{StaticResource ProfileDefault}'}" />
                         <Grid Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
@@ -90,17 +90,18 @@
                                    Style="{StaticResource MaterialDesignHeadline6TextBlock}">
                             <TextBlock.Text>
                                 <MultiBinding StringFormat="{}{0} {1}">
-                                    <Binding Path="DetailModel.Driver.Name"/>
-                                    <Binding Path="DetailModel.Driver.Surname"/>
+                                    <Binding Path="Driver.Name" FallbackValue=""/>
+                                    <Binding Path="Driver.Surname" FallbackValue=""/>
                                 </MultiBinding>
                             </TextBlock.Text>
                         </TextBlock>
                             <StackPanel Grid.Row="1" Margin="20px 20px 20px 0px" Orientation="Horizontal">
-                                <materialDesign:RatingBar  Value="{Binding DetailModel.Driver}" Margin="0px -3px 5px 0px" IsReadOnly="True"/>
+                                <materialDesign:RatingBar  Value="{Binding DriverRating, Converter={StaticResource FloatToIntConverter}}" Margin="0px -3px 5px 0px" IsReadOnly="True"/>
                                 <TextBlock />
                             </StackPanel>
                         </Grid>
-                        <Button Grid.Row="1" Grid.Column="2" VerticalAlignment="Bottom" Style="{StaticResource MaterialDesignOutlinedButton}">Contact driver</Button>
+                        <Button Grid.Row="1" Grid.Column="2" VerticalAlignment="Bottom" Style="{StaticResource MaterialDesignOutlinedButton}"
+                            Cursor="Hand">Contact driver</Button>
                     </Grid>
             </materialDesign:Card>
             <materialDesign:Card Grid.Row="1"
@@ -119,7 +120,7 @@
                     </Grid.ColumnDefinitions>
                     <Image Width="150px" HorizontalAlignment="Left" Height="150px" Stretch="UniformToFill"
                            VerticalAlignment="Top"
-                           Source="https://auta5p.eu/katalog/skoda/felicia_28.jpg" />
+                           Source="{Binding Vehicle.ImageUrl, FallbackValue={StaticResource VehicleDefault}, TargetNullValue={StaticResource VehicleDefault}}" />
                     <Grid Grid.Column="1"
                           Grid.ColumnSpan="2">
                         <Grid.RowDefinitions>
@@ -128,8 +129,14 @@
                         </Grid.RowDefinitions>
                         <StackPanel>
                             <TextBlock Margin="20px 0px"
-                                       Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-                                       Text="Mercedes C-class Silver"></TextBlock>
+                                       Style="{StaticResource MaterialDesignHeadline6TextBlock}">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="Vehicle.Make" FallbackValue=""/>
+                                        <Binding Path="Vehicle.Model" FallbackValue=""/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
                             <TextBlock  Margin="20px 0px"
                                         Text="Available seats: 3" />
                         </StackPanel>
@@ -148,3 +155,4 @@
         </Grid>
     </Grid>
 </local:UserControlBase>
+s
