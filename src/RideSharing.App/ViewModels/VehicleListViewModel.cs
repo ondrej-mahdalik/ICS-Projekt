@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.Input;
@@ -18,12 +17,11 @@ namespace RideSharing.App.ViewModels
         private readonly VehicleFacade _vehicleFacade;
         private readonly IMediator _mediator;
         private readonly IMessageDialogService _messageDialogService;
-        private Guid? _userId;
 
         public VehicleListViewModel(
             VehicleFacade vehicleFacade,
             IMediator mediator,
-            IMessageDialogService messageDialogService)
+            IMessageDialogService messageDialogService) : base(mediator)
         {
             _vehicleFacade = vehicleFacade;
             _mediator = mediator;
@@ -36,14 +34,8 @@ namespace RideSharing.App.ViewModels
 
             mediator.Register<UpdateMessage<VehicleWrapper>>(VehicleUpdated);
             mediator.Register<NewMessage<VehicleWrapper>>(VehicleCreated);
-            mediator.Register<SelectedMessage<UserWrapper>>(UserLogged);
 
             // TODO register mediator for creating
-        }
-
-        private void UserLogged(SelectedMessage<UserWrapper> obj)
-        {
-            _userId = obj.Id;
         }
 
         public ICommand VehicleNewCommand { get; }
@@ -63,10 +55,10 @@ namespace RideSharing.App.ViewModels
         public async Task LoadAsync()
         {
             Vehicles.Clear();
-            if (_userId is null)
+            if (LoggedUser is null)
                 return;
 
-            var vehicles = await _vehicleFacade.GetByOwnerAsync(_userId.Value);
+            var vehicles = await _vehicleFacade.GetByOwnerAsync(LoggedUser.Id);
             Vehicles.AddRange(vehicles);
         }
 

@@ -26,10 +26,39 @@ public static class ReviewSeeds
         2
     );
 
+    public static readonly ReviewEntity BadBicycleRide = new(
+        Guid.Parse("79cd988b-b2c3-450d-aa15-394eb8fbe808"),
+        RideSeeds.TynecOlomouc.Id,
+        UserSeeds.ElonTusk.Id,
+        1
+    );
+
+    public static readonly ReviewEntity VanRideElonTusk = new(
+        Guid.Parse("3d3d171d-0d6a-4d2f-a587-59ac49d56003"),
+        RideSeeds.TynecPraha.Id,
+        UserSeeds.ElonTusk.Id,
+        0
+    );
+
+    public static readonly ReviewEntity VanRideJohnDoe = new(
+        Guid.Parse("5ea15a61-49fa-4149-8cbf-5e3189fe1920"),
+        RideSeeds.TynecPraha.Id,
+        UserSeeds.JohnDoe.Id,
+        1
+    );
+
+    public static readonly ReviewEntity VanRideJanNovotny = new(
+        Guid.Parse("718dca06-27e2-4dbb-a882-90650d6398d8"),
+        RideSeeds.TynecPraha.Id,
+        UserSeeds.JanNovotny.Id,
+        0
+    );
+
+
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ReviewEntity>().HasData(
-            Perfect, Bad, Average
+            Perfect, Bad, Average, BadBicycleRide, VanRideElonTusk, VanRideJohnDoe, VanRideJanNovotny
         );
     }
 }

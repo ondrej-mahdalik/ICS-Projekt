@@ -11,6 +11,8 @@ namespace RideSharing.App.ViewModels;
 public class MainViewModel : ViewModelBase
 {
     public event EventHandler? OnLogout;
+    private readonly IMediator _mediator;
+
 
     private readonly IFactory<IDashboardViewModel> _dashboardViewModelFactory;
     private readonly IFactory<IFindRideViewModel> _findRideViewModelFactory;
@@ -22,7 +24,7 @@ public class MainViewModel : ViewModelBase
         IFindRideViewModel findRideViewModel,
         IMediator mediator,
         IFactory<IDashboardViewModel> dashboardViewModelFactory,
-        IFactory<IFindRideViewModel> findRideViewModelFactory)
+        IFactory<IFindRideViewModel> findRideViewModelFactory) : base(mediator)
     {
         _dashboardViewModelFactory = dashboardViewModelFactory;
         _findRideViewModelFactory = findRideViewModelFactory;
@@ -33,8 +35,11 @@ public class MainViewModel : ViewModelBase
         LogOutCommand = new RelayCommand(LogOut);
         MenuTabCommand = new RelayCommand<string>(MenuTab);
 
+        _mediator = mediator;
         mediator.Register<NewMessage<UserWrapper>>(OnNewUserMessage);
-        mediator.Register<SelectedMessage<UserWrapper>>(LoggedIn);
+        mediator.Register<LoginMessage<UserWrapper>>(LoggedIn);
+        mediator.Register<LogoutMessage<UserWrapper>>(LoggedOut);
+
     }
 
     private void MenuTab(string? selectedIndex)
@@ -42,18 +47,22 @@ public class MainViewModel : ViewModelBase
         TransitionerSelectedIndex = selectedIndex ?? "0";
     }
 
-    private void LoggedIn(SelectedMessage<UserWrapper> obj)
+    private void LoggedIn(LoginMessage<UserWrapper> obj)
     {
         _loggedUserId = obj.Id;
         TransitionerSelectedIndex = "0";
-        IsLoggedIn = true;
+            IsLoggedIn = true;
     }
+
+    private void LoggedOut(LogoutMessage<UserWrapper> obj) => LogOut();
 
     public bool IsLoggedIn { get; private set; }
 
     private void LogOut()
     {
         IsLoggedIn = false;
+        TransitionerSelectedIndex = "0";
+        _loggedUserId = null;
         OnLogout?.Invoke(this, EventArgs.Empty);
     }
 

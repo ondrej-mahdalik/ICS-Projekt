@@ -15,6 +15,7 @@ public record RideRecentListModel(
     public DateTime Arrival { get; set; } = Arrival;
     public bool IsDriver { get; set; }
     public bool HasReviewed { get; set; }
+    public ushort UserRating { get; set; } = 0;
 
     public class MapperProfile : Profile
     {
@@ -22,7 +23,8 @@ public record RideRecentListModel(
         {
             CreateMap<RideEntity, RideRecentListModel>()
                 .ForMember(entity => entity.IsDriver, action => action.Ignore())
-                .ForMember(entity => entity.HasReviewed, action => action.Ignore());
+                .ForMember(entity => entity.HasReviewed, action => action.Ignore())
+                .ForMember(entity => entity.UserRating, action => action.Ignore());
 
 
         }

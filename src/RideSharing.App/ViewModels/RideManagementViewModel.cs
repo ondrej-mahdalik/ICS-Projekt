@@ -28,7 +28,7 @@ namespace RideSharing.App.ViewModels
             ReservationFacade reservationFacade,
             VehicleFacade vehicleFacade,
             IMediator mediator,
-            IMessageDialogService messageDialogService)
+            IMessageDialogService messageDialogService) : base(mediator)
         {
             _rideFacade = rideFacade;
             _reservationFacade = reservationFacade;

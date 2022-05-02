@@ -23,7 +23,7 @@ namespace RideSharing.App.ViewModels
             RideFacade rideFacade,
             UserFacade userFacade,
             IMediator mediator,
-            IMessageDialogService messageDialogService)
+            IMessageDialogService messageDialogService) : base(mediator)
         {
             _rideFacade = rideFacade;
             _userFacade = userFacade;
@@ -39,7 +39,7 @@ namespace RideSharing.App.ViewModels
 
         public bool MapEnabled { get; set; }
 
-
+        public TimeSpan? Duration { get; private set; }
 
         public Task SaveAsync()
         {
@@ -51,6 +51,7 @@ namespace RideSharing.App.ViewModels
         {
             MapEnabled = false;
             DetailModel = await _rideFacade.GetAsync(rideId) ?? throw new InvalidOperationException("Failed to load the selected ride");
+            Duration = DetailModel.Arrival - DetailModel.Departure;
             MapEnabled = true;
         }
 

@@ -5,11 +5,7 @@ namespace RideSharing.BL.Models;
 
 public record RideDetailModel(
     string FromName,
-    double FromLatitude,
-    double FromLongitude,
     string ToName,
-    double ToLatitude,
-    double ToLongitude,
     int Distance,
     int SharedSeats,
     DateTime Departure,
@@ -17,16 +13,15 @@ public record RideDetailModel(
     string? Note = null) : ModelBase
 {
     public string FromName { get; set; } = FromName;
-    public double FromLatitude { get; set; } = FromLatitude;
-    public double FromLongitude { get; set; } = FromLongitude;
     public string ToName { get; set; } = ToName;
-    public double ToLatitude { get; set; } = ToLatitude;
-    public double ToLongitude { get; set; } = ToLongitude;
     public int Distance { get; set; } = Distance;
     public int SharedSeats { get; set; } = SharedSeats;
     public DateTime Departure { get; set; } = Departure;
     public DateTime Arrival { get; set; } = Arrival;
     public string? Note { get; set; } = Note;
+
+    public float DriverRating { get; set; }
+    public int DriverReviewCount { get; set; }
 
     public List<ReservationDetailModel> Reservations { get; init; } = new();
     public VehicleListModel? Vehicle { get; set; }
@@ -39,12 +34,13 @@ public record RideDetailModel(
         public MapperProfile()
         {
             CreateMap<RideEntity, RideDetailModel>()
-                .ForMember(entity => entity.Duration, action => action.Ignore())
-                .ForMember(entity => entity.OccupiedSeats, action => action.Ignore())
+                .ForMember(model => model.Duration, action => action.Ignore())
+                .ForMember(model => model.OccupiedSeats, action => action.Ignore())
+                .ForMember(model => model.DriverRating, action => action.Ignore())
+                .ForMember(model => model.DriverReviewCount, action => action.Ignore())
                 .ReverseMap()
-                .ForMember(entity => entity.Vehicle, action => action.Ignore());
-
-
+                .ForMember(entity => entity.Vehicle, action => action.Ignore())
+                .ForMember(entity => entity.Reservations, action => action.Ignore());
         }
     }
 }

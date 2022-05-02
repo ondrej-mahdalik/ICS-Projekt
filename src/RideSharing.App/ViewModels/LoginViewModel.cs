@@ -22,7 +22,7 @@ public class LoginViewModel : ViewModelBase
 
     public LoginViewModel(UserFacade userFacade,
         IMessageDialogService messageDialogService,
-        IMediator mediator)
+        IMediator mediator) : base(mediator)
     {
         _userFacade = userFacade;
         _mediator = mediator;
@@ -32,7 +32,9 @@ public class LoginViewModel : ViewModelBase
 
         mediator.Register<NewMessage<UserWrapper>>(UserAdded);
         mediator.Register<UpdateMessage<UserWrapper>>(UserUpdated);
-        LoginCommand = new Commands.RelayCommand<Guid>(Login);
+        mediator.Register<DeleteMessage<UserWrapper>>(UserDeleted);
+
+            LoginCommand = new Commands.RelayCommand<Guid>(Login);
 
     }
 
@@ -59,6 +61,7 @@ public class LoginViewModel : ViewModelBase
 
     private async void UserAdded(NewMessage<UserWrapper> _) => await LoadAsync();
     private async void UserUpdated(UpdateMessage<UserWrapper> _) => await LoadAsync();
+    private async void UserDeleted(DeleteMessage<UserWrapper> _) => await LoadAsync();
 
     public async Task LoadAsync()
     {
@@ -71,7 +74,7 @@ public class LoginViewModel : ViewModelBase
     public async void Login(Guid userId)
     {
         Model = await _userFacade.GetAsync(userId);
-        _mediator.Send(new SelectedMessage<UserWrapper> { Model = Model });
+        _mediator.Send(new LoginMessage<UserWrapper> { Model = Model });
         OnLogin?.Invoke(this, EventArgs.Empty);
     }
 

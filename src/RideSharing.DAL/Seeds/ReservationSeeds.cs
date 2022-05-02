@@ -7,9 +7,9 @@ namespace RideSharing.DAL.Seeds;
 
 public static class ReservationSeeds
 {
-    public static readonly ReservationEntity BrnoTwoSeats = new(
+    public static readonly ReservationEntity PrahaBrnoJanNovotnny = new(
         Guid.Parse("7c6cdd3e-481d-427a-a971-ae306aba8c95"),
-        Seeds.UserSeeds.JohnDoe.Id,
+        Seeds.UserSeeds.JanNovotny.Id,
         RideSeeds.PrahaBrno.Id,
         2,
         DateTime.Parse("03/02/2022 00:00", CultureInfo.InvariantCulture)
@@ -23,9 +23,9 @@ public static class ReservationSeeds
         DateTime.Parse("12/03/2021 12:30", CultureInfo.InvariantCulture)
     );
 
-    public static readonly ReservationEntity OlomoucBrnoJohnDoe = new(
+    public static readonly ReservationEntity OlomoucBrnoJanNovotny = new(
         Guid.Parse("35773f2e-3dfa-415d-8440-e637a09ac7d1"),
-        Seeds.UserSeeds.JohnDoe.Id,
+        Seeds.UserSeeds.JanNovotny.Id,
         RideSeeds.OlomoucBrno.Id,
         1,
         DateTime.Parse("05/02/2022 13:36", CultureInfo.InvariantCulture)
@@ -55,11 +55,44 @@ public static class ReservationSeeds
         DateTime.Parse("12/25/2021 12:00", CultureInfo.InvariantCulture)
     );
 
+    public static readonly ReservationEntity TynecOlomoucElonTusk = new(
+        Guid.Parse("573c268e-296e-43fa-bb5b-83da3b250416"),
+        UserSeeds.ElonTusk.Id,
+        RideSeeds.TynecOlomouc.Id,
+        1,
+        DateTime.Parse("06/03/2020 15:00", CultureInfo.InvariantCulture)
+    );
+
+    public static readonly ReservationEntity TynecPrahaElonTusk = new(
+        Id: Guid.Parse("70a1898b-6d84-458e-aa02-ccfa09856fb6"),
+        UserSeeds.ElonTusk.Id,
+        RideSeeds.TynecPraha.Id,
+        2,
+        DateTime.Parse("2021-02-02 12:00", CultureInfo.InvariantCulture)
+    );
+
+    public static readonly ReservationEntity TynecPrahaJohnDoe = new(
+        Id: Guid.Parse("d3c0e43e-e695-484f-b15e-9d9ccc86b85a"),
+        UserSeeds.JohnDoe.Id,
+        RideSeeds.TynecPraha.Id,
+        1,
+        DateTime.Parse("2021-02-01 18:25", CultureInfo.InvariantCulture)
+    );
+
+    public static readonly ReservationEntity TynecPrahaJanNovotny = new(
+        Id: Guid.Parse("1fc8fb6a-22f7-41c0-b355-3f343a9db1c8"),
+        UserSeeds.JanNovotny.Id,
+        RideSeeds.TynecPraha.Id,
+        1,
+        DateTime.Parse("2021-02-02 11:00", CultureInfo.InvariantCulture)
+    );
+
+
 
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ReservationEntity>().HasData(
-            BrnoTwoSeats, OlomoucOstravaJohnDoe, OlomoucBrnoJohnDoe, OlomoucOstravaJanNovotny, PrahaBrnoPavelNovak, OlomoucOstravaPavelNovak
+            PrahaBrnoJanNovotnny, OlomoucOstravaJohnDoe, OlomoucBrnoJanNovotny, OlomoucOstravaJanNovotny, PrahaBrnoPavelNovak, OlomoucOstravaPavelNovak, TynecOlomoucElonTusk, TynecPrahaElonTusk, TynecPrahaJohnDoe, TynecPrahaJanNovotny
         );
     }
 }

@@ -11,7 +11,7 @@ namespace RideSharing.App.Wrappers;
 
 public abstract class ModelWrapper<T> : ViewModelBase, IModel, IValidatableObject where T : IModel
 {
-    protected ModelWrapper(T? model)
+    protected ModelWrapper(T? model) : base(null)
     {
         if (model == null)
             throw new ArgumentNullException(nameof(model));
