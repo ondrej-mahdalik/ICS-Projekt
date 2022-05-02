@@ -50,7 +50,7 @@ namespace RideSharing.App.ViewModels
 
         public TimeSpan? Duration { get; private set; }
 
-        public void ContactDriver()
+        public async Task ContactDriver()
         {
             throw new NotImplementedException();
         }
