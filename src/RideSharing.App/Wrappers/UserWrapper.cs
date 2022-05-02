@@ -44,12 +44,12 @@ public class UserWrapper : ModelWrapper<UserDetailModel>
 
     private void InitializeCollectionProperties(UserDetailModel model)
     {
-        if(model.Vehicles != null)
+        if(model.Vehicles.Count > 0)
         {
             Vehicles.AddRange(model.Vehicles.Select(e => new VehicleWrapper(e)));
             RegisterCollection(Vehicles, model.Vehicles);
         }
-        if (model.SubmittedReviews != null)
+        if (model.SubmittedReviews.Count > 0)
         {
             SubmittedReviews.AddRange(model.SubmittedReviews.Select(e => new ReviewWrapper(e)));
             RegisterCollection(SubmittedReviews, model.SubmittedReviews);

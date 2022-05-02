@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using RideSharing.App.Commands;
-using RideSharing.App.Messages;
 using RideSharing.App.Services;
 using RideSharing.App.Services.MessageDialog;
-using RideSharing.App.ViewModels;
 using RideSharing.App.Wrappers;
 using RideSharing.BL.Facades;
 using RideSharing.BL.Models;
@@ -62,6 +59,9 @@ namespace RideSharing.App.ViewModels
             Duration = DetailModel.Arrival - DetailModel.Departure;
             MapEnabled = true;
             var currentRide = await _rideFacade.GetAsync(DetailModel.Id);
+            if (currentRide?.Vehicle is null)
+                return;
+
             Vehicle = await _vehicleFacade.GetAsync(currentRide.Vehicle.Id);
             Driver = await _userFacade.GetAsync(currentRide.Vehicle.OwnerId);
 
@@ -75,7 +75,10 @@ namespace RideSharing.App.ViewModels
 
         public async Task CreateReservationAsync(ushort seats)
         {
-            ReservationDetailModel Reservation = new ReservationDetailModel(DateTime.Now, seats)
+            if (LoggedUser is null || DetailModel is null)
+                return;
+
+            ReservationDetailModel reservation = new ReservationDetailModel(DateTime.Now, seats)
             {
                 ReservingUser = await _userFacade.GetAsync(LoggedUser.Id),
                 Ride = DetailModel
