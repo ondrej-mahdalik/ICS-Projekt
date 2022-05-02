@@ -75,6 +75,12 @@ public class RideWrapper : ModelWrapper<RideDetailModel>
         set => SetValue(value);
     }
 
+    public int OccupiedSeats
+    {
+        get => GetValue<int>();
+        set => SetValue(value);
+    }
+
     public string? Note
     {
         get => GetValue<string>();

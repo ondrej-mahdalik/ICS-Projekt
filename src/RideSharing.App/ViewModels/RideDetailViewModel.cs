@@ -67,10 +67,10 @@ namespace RideSharing.App.ViewModels
                 Ride = DetailModel
             };
 
-            //if (DetailModel.SharedSeats - DetailModel.)
-            //{
-
-            //}
+            if (DetailModel.SharedSeats - DetailModel.OccupiedSeats < seats)
+            {
+                throw new InvalidOperationException("This ride is full");
+            }
             throw new NotImplementedException();
         }
     }
