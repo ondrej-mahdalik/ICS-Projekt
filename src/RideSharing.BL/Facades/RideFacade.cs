@@ -21,8 +21,13 @@ public class RideFacade : CRUDFacade<RideEntity, RideRecentListModel, RideDetail
         if (model?.Vehicle is null)
             return null;
 
-        var reservations = await uow.GetRepository<ReservationEntity>().Get().Where(x => x.RideId == id).ToListAsync();
-        model.OccupiedSeats = reservations.Sum(x => x.Seats);
+        var reservations = uow.GetRepository<ReservationEntity>().Get().Where(x => x.RideId == id);
+        Mapper.ProjectTo<ReservationDetailModel>(reservations);
+
+        var reviews = uow.GetRepository<ReviewEntity>().Get().Where(x => x.RideId == model.Id);
+        model.DriverReviewCount = await reviews.CountAsync();
+        model.DriverRating = await reviews.SumAsync(x => x.Rating) / (float)model.DriverReviewCount;
+        model.OccupiedSeats = await uow.GetRepository<ReservationEntity>().Get().Where(x => x.RideId == model.Id).SumAsync(x => x.Seats);
 
         return model;
     }

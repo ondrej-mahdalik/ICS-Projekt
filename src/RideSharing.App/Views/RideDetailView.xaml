@@ -32,10 +32,10 @@
             <materialDesign:Card Grid.RowSpan="2" Padding="20px" Margin="20px 20px 10px 20px">
                 <StackPanel>
                     <controls:FromToBlock x:Name="FromToBlock"
-                                          FromName="Brno"
-                                          ToName="Prague"
-                                          Departure="12:00"
-                                          Arrival="14:00"
+                                          FromName="{Binding DetailModel.FromName, FallbackValue=''}"
+                                          ToName="{Binding DetailModel.ToName,FallbackValue=''}"
+                                          Departure="{Binding DetailModel.Departure, FallbackValue=''}"
+                                          Arrival="{Binding DetailModel.Arrival, FallbackValue=''}"
                                           FontSize="20px"
                                           HorizontalAlignment="Center"/>
                     <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}"
@@ -52,14 +52,14 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock FontWeight="Bold"
-                                   Text="Distance: 200 km" />
+                                   Text="{Binding DetailModel.Distance, StringFormat='Distance: {0} km', FallbackValue=''}" />
                         <TextBlock Grid.Column="1" FontWeight="Bold"
                                    HorizontalAlignment="Right"
-                                   Text="Duration: 2 h" />
+                                   Text="{Binding Duration, StringFormat='Duration: {0} h'}" />
                     </Grid>
                     <TextBlock FontWeight="Bold" Text="Driver's note:"/>
                     <materialDesign:Chip HorizontalAlignment="Stretch">
-                        <TextBlock TextAlignment="Center" Text="You can take your cat on board."/>
+                        <TextBlock TextAlignment="Center" Text="{Binding DetailModel.Note, FallbackValue='No note.'}"/>
                     </materialDesign:Chip>
                 </StackPanel>
             </materialDesign:Card>
@@ -80,16 +80,24 @@
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            Stretch="UniformToFill"
-                           Source="https://pbs.twimg.com/profile_images/1443129819122782209/sqba2I3D_400x400.jpg" />
+                           Source="{Binding DetailModel.Driver.ImageUrl, FallbackValue='{StaticResource ProfileDefault}', TargetNullValue='{StaticResource ProfileDefault}'}" />
                         <Grid Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <TextBlock Margin="20px 0px" Style="{StaticResource MaterialDesignHeadline6TextBlock}" Text="John Smith"/>
+                        <TextBlock Margin="20px 0px"
+                                   Style="{StaticResource MaterialDesignHeadline6TextBlock}">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0} {1}">
+                                    <Binding Path="DetailModel.Driver.Name"/>
+                                    <Binding Path="DetailModel.Driver.Surname"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
                             <StackPanel Grid.Row="1" Margin="20px 20px 20px 0px" Orientation="Horizontal">
                                 <materialDesign:RatingBar  Value="4" Margin="0px -3px 5px 0px"/>
-                                <TextBlock Text="15 reviews"/>
+                                <TextBlock />
                             </StackPanel>
                         </Grid>
                         <Button Grid.Row="1" Grid.Column="2" VerticalAlignment="Bottom" Style="{StaticResource MaterialDesignOutlinedButton}">Contact driver</Button>
@@ -131,10 +139,10 @@
                         </StackPanel>
                     </Grid>
                     
-                    <Button Grid.Row="2"
+                    <Button Grid.Row="1"
                             Grid.Column="2"
                             VerticalAlignment="Bottom"
-                            Style="{StaticResource MaterialDesignOutlinedButton}">Reserve</Button>
+                            Style="{StaticResource MaterialDesignOutlinedButton}">Create Reservation</Button>
                 </Grid>
             </materialDesign:Card>
         </Grid>
