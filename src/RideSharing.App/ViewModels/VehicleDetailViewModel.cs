@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using RideSharing.App.Commands;
-using RideSharing.App.ViewModels;
 using RideSharing.BL.Facades;
 using RideSharing.App.Services;
 using RideSharing.App.Services.MessageDialog;
@@ -20,7 +19,7 @@ namespace RideSharing.App.ViewModels
         public VehicleDetailViewModel(
             VehicleFacade vehicleFacade,
             IMediator mediator,
-            IMessageDialogService messageDialogService)
+            IMessageDialogService messageDialogService) : base(mediator)
         {
             _vehicleFacade = vehicleFacade;
             _mediator = mediator;

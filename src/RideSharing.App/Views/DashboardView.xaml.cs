@@ -21,9 +21,7 @@ namespace RideSharing.App.Views
             var ride = (RideRecentListModel)ratingBar.Tag;
             var viewModel = (DashboardViewModel)DataContext;
             if (viewModel.ReviewSubmittedCommand.CanExecute(ride))
-            {
                 viewModel.ReviewSubmittedCommand.Execute(ride);
-            }
         }
     }
 }

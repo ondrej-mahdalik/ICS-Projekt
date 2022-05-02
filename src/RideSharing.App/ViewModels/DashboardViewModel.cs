@@ -18,9 +18,8 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
     private readonly RideFacade _rideFacade;
     private readonly ReviewFacade _reviewFacade;
     private readonly IMediator _mediator;
-    private Guid? _loggedUserid;
 
-    public DashboardViewModel(RideFacade rideFacade, ReviewFacade reviewFacade, IMediator mediator)
+    public DashboardViewModel(RideFacade rideFacade, ReviewFacade reviewFacade, IMediator mediator) : base(mediator)
     {
         _rideFacade = rideFacade;
         _reviewFacade = reviewFacade;
@@ -32,19 +31,28 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
 
         mediator.Register<UpdateMessage<RideWrapper>>(RideUpdated);
         mediator.Register<DeleteMessage<RideWrapper>>(RideDeleted);
-        mediator.Register<LoginMessage<UserWrapper>>(UserLoggedIn);
-        mediator.Register<LogoutMessage<UserWrapper>>(ResetViewModel);
     }
 
     public string? UserName { get; set; } = "User";
-    private async void UserLoggedIn(LoginMessage<UserWrapper> obj)
+    public override async void UserLoggedIn(LoginMessage<UserWrapper> obj)
     {
-        _loggedUserid = obj.Id;
+        base.UserLoggedIn(obj);
+
         if (obj.Model is not null)
         {
             UserName = obj.Model.Name;
             await LoadAsync();
         }
+    }
+
+    public override void UserLoggedOut(LogoutMessage<UserWrapper> obj)
+    {
+        base.UserLoggedOut(obj);
+
+        RecentDriverFilter = false;
+        RecentPassengerFilter = false;
+        UpcomingDriverFilter = false;
+        UpcomingPassengerFilter = false;
     }
 
     private bool _upcomingDriverFilter = false;
@@ -104,12 +112,12 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
 
     private async void ReviewSubmitted(RideRecentListModel? rideListModel)
     {
-        if (rideListModel is null) 
+        if (rideListModel is null || LoggedUser is null) 
             return;
 
         RecentRides.FirstOrDefault(rideListModel).HasReviewed = true;
 
-        var review = new ReviewDetailModel(rideListModel.Id, _loggedUserid, rideListModel.UserRating);
+        var review = new ReviewDetailModel(rideListModel.Id, LoggedUser.Id, rideListModel.UserRating);
         await _reviewFacade.SaveAsync(review);
 
         await LoadAsync();
@@ -126,46 +134,37 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
             _mediator.Send(new SelectedMessage<RideWrapper> { Id = rideListModel.Id });
     }
 
-    private void ResetViewModel(LogoutMessage<UserWrapper> obj)
-    {
-        _loggedUserid = null;
-        RecentDriverFilter = false;
-        RecentPassengerFilter = false;
-        UpcomingDriverFilter = false;
-        UpcomingPassengerFilter = false;
-    }
-
     public async Task LoadAsync()
     {
-        if (_loggedUserid is null)
+        if (LoggedUser is null)
             return;
 
         UpcomingRides.Clear();
-        var upcomingRides = await _rideFacade.GetUserUpcomingRidesAsync(_loggedUserid.Value);
+        var upcomingRides = await _rideFacade.GetUserUpcomingRidesAsync(LoggedUser.Id);
         UpcomingRides.AddRange(upcomingRides);
 
         RecentRides.Clear();
-        var recentRides = await _rideFacade.GetUserRecentRidesAsync(_loggedUserid.Value);
+        var recentRides = await _rideFacade.GetUserRecentRidesAsync(LoggedUser.Id);
         RecentRides.AddRange(recentRides);
     }
 
     public async Task LoadUpcomingFilteredRides()
     {
-        if (_loggedUserid is null)
+        if (LoggedUser is null)
             return;
 
         UpcomingRides.Clear();
-        var upcomingRides = await _rideFacade.GetUserUpcomingRidesAsync(_loggedUserid.Value, _upcomingDriverFilter, _upcomingPassengerFilter);
+        var upcomingRides = await _rideFacade.GetUserUpcomingRidesAsync(LoggedUser.Id, _upcomingDriverFilter, _upcomingPassengerFilter);
         UpcomingRides.AddRange(upcomingRides);
     }
 
     public async Task LoadRecentFilteredRides()
     {
-        if (_loggedUserid is null)
+        if (LoggedUser is null)
             return;
 
         RecentRides.Clear();
-        var recentRides = await _rideFacade.GetUserRecentRidesAsync(_loggedUserid.Value, _recentDriverFilter, _recentPassengerFilter);
+        var recentRides = await _rideFacade.GetUserRecentRidesAsync(LoggedUser.Id, _recentDriverFilter, _recentPassengerFilter);
         RecentRides.AddRange(recentRides);
     }
 }

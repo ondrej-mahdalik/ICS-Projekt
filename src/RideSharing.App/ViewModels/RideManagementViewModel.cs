@@ -19,7 +19,7 @@ namespace RideSharing.App.ViewModels
         public RideManagementViewModel(
             RideFacade rideFacade,
             IMediator mediator,
-            IMessageDialogService messageDialogService)
+            IMessageDialogService messageDialogService) : base(mediator)
         {
             _rideFacade = rideFacade;
             _mediator = mediator;

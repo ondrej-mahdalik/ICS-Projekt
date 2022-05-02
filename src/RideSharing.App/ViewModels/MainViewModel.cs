@@ -24,7 +24,7 @@ public class MainViewModel : ViewModelBase
         IFindRideViewModel findRideViewModel,
         IMediator mediator,
         IFactory<IDashboardViewModel> dashboardViewModelFactory,
-        IFactory<IFindRideViewModel> findRideViewModelFactory)
+        IFactory<IFindRideViewModel> findRideViewModelFactory) : base(mediator)
     {
         _dashboardViewModelFactory = dashboardViewModelFactory;
         _findRideViewModelFactory = findRideViewModelFactory;

@@ -22,7 +22,7 @@ public class LoginViewModel : ViewModelBase
 
     public LoginViewModel(UserFacade userFacade,
         IMessageDialogService messageDialogService,
-        IMediator mediator)
+        IMediator mediator) : base(mediator)
     {
         _userFacade = userFacade;
         _mediator = mediator;
