@@ -17,6 +17,7 @@
             <converters:FloatToIntConverter x:Key="FloatToIntConverter"/>
             <converters:RideFilterEnumToBoolConverter x:Key="RideFilterEnumToBoolConverter"/>
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <converters:BoolToReviewMessageConverter x:Key="BoolToReviewMessageConverter"/>
             <BitmapImage x:Key="ProfileDefault"
                          UriSource="/Resources/profile_default.jpg" />
             <BitmapImage x:Key="VehicleDefault"

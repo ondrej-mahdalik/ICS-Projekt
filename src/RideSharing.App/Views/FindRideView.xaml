@@ -77,12 +77,10 @@
                                                SelectedTime="{Binding SelTime}"/>
                     <RadioButton Grid.Row="0"
                                  Grid.Column="2"
-                                 x:Name="DepartureFilter"
                                  Margin="5px 0px"
                                  IsChecked="{Binding SelDeparture}">Departure</RadioButton>
                     <RadioButton Grid.Row="1"
                                  Grid.Column="2"
-                                 x:Name="ArrivalFilter"
                                  Margin="5px 0px">Arrival</RadioButton>
                 </Grid>
                 <Button Grid.Row="3"

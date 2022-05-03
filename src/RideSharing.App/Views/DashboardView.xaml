@@ -36,13 +36,11 @@
                         Orientation="Horizontal"
                         HorizontalAlignment="Center">
                 <Label VerticalAlignment="Center">Filter:</Label>
-                <CheckBox x:Name="CheckBoxUpcomingDriver"
-                          VerticalAlignment="Center"
+                <CheckBox VerticalAlignment="Center"
                           Style="{StaticResource MaterialDesignFilterChipPrimaryCheckBox}"
                           Cursor="Hand"
                           IsChecked="{Binding UpcomingDriverFilter, Mode=TwoWay}">Driver</CheckBox>
-                <CheckBox x:Name="CheckBoxUpcomingPassenger"
-                          VerticalAlignment="Center"
+                <CheckBox VerticalAlignment="Center"
                           Style="{StaticResource MaterialDesignFilterChipPrimaryCheckBox}"
                           IsChecked="{Binding UpcomingPassengerFilter, Mode=TwoWay}">Passenger</CheckBox>
             </StackPanel>
@@ -51,12 +49,10 @@
                         Orientation="Horizontal"
                         HorizontalAlignment="Center">
                 <Label VerticalAlignment="Center">Filter:</Label>
-                <CheckBox x:Name="CheckBoxRecentDriver"
-                          VerticalAlignment="Center"
+                <CheckBox VerticalAlignment="Center"
                           Style="{StaticResource MaterialDesignFilterChipPrimaryCheckBox}"
                           IsChecked="{Binding RecentDriverFilter, Mode=TwoWay}">Driver</CheckBox>
-                <CheckBox x:Name="CheckBoxRecentPassenger"
-                          VerticalAlignment="Center"
+                <CheckBox VerticalAlignment="Center"
                           Style="{StaticResource MaterialDesignFilterChipPrimaryCheckBox}"
                           IsChecked="{Binding RecentPassengerFilter, Mode=TwoWay}">Passenger</CheckBox>
             </StackPanel>
@@ -161,13 +157,13 @@
                                                           HorizontalAlignment="Left"
                                                           VerticalAlignment="Bottom"
                                                           Margin="5px -5px 5px 0px"
-                                                          Visibility="{Binding HasReviewed, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}"
+                                                          Visibility="{Binding CanReview, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}"
                                                           Value="{Binding UserRating, UpdateSourceTrigger=PropertyChanged}"
                                                           ValueChanged="RatingBar_OnValueChanged"
                                                           Tag="{Binding}"/>
                                 <TextBlock Grid.Row="1" Grid.Column="0"
-                                           VerticalAlignment="Bottom" Margin="5px 0px" Visibility="{Binding HasReviewed, Converter={StaticResource BoolToVisibilityConverter}}"
-                                           Text="Review submitted."/>
+                                           VerticalAlignment="Bottom" Margin="5px 0px" Visibility="{Binding CanReview, Converter={StaticResource BoolToVisibilityConverter}}"
+                                           Text="{Binding IsDriver, Converter={StaticResource BoolToReviewMessageConverter}}"/>
                                 <TextBlock Grid.Row="0"
                                            Grid.Column="1"
                                            VerticalAlignment="Center"
