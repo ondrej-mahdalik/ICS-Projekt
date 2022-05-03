@@ -80,6 +80,6 @@ public class LoginViewModel : ViewModelBase
 
     //public override void LoadInDesignMode()
     //{
-    //    Users.Add(new UserListModel("John", "Smith", "700 858 999", "https://ownhubb.com/wp-content/uploads/2021/05/team.jpg"));
+    //    Users.Add(new UserListModel("John", "Smith", "https://ownhubb.com/wp-content/uploads/2021/05/team.jpg"));
     //}
 }
