@@ -37,7 +37,7 @@
                   >
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal"></StackPanel>
+                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"></WrapPanel>
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
@@ -57,6 +57,7 @@
                             </Grid.ColumnDefinitions>
                             <Image Grid.ColumnSpan="2"
                                    Margin="0"
+                                   Width="160px"
                                    Height="150px"
                                    Stretch="UniformToFill"
                                    HorizontalAlignment="Stretch"

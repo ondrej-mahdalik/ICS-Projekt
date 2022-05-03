@@ -21,6 +21,7 @@ public class UserDetailViewModel : ViewModelBase, IUserDetailViewModel
 
     public ICommand DeleteUser { get; }
     public ICommand SaveChanges { get; }
+    public ICommand ChangeImage { get; }
 
     public UserDetailViewModel(UserFacade userFacade, 
         IMessageDialogService messageDialogService,
@@ -33,6 +34,16 @@ public class UserDetailViewModel : ViewModelBase, IUserDetailViewModel
 
         DeleteUser = new RelayCommand(UserDeleted);
         SaveChanges = new AsyncRelayCommand(SaveAsync);
+        ChangeImage = new AsyncRelayCommand<string>(ChangeImageAsync);
+    }
+
+    private async Task ChangeImageAsync(string? filePath)
+    {
+        if (filePath is null || DetailModel is null)
+            return;
+
+        var imageUrl = await UserFacade.UploadImageAsync(filePath);
+        DetailModel.ImageUrl = imageUrl;
     }
 
     public override async void UserLoggedIn(LoginMessage<UserWrapper> obj)

@@ -42,7 +42,8 @@
                    Stretch="UniformToFill"
                    Source="{Binding DetailModel.ImageUrl, FallbackValue={StaticResource ProfileDefault}, TargetNullValue={StaticResource ProfileDefault}}" />
             <Button HorizontalAlignment="Center"
-                    Style="{StaticResource MaterialDesignOutlinedButton}">Upload photo</Button>
+                    Style="{StaticResource MaterialDesignOutlinedButton}"
+                    Click="Button_Click">Upload photo</Button>
             <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="Name"
                      Margin="10px"
