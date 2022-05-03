@@ -40,6 +40,7 @@
                    Margin="10px"
                    Height="150px"
                    Stretch="UniformToFill"
+                   IsEnabled="{Binding UploadingImage, Converter={StaticResource InvertBooleanConverter}}"
                    Source="{Binding DetailModel.ImageUrl, FallbackValue={StaticResource ProfileDefault}, TargetNullValue={StaticResource ProfileDefault}}" />
             <Button HorizontalAlignment="Center"
                     Style="{StaticResource MaterialDesignOutlinedButton}"
@@ -60,6 +61,7 @@
             <Button Style="{StaticResource MaterialDesignOutlinedButton}"
                     HorizontalAlignment="Right"
                     Margin="10px"
+                    IsEnabled="{Binding IsValid}"
                     Command="{Binding SaveChanges}">Save Changes</Button>
         </StackPanel>
     </Grid>

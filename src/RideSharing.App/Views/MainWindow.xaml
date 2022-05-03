@@ -17,7 +17,14 @@
         FontFamily="{materialDesign:MaterialDesignFont}"
         MinWidth="1000"
         MinHeight="600">
-    <Grid>
+    <materialDesign:DialogHost x:Name="DialogHost">
+        <materialDesign:DialogHost.DialogContent>
+            <StackPanel x:Name="ButtonsPanel" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button>yes</Button>
+                <Button>no</Button>
+            </StackPanel>
+        </materialDesign:DialogHost.DialogContent>
+        <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -124,4 +131,5 @@
             </materialDesign:TransitionerSlide>
         </materialDesign:Transitioner>
     </Grid>
+    </materialDesign:DialogHost>
 </Window>

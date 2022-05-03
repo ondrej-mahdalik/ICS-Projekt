@@ -19,6 +19,11 @@ public class UserDetailViewModel : ViewModelBase, IUserDetailViewModel
 
     public UserWrapper? DetailModel { get; private set; }
 
+    public bool IsValid
+    {
+        get => DetailModel is not null && DetailModel.IsValid && !UploadingImage;
+    }
+
     public ICommand DeleteUser { get; }
     public ICommand SaveChanges { get; }
     public ICommand ChangeImage { get; }
@@ -36,14 +41,23 @@ public class UserDetailViewModel : ViewModelBase, IUserDetailViewModel
         SaveChanges = new AsyncRelayCommand(SaveAsync);
         ChangeImage = new AsyncRelayCommand<string>(ChangeImageAsync);
     }
+    public bool UploadingImage { get; private set; }
 
     private async Task ChangeImageAsync(string? filePath)
     {
         if (filePath is null || DetailModel is null)
             return;
 
-        var imageUrl = await UserFacade.UploadImageAsync(filePath);
-        DetailModel.ImageUrl = imageUrl;
+        UploadingImage = true;
+        try
+        {
+            var imageUrl = await UserFacade.UploadImageAsync(filePath);
+            DetailModel.ImageUrl = imageUrl;
+        }
+        finally
+        {
+            UploadingImage = false;
+        }
     }
 
     public override async void UserLoggedIn(LoginMessage<UserWrapper> obj)
