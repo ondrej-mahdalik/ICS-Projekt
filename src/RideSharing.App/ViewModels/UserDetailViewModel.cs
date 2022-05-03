@@ -4,6 +4,7 @@ using System.Windows.Input;
 using RideSharing.App.Commands;
 using RideSharing.App.Messages;
 using RideSharing.App.Services;
+using RideSharing.App.Services.MessageDialog;
 using RideSharing.App.Wrappers;
 using RideSharing.BL.Facades;
 
@@ -13,16 +14,22 @@ public class UserDetailViewModel : ViewModelBase, IUserDetailViewModel
 {
     private readonly UserFacade _userFacade;
     private readonly IMediator _mediator;
+    private readonly IMessageDialogService _messageDialogService;
+
 
     public UserWrapper? DetailModel { get; private set; }
 
     public ICommand DeleteUser { get; }
     public ICommand SaveChanges { get; }
 
-    public UserDetailViewModel(UserFacade userFacade, IMediator mediator) : base(mediator)
+    public UserDetailViewModel(UserFacade userFacade, 
+        IMessageDialogService messageDialogService,
+        IMediator mediator) : base(mediator)
     {
         _userFacade = userFacade;
         _mediator = mediator;
+        _messageDialogService = messageDialogService;
+
 
         DeleteUser = new RelayCommand(UserDeleted);
         SaveChanges = new AsyncRelayCommand(SaveAsync);
@@ -41,7 +48,18 @@ public class UserDetailViewModel : ViewModelBase, IUserDetailViewModel
     {
         if (LoggedUser is null)
             return;
-        
+
+        var delete = _messageDialogService.Show(
+            "Delete profile",
+            $"Do you really want to delete your profile?",
+            MessageDialogButtonConfiguration.DeleteCancel,
+            MessageDialogResult.Cancel);
+
+        if (delete == MessageDialogResult.Cancel)
+        {
+            return;
+        }
+
         await _userFacade.DeleteAsync(LoggedUser.Id);
         _mediator.Send(new DeleteMessage<UserWrapper> { });
         _mediator.Send(new LogoutMessage<UserWrapper> { });
@@ -55,6 +73,18 @@ public class UserDetailViewModel : ViewModelBase, IUserDetailViewModel
     {
         if (DetailModel is null)
             return;
+
+        if (!DetailModel!.IsValid)
+        {
+           _ = _messageDialogService.Show(
+                "Error",
+                $"Couldn't save profile due to invalid values.",
+                MessageDialogButtonConfiguration.OK,
+                MessageDialogResult.OK);
+
+                return;
+
+        }
 
         DetailModel = await _userFacade.SaveAsync(DetailModel);
         _mediator.Send(new UpdateMessage<UserWrapper> { Model = DetailModel });

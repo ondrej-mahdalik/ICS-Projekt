@@ -17,6 +17,8 @@ public class LoginViewModel : ViewModelBase
 {
     private readonly IMediator _mediator;
     private readonly UserFacade _userFacade;
+    private readonly IMessageDialogService _messageDialogService;
+
 
     public event EventHandler? OnLogin;
 
@@ -26,6 +28,7 @@ public class LoginViewModel : ViewModelBase
     {
         _userFacade = userFacade;
         _mediator = mediator;
+        _messageDialogService = messageDialogService;
 
         DeleteUserCommand = new Commands.AsyncRelayCommand<UserListModel>(DeleteUserAsync);
         NewUserCommand = new RelayCommand(NewUser);
@@ -44,12 +47,23 @@ public class LoginViewModel : ViewModelBase
         throw new NotImplementedException();
     }
 
-    private async Task DeleteUserAsync(UserListModel? arg1)
+    private async Task DeleteUserAsync(UserListModel? Model)
     {
-        if (arg1 is null)
+        if (Model is null)
             return;
 
-        await _userFacade.DeleteAsync(arg1.Id);
+        var delete = _messageDialogService.Show(
+            "Delete profile",
+            $"Do you really want to delete profile {Model?.Name} {Model?.Surname}?",
+            MessageDialogButtonConfiguration.DeleteCancel,
+            MessageDialogResult.Cancel);
+
+        if (delete == MessageDialogResult.Cancel)
+        {
+            return;
+        }
+
+        await _userFacade.DeleteAsync(Model.Id);
         await LoadAsync();
     }
 

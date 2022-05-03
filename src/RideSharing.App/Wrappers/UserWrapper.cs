@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.RegularExpressions;
 using RideSharing.App.Extensions;
 using RideSharing.BL.Models;
 
@@ -62,17 +63,20 @@ public class UserWrapper : ModelWrapper<UserDetailModel>
 
     public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
-        if (string.IsNullOrWhiteSpace(Name))
+        Regex letters = new Regex(@"^\p{L}+$");
+        if (!letters.IsMatch(Name))
         {
             yield return new ValidationResult($"{nameof(Name)} is required", new[] { nameof(Name) });
         }
-        if (string.IsNullOrWhiteSpace(Surname))
+        if (!letters.IsMatch(Surname))
         {
             yield return new ValidationResult($"{nameof(Surname)} is required", new[] { nameof(Surname) });
         }
-        if (string.IsNullOrWhiteSpace(Phone))
+
+        Regex phoneFormat = new Regex(@"^\+?[\d \-]{7}[\d \-]*$");
+        if (!phoneFormat.IsMatch(Phone))
         {
-            yield return new ValidationResult($"{nameof(Phone)} is required", new[] { nameof(Phone) });
+            yield return new ValidationResult($"{nameof(Phone)} is invalid", new[] { nameof(Phone) });
         }
     }
 
