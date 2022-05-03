@@ -115,6 +115,7 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
         var review = new ReviewDetailModel(rideListModel.Id, LoggedUser.Id, rideListModel.UserRating);
         await _reviewFacade.SaveAsync(review);
 
+        await Task.Delay(500); // Allow animation to finish
         await LoadAsync();
     }
 
