@@ -31,7 +31,8 @@
                 Style="{StaticResource MaterialDesignOutlinedButton}">Add New Car</Button>
         <ListView Grid.Row="1"
                   Grid.Column="1"
-                  Margin="0px 20px">
+                  Margin="0px 20px"
+                  ItemsSource="{Binding Vehicles}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <materialDesign:Card HorizontalContentAlignment="Stretch"

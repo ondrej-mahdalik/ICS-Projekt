@@ -22,6 +22,12 @@ public class MainViewModel : ViewModelBase
     public MainViewModel(
         IDashboardViewModel dashboardViewModel,
         IFindRideViewModel findRideViewModel,
+        IShareRideViewModel shareRideViewModel,
+        IRideDetailViewModel rideDetailViewModel,
+        IRideManagementViewModel rideManagementViewModel,
+        IUserDetailViewModel userDetailViewModel,
+        IVehicleDetailViewModel vehicleDetailViewModel,
+        IVehicleListViewModel vehicleListViewModel,
         IMediator mediator,
         IFactory<IDashboardViewModel> dashboardViewModelFactory,
         IFactory<IFindRideViewModel> findRideViewModelFactory) : base(mediator)
@@ -31,6 +37,12 @@ public class MainViewModel : ViewModelBase
 
         DashboardViewModel = dashboardViewModel;
         FindRideViewModel = findRideViewModel;
+        ShareRideViewModel = shareRideViewModel;
+        RideDetailViewModel = rideDetailViewModel;
+        RideManagementViewModel = rideManagementViewModel;
+        UserDetailViewModel = userDetailViewModel;
+        VehicleDetailViewModel = vehicleDetailViewModel;
+        VehicleListViewModel = vehicleListViewModel;
 
         LogOutCommand = new RelayCommand(LogOut);
         MenuTabCommand = new RelayCommand<string>(MenuTab);
@@ -68,6 +80,13 @@ public class MainViewModel : ViewModelBase
 
     public IDashboardViewModel DashboardViewModel { get; }
     public IFindRideViewModel FindRideViewModel { get; }
+    public IShareRideViewModel ShareRideViewModel { get; }
+    public IRideDetailViewModel RideDetailViewModel { get; }
+    public IRideManagementViewModel RideManagementViewModel { get; }
+    public IUserDetailViewModel UserDetailViewModel { get; }
+    public IVehicleDetailViewModel VehicleDetailViewModel { get; }
+    public IVehicleListViewModel VehicleListViewModel { get; }
+
 
     public ICommand LogOutCommand { get; }
     public ICommand MenuTabCommand { get; }

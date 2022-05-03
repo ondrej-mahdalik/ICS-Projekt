@@ -12,7 +12,7 @@
                        d:DesignHeight="600"
                        d:DesignWidth="1000"
                        Background="{StaticResource MaterialDesignLightBackground}"
-                       d:DataContext="{d:DesignInstance viewModels:RideManagementViewModel}">
+                       d:DataContext="{d:DesignInstance viewModels:ShareRideViewModel}">
     <Grid x:Name="Root">
         
     </Grid>

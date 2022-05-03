@@ -19,16 +19,18 @@
         MinHeight="600">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
         </Grid.RowDefinitions>
-        <materialDesign:Card Background="{StaticResource MaterialDesignLightSeparatorBackground}" Padding="20px 5px">
+        <materialDesign:Card Background="{StaticResource MaterialDesignLightSeparatorBackground}"
+                             Padding="20px 5px">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <TextBlock Style="{StaticResource MaterialDesignHeadline5TextBlock}" FontWeight="Bold"
+                <TextBlock Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                           FontWeight="Bold"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            Padding="10px 0px">RideSharing
@@ -88,15 +90,37 @@
                 </StackPanel>
             </Grid>
         </materialDesign:Card>
-        <materialDesign:Transitioner Grid.Row="1" x:Name="Transitioner" SelectedIndex="{Binding TransitionerSelectedIndex}"
+        <materialDesign:Transitioner Grid.Row="1"
+                                     x:Name="Transitioner"
+                                     SelectedIndex="{Binding TransitionerSelectedIndex}"
                                      SelectionChanged="Transitioner_OnSelectionChanged">
+
+            <!-- Slides selectable in main menu -->
             <materialDesign:TransitionerSlide>
-                <views:DashboardView x:Name="Dashboard"
-                                     DataContext="{Binding DashboardViewModel}" />
+                <views:DashboardView DataContext="{Binding DashboardViewModel}" />
             </materialDesign:TransitionerSlide>
             <materialDesign:TransitionerSlide>
-                <views:FindRideView x:Name="FindRide"
-                                    DataContext="{Binding FindRideViewModel}" />
+                <views:FindRideView DataContext="{Binding FindRideViewModel}" />
+            </materialDesign:TransitionerSlide>
+            <materialDesign:TransitionerSlide>
+                <views:ShareRideView DataContext="{Binding ShareRideViewModel}" />
+            </materialDesign:TransitionerSlide>
+            <materialDesign:TransitionerSlide>
+                <views:VehicleListView DataContext="{Binding VehicleListViewModel}" />
+            </materialDesign:TransitionerSlide>
+            <materialDesign:TransitionerSlide>
+                <views:UserDetailView DataContext="{Binding UserDetailViewModel}" />
+            </materialDesign:TransitionerSlide>
+
+            <!-- Invisible slides -->
+            <materialDesign:TransitionerSlide>
+                <views:RideDetailView DataContext="{Binding RideDetailViewModel}" />
+            </materialDesign:TransitionerSlide>
+            <materialDesign:TransitionerSlide>
+                <views:RideManagementView DataContext="{Binding RideManagementViewModel}" />
+            </materialDesign:TransitionerSlide>
+            <materialDesign:TransitionerSlide>
+                <views:VehicleDetailView DataContext="{Binding VehicleDetailViewModel}" />
             </materialDesign:TransitionerSlide>
         </materialDesign:Transitioner>
     </Grid>

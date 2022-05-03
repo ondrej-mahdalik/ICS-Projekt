@@ -9,10 +9,12 @@ using RideSharing.BL.Facades;
 
 namespace RideSharing.App.ViewModels;
 
-public class UserDetailViewModel : ViewModelBase
+public class UserDetailViewModel : ViewModelBase, IUserDetailViewModel
 {
     private readonly UserFacade _userFacade;
     private readonly IMediator _mediator;
+
+    public UserWrapper? DetailModel { get; private set; }
 
     public ICommand DeleteUser { get; }
     public ICommand SaveChanges { get; }
@@ -23,18 +25,18 @@ public class UserDetailViewModel : ViewModelBase
         _mediator = mediator;
 
         DeleteUser = new RelayCommand(UserDeleted);
-        SaveChanges = new RelayCommand(SaveAsync);
+        SaveChanges = new AsyncRelayCommand(SaveAsync);
     }
-
-    public UserWrapper? Model { get; set; }
 
     public override async void UserLoggedIn(LoginMessage<UserWrapper> obj)
     {
         base.UserLoggedIn(obj);
-        await LoadAsync();
+
+        if (obj.Model is not null)
+            await LoadAsync(obj.Model.Id);
     }
 
-    private async void UserUpdated(UpdateMessage<UserWrapper> _) => await LoadAsync();
+    private async void UserUpdated(UpdateMessage<UserWrapper> _) => await LoadAsync(DetailModel.Id);
     private async void UserDeleted()
     {
         if (LoggedUser is null)
@@ -45,19 +47,21 @@ public class UserDetailViewModel : ViewModelBase
         _mediator.Send(new LogoutMessage<UserWrapper> { });
     }
     
-    public async Task LoadAsync()
+    public async Task LoadAsync(Guid id)
     {
-        if (LoggedUser is null)
-            return;
-
-        Model = await _userFacade.GetAsync(LoggedUser.Id) ?? throw new InvalidOperationException("Failed to load the selected ride");
+        DetailModel = await _userFacade.GetAsync(id) ?? throw new InvalidOperationException("Failed to load the selected ride");
     }
-    public async void  SaveAsync()
+    public async Task SaveAsync()
     {
-        if (LoggedUser is null && Model is null)
+        if (DetailModel is null)
             return;
 
-        Model = await _userFacade.SaveAsync(Model);
-        _mediator.Send(new UpdateMessage<UserWrapper> { Model = Model });
+        DetailModel = await _userFacade.SaveAsync(DetailModel);
+        _mediator.Send(new UpdateMessage<UserWrapper> { Model = DetailModel });
+    }
+
+    public async Task DeleteAsync()
+    {
+        throw new NotImplementedException();
     }
 }
