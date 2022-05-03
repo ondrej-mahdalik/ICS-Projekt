@@ -137,7 +137,9 @@ public class RideFacade : CRUDFacade<RideEntity, RideRecentListModel, RideDetail
         foreach (var ride in rideModels)
         {
             ride.IsDriver = await dbSet.AnyAsync(x => x.Id == ride.Id && x.Vehicle!.OwnerId == userId);
-            ride.HasReviewed = await uow.GetRepository<ReviewEntity>().Get().AnyAsync(x => x.RideId == ride.Id && x.AuthorUserId == userId);
+            ride.CanReview =
+                !(await uow.GetRepository<ReviewEntity>().Get()
+                    .AnyAsync(x => x.RideId == ride.Id && x.AuthorUserId == userId) || ride.IsDriver);
         }
         return rideModels;
     }
