@@ -14,6 +14,51 @@
                        Background="{StaticResource MaterialDesignLightBackground}"
                        d:DataContext="{d:DesignInstance viewModels:UserDetailViewModel}">
     <Grid x:Name="Root">
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Column="1"
+                   Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                   Text="Edit Profile"
+                   TextAlignment="Center" />
+        <Button Grid.Row="0"
+                Grid.Column="2"
+                HorizontalAlignment="Center"
+                Style="{StaticResource MaterialDesignOutlinedButton}"
+                Command="{Binding DeleteUser}">Delete user</Button>
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1">
+            <Image Width="150px"
+                   HorizontalAlignment="Center"
+                   Margin="10px"
+                   Height="150px"
+                   Stretch="UniformToFill"
+                   Source="{Binding Model.ImageUrl, FallbackValue={StaticResource ProfileDefault}, TargetNullValue={StaticResource ProfileDefault}}" />
+            <Button HorizontalAlignment="Center"
+                    Style="{StaticResource MaterialDesignOutlinedButton}">Upload photo</Button>
+            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="Name"
+                     Margin="10px"
+                     Text="John" />
+            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="Surname"
+                     Margin="10px"
+                     Text="Doe" />
+
+            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="Phone"
+                     Margin="10px"
+                     Text="790 000 000" />
+            <Button Style="{StaticResource MaterialDesignOutlinedButton}"
+                    HorizontalAlignment="Right"
+                    Margin="10px"
+                    Command="{Binding SaveChanges}">Save Changes</Button>
+        </StackPanel>
     </Grid>
 </local:UserControlBase>
