@@ -112,7 +112,7 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
         if (rideListModel is null || LoggedUser is null) 
             return;
 
-        RecentRides.FirstOrDefault(rideListModel).HasReviewed = true;
+        RecentRides.FirstOrDefault(rideListModel).CanReview = false;
 
         var review = new ReviewDetailModel(rideListModel.Id, LoggedUser.Id, rideListModel.UserRating);
         await _reviewFacade.SaveAsync(review);
