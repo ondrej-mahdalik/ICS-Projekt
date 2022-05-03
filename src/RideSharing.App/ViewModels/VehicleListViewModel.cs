@@ -41,7 +41,7 @@ namespace RideSharing.App.ViewModels
 
         private void VehicleNew() => _mediator.Send(new NewMessage<VehicleWrapper>());
 
-        private void VehicleEdit() => _mediator.Send(new SelectedMessage<VehicleWrapper>());
+        private void VehicleEdit() => _mediator.Send(new ManageMessage<VehicleWrapper>());
 
         private async void VehicleUpdated(UpdateMessage<VehicleWrapper> _) => await LoadAsync();
 

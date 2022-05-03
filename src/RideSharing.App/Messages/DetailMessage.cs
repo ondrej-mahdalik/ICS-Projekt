@@ -2,7 +2,7 @@
 
 namespace RideSharing.App.Messages;
 
-public record SelectedMessage<T> : Message<T>
+public record DetailMessage<T> : Message<T>
     where T : IModel
 {
 }

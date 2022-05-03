@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using RideSharing.App.Commands;
+using RideSharing.App.Messages;
 using RideSharing.App.Services;
 using RideSharing.App.Services.MessageDialog;
 using RideSharing.App.Wrappers;
@@ -34,8 +35,11 @@ namespace RideSharing.App.ViewModels
             UserReservationCommand = new AsyncRelayCommand<ushort>(CreateReservationAsync);
             ContactDriverCommand = new AsyncRelayCommand(ContactDriver);
 
-            
+            mediator.Register<DetailMessage<RideWrapper>>(RideSelected);
         }
+
+        
+
         public RideWrapper? DetailModel { get; private set; }
         public UserWrapper? Driver { get; private set; }
         public float DriverRating { get; private set; }
@@ -44,10 +48,11 @@ namespace RideSharing.App.ViewModels
         public VehicleWrapper? Vehicle { get; private set; }
         public ICommand UserReservationCommand { get; }
         public ICommand ContactDriverCommand { get; }
+        public int SelectedSeats { get; set; } = 1;
 
 
         public bool MapEnabled { get; set; }
-
+        public bool ReservationPossible { get; private set; }
         public TimeSpan? Duration { get; private set; }
 
         public async Task ContactDriver()
@@ -59,6 +64,14 @@ namespace RideSharing.App.ViewModels
         {
             throw new NotImplementedException();
 
+        }
+
+        private async void RideSelected(DetailMessage<RideWrapper> obj)
+        {
+            if (obj.Model is null)
+                return;
+
+            await LoadAsync(obj.Model.Id);
         }
 
         public async Task LoadAsync(Guid rideId)
@@ -75,6 +88,7 @@ namespace RideSharing.App.ViewModels
             Driver = await _userFacade.GetAsync(currentRide.Vehicle.OwnerId);
 
             AvailableSeats = DetailModel.SharedSeats - DetailModel.OccupiedSeats;
+            CheckReservationPossibility();
         }
 
         public Task DeleteAsync()
@@ -99,5 +113,15 @@ namespace RideSharing.App.ViewModels
             }
             throw new NotImplementedException();
         }
+
+        private void CheckReservationPossibility()
+        {
+            if (AvailableSeats == 0 || SelectedSeats > AvailableSeats)
+                ReservationPossible = false;
+            else
+                ReservationPossible = true;
+        }
     }
+
+    
 }

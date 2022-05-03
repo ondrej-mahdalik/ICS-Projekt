@@ -10,7 +10,7 @@ namespace RideSharing.App.Wrappers;
 
 public class UserWrapper : ModelWrapper<UserDetailModel>
 {
-    public UserWrapper(UserDetailModel model) : base(model)
+    public UserWrapper(UserDetailModel? model) : base(model)
     {
         InitializeCollectionProperties(model);
     }
@@ -42,8 +42,11 @@ public class UserWrapper : ModelWrapper<UserDetailModel>
     public ObservableCollection<VehicleWrapper> Vehicles { get; set; } = new();
     public ObservableCollection<ReviewWrapper> SubmittedReviews { get; set; } = new();
 
-    private void InitializeCollectionProperties(UserDetailModel model)
+    private void InitializeCollectionProperties(UserDetailModel? model)
     {
+        if (model is null)
+            return;
+
         if(model.Vehicles.Count > 0)
         {
             Vehicles.AddRange(model.Vehicles.Select(e => new VehicleWrapper(e)));

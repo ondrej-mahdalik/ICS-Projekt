@@ -27,7 +27,6 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
 
         ReviewSubmittedCommand = new RelayCommand<RideRecentListModel>(ReviewSubmitted);
         UpcomingRideDetailClickedCommand = new RelayCommand<RideUpcomingListModel>(UpcomingRideDetailClicked);
-        RecentRideDetailClickedCommand = new RelayCommand<RideRecentListModel>(RecentRideDetailClicked);
 
         mediator.Register<UpdateMessage<RideWrapper>>(RideUpdated);
         mediator.Register<DeleteMessage<RideWrapper>>(RideDeleted);
@@ -104,8 +103,6 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
 
     public ICommand ReviewSubmittedCommand { get; }
     public ICommand UpcomingRideDetailClickedCommand { get; }
-    public ICommand RecentRideDetailClickedCommand { get; }
-
 
     private async void RideUpdated(UpdateMessage<RideWrapper> _) => await LoadAsync();
     private async void RideDeleted(DeleteMessage<RideWrapper> _) => await LoadAsync();
@@ -125,13 +122,13 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
 
     private void UpcomingRideDetailClicked(RideUpcomingListModel? rideListModel)
     {
-        if (rideListModel is not null)
-            _mediator.Send(new SelectedMessage<RideWrapper> { Id = rideListModel.Id});
-    }
-    private void RecentRideDetailClicked(RideRecentListModel? rideListModel)
-    {
-        if (rideListModel is not null)
-            _mediator.Send(new SelectedMessage<RideWrapper> { Id = rideListModel.Id });
+        if (rideListModel is null)
+            return;
+
+        if (rideListModel.IsDriver)
+            _mediator.Send(new ManageMessage<RideWrapper> { Id = rideListModel.Id});
+        else
+            _mediator.Send(new DetailMessage<RideWrapper> { Id = rideListModel.Id});
     }
 
     public async Task LoadAsync()
