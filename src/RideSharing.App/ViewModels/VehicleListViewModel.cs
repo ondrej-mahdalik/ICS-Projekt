@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.Input;
@@ -27,9 +28,9 @@ namespace RideSharing.App.ViewModels
             _mediator = mediator;
             _messageDialogService = messageDialogService;
 
-            VehicleNewCommand = new RelayCommand(VehicleNew);
-            VehicleDeleteCommand = new AsyncRelayCommand<VehicleListModel>(VehicleDelete);
-            VehicleEditCommand = new RelayCommand(VehicleEdit);
+            VehicleNewCommand = new RelayCommand(NewVehicle);
+            VehicleDeleteCommand = new AsyncRelayCommand<VehicleListModel>(DeleteVehicle);
+            VehicleEditCommand = new RelayCommand<VehicleListModel>(EditVehicle);
 
             mediator.Register<UpdateMessage<VehicleWrapper>>(VehicleUpdated);
             mediator.Register<NewMessage<VehicleWrapper>>(VehicleCreated);
@@ -39,9 +40,13 @@ namespace RideSharing.App.ViewModels
         public ICommand VehicleDeleteCommand { get; }
         public ICommand VehicleEditCommand { get; }
 
-        private void VehicleNew() => _mediator.Send(new NewMessage<VehicleWrapper>());
+        private void NewVehicle() => _mediator.Send(new NewMessage<VehicleWrapper>());
 
-        private void VehicleEdit() => _mediator.Send(new ManageMessage<VehicleWrapper>());
+        private void EditVehicle(VehicleListModel? model)
+        {
+            if (model is not null)
+                _mediator.Send(new ManageMessage<VehicleWrapper> { Id = model.Id });
+        }
 
         private async void VehicleUpdated(UpdateMessage<VehicleWrapper> _) => await LoadAsync();
 
@@ -65,11 +70,14 @@ namespace RideSharing.App.ViewModels
             Vehicles.AddRange(vehicles);
         }
 
-        public async Task VehicleDelete(VehicleListModel? vehicle)
+        public async Task DeleteVehicle(VehicleListModel? vehicle)
         {
+            if (vehicle is null)
+                return;
+
             try
             {
-                await _vehicleFacade.DeleteAsync(vehicle!.Id);
+                await _vehicleFacade.DeleteAsync(vehicle.Id);
             }
 
             catch
