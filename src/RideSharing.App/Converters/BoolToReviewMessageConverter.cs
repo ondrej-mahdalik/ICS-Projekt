@@ -13,7 +13,7 @@ public class BoolToReviewMessageConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        return value.ToString() == "true" ? "Review submitted." : "You are the driver.";
+        return value.ToString() == "True" ? "You are the driver." : "Review submitted.";
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

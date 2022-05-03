@@ -37,7 +37,7 @@ public static class ReviewSeeds
         Guid.Parse("3d3d171d-0d6a-4d2f-a587-59ac49d56003"),
         RideSeeds.TynecPraha.Id,
         UserSeeds.ElonTusk.Id,
-        0
+        2
     );
 
     public static readonly ReviewEntity VanRideJohnDoe = new(
@@ -51,7 +51,7 @@ public static class ReviewSeeds
         Guid.Parse("718dca06-27e2-4dbb-a882-90650d6398d8"),
         RideSeeds.TynecPraha.Id,
         UserSeeds.JanNovotny.Id,
-        0
+        3
     );
 
 
