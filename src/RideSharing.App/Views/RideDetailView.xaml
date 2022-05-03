@@ -19,7 +19,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock TextAlignment="Center" Style="{StaticResource MaterialDesignHeadline4TextBlock}">Detail of upcoming ride</TextBlock>
+        <TextBlock TextAlignment="Center" Padding="20px" Style="{StaticResource MaterialDesignHeadline4TextBlock}">Detail of upcoming ride</TextBlock>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>

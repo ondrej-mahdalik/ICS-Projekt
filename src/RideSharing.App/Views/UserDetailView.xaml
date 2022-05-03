@@ -25,6 +25,7 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Column="1"
                    Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                   Padding="20px"
                    Text="Edit Profile"
                    TextAlignment="Center" />
         <Button Grid.Row="0"

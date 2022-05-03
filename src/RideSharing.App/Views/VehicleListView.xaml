@@ -24,7 +24,8 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Column="1"
                    Style="{StaticResource MaterialDesignHeadline4TextBlock}"
-                   TextAlignment="Center">Manage Vehicles</TextBlock>
+                   TextAlignment="Center"
+                   Padding="20px">Manage Vehicles</TextBlock>
         <Button Grid.Row="0"
                 Grid.Column="1"
                 HorizontalAlignment="Right"
@@ -32,14 +33,16 @@
         <ListView Grid.Row="1"
                   Grid.Column="1"
                   Margin="0px 20px"
+                  Style="{StaticResource MaterialDesignListViewNoRippleEffect}"
                   ItemsSource="{Binding Vehicles}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <materialDesign:Card HorizontalContentAlignment="Stretch"
+                    <materialDesign:Card HorizontalAlignment="Center"
+                                         HorizontalContentAlignment="Stretch"
                                          VerticalContentAlignment="Stretch"
-                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                          Padding="10px">
-                        <Grid Width="570px">
+                        <Grid Width="500px">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*" />
                                 <ColumnDefinition Width="1*" />
@@ -82,12 +85,15 @@
                                        Text="Registered: 10. 3. 2012" />
                             <Button Grid.Row="0"
                                     Grid.Column="3"
+                                    materialDesign:RippleAssist.IsDisabled="False"
                                     Style="{StaticResource MaterialDesignOutlinedButton}">Edit car</Button>
                             <Button Grid.Row="0"
                                     Grid.Column="3"
+                                    materialDesign:RippleAssist.IsDisabled="False"
                                     Style="{StaticResource MaterialDesignOutlinedButton}">Edit car</Button>
                             <Button Grid.Row="1"
                                     Grid.Column="3"
+                                    materialDesign:RippleAssist.IsDisabled="False"
                                     Style="{StaticResource MaterialDesignOutlinedButton}">Delete car</Button>
                         </Grid>
                     </materialDesign:Card>

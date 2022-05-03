@@ -49,6 +49,12 @@ namespace RideSharing.App.ViewModels
 
         public ObservableCollection<VehicleListModel> Vehicles { get; set; } = new();
 
+        public override async void UserLoggedIn(LoginMessage<UserWrapper> obj)
+        {
+            base.UserLoggedIn(obj);
+            await LoadAsync();
+        }
+
         public async Task LoadAsync()
         {
             Vehicles.Clear();

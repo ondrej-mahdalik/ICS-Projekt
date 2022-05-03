@@ -37,7 +37,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\AddUserView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\RideManagementView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AddCarView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\ShareRideView.xaml.cs">
@@ -58,7 +64,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Views\AddUserView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\RideManagementView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AddCarView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
