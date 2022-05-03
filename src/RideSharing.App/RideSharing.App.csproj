@@ -40,6 +40,9 @@
     <Compile Update="Views\RideManagementView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\ShareRideView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\VehicleDetailView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -56,6 +59,10 @@
 
   <ItemGroup>
     <Page Update="Views\RideManagementView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ShareRideView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
