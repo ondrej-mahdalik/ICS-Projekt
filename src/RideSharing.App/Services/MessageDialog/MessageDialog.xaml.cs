@@ -34,6 +34,7 @@ namespace RideSharing.App.Services.MessageDialog
             MessageDialogButtonConfiguration buttonConfiguration) =>
             buttonConfiguration switch
             {
+                MessageDialogButtonConfiguration.DeleteCancel => new[] { MessageDialogResult.Delete, MessageDialogResult.Cancel },
                 MessageDialogButtonConfiguration.OK => new[] {MessageDialogResult.OK},
                 MessageDialogButtonConfiguration.OKCancel => new[] {MessageDialogResult.OK, MessageDialogResult.Cancel},
                 MessageDialogButtonConfiguration.YesNoCancel => new[] { MessageDialogResult.Yes, MessageDialogResult.No, MessageDialogResult.Cancel},

@@ -2,6 +2,7 @@
 {
     public enum MessageDialogButtonConfiguration
     {
+        DeleteCancel,
         OK,
         OKCancel,
         YesNoCancel,
