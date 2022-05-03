@@ -130,7 +130,8 @@
                             <materialDesign:Card HorizontalContentAlignment="Stretch"
                                                  VerticalContentAlignment="Stretch"
                                                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                                 Padding="10px">
+                                                 Padding="10px"
+                                                 Margin="5px">
                                 <Grid HorizontalAlignment="Stretch">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
