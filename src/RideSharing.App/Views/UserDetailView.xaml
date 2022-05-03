@@ -40,22 +40,22 @@
                    Margin="10px"
                    Height="150px"
                    Stretch="UniformToFill"
-                   Source="{Binding Model.ImageUrl, FallbackValue={StaticResource ProfileDefault}, TargetNullValue={StaticResource ProfileDefault}}" />
+                   Source="{Binding DetailModel.ImageUrl, FallbackValue={StaticResource ProfileDefault}, TargetNullValue={StaticResource ProfileDefault}}" />
             <Button HorizontalAlignment="Center"
                     Style="{StaticResource MaterialDesignOutlinedButton}">Upload photo</Button>
             <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="Name"
                      Margin="10px"
-                     Text="John" />
+                     Text="{Binding DetailModel.Name}" />
             <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="Surname"
                      Margin="10px"
-                     Text="Doe" />
+                     Text="{Binding DetailModel.Surname}" />
 
             <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="Phone"
                      Margin="10px"
-                     Text="790 000 000" />
+                     Text="{Binding DetailModel.Phone}" />
             <Button Style="{StaticResource MaterialDesignOutlinedButton}"
                     HorizontalAlignment="Right"
                     Margin="10px"
