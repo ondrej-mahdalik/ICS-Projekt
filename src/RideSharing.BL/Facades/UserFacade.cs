@@ -54,7 +54,7 @@ public class UserFacade : CRUDFacade<UserEntity, UserListModel, UserDetailModel>
     }
 
 
-    public async Task<string> UploadImageAsync(string filePath)
+    public static async Task<string> UploadImageAsync(string filePath)
     {
         // Open file
         var extension = Path.GetExtension(filePath);

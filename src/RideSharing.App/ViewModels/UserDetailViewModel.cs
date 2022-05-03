@@ -35,7 +35,7 @@ public class UserDetailViewModel : ViewModelBase, IUserDetailViewModel
         if (filePath is null || DetailModel is null)
             return;
 
-        var imageUrl = await _userFacade.UploadImageAsync(filePath);
+        var imageUrl = await UserFacade.UploadImageAsync(filePath);
         DetailModel.ImageUrl = imageUrl;
     }
 
