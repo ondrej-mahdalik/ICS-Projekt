@@ -44,7 +44,7 @@ namespace RideSharing.App.Services.MessageDialog
 
         private void ButtonClick(object sender, RoutedEventArgs e)
         {
-            if (!(e.Source is Button button)) return;
+            if (e.Source is not Button button) return;
 
             _result = (MessageDialogResult) button.Tag;
             Close();

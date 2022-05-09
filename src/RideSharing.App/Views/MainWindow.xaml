@@ -99,7 +99,7 @@
         </materialDesign:Card>
         <materialDesign:Transitioner Grid.Row="1"
                                      x:Name="Transitioner"
-                                     SelectedIndex="{Binding TransitionerSelectedIndex}"
+                                     SelectedIndex="{Binding TransitionerSelectedIndex, Converter={StaticResource ViewIndexToIntConverter}}"
                                      SelectionChanged="Transitioner_OnSelectionChanged">
 
             <!-- Slides selectable in main menu -->

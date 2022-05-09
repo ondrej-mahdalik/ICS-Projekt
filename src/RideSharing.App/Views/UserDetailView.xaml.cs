@@ -13,7 +13,7 @@ namespace RideSharing.App.Views
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void UploadImageBtn_OnClick(object sender, System.Windows.RoutedEventArgs e)
         {
             OpenFileDialog dialog = new()
             {

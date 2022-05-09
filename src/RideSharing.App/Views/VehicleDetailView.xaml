@@ -14,6 +14,82 @@
                        Background="{StaticResource MaterialDesignLightBackground}"
                        d:DataContext="{d:DesignInstance viewModels:VehicleDetailViewModel}">
     <Grid x:Name="Root">
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Column="1"
+                   TextAlignment="Center"
+                   Text="Edit Vehicle"
+                   Style="{StaticResource MaterialDesignHeadline4TextBlock}" />
+        <Grid Grid.Column="1"
+              Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.ColumnSpan="2">
+                <Image Width="150px"
+                       HorizontalAlignment="Center"
+                       Margin="10px"
+                       Height="150px"
+                       Stretch="UniformToFill"
+                       IsEnabled="{Binding UploadingImage, Converter={StaticResource InvertBooleanConverter}}"
+                       Source="{Binding DetailModel.ImageUrl, FallbackValue={StaticResource VehicleDefault}, TargetNullValue={StaticResource VehicleDefault}}" />
+                <Button x:Name="UploadImageBtn"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Click="UploadImageBtn_OnClick">Upload photo</Button>
+            </StackPanel>
+            <TextBox Grid.Row="1"
+                     Grid.Column="0"
+                     Margin="10px"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="Make"
+                     Text="{Binding DetailModel.Make}"/>
+            <TextBox Grid.Row="1"
+                     Grid.Column="1"
+                     Margin="10px"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="Model"
+                     Text="{Binding DetailModel.Model}"/>
+            <ComboBox Grid.Row="2"
+                      Grid.Column="0"
+                      Margin="10px"
+                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                      materialDesign:HintAssist.Hint="Vehicle Type"
+                      ItemsSource="{Binding VehicleTypes}"
+                      SelectedIndex="{Binding DetailModel.VehicleType, Converter={StaticResource VehicleTypeToIntConverter}}" />
+            <TextBox Grid.Row="2"
+                                 Grid.Column="1"
+                                 Margin="10px"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                 materialDesign:HintAssist.Hint="Seats"
+                                 Text="{Binding DetailModel.Seats}"
+                                 PreviewTextInput="SeatsTextBox_OnPreviewTextInput"/>
+            <DatePicker Grid.Row="3" Grid.Column="0"
+                        Margin="10px" Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                        materialDesign:HintAssist.Hint="Registration Date"
+                        Text="{Binding DetailModel.Registered}"/>
+            <Button Grid.Row="4"
+                    Grid.Column="1"
+                    Margin="10px"
+                    HorizontalAlignment="Right"
+                    Style="{StaticResource MaterialDesignOutlinedButton}"
+                    Command="{Binding SaveCommand}"
+                    Cursor="Hand">Save Changes</Button>
+        </Grid>
     </Grid>
 </local:UserControlBase>

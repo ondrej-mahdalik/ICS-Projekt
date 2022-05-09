@@ -6,6 +6,7 @@ using RideSharing.App.Messages;
 using RideSharing.App.Services;
 using RideSharing.App.Services.MessageDialog;
 using RideSharing.App.Wrappers;
+using RideSharing.BL;
 using RideSharing.BL.Facades;
 
 namespace RideSharing.App.ViewModels;
@@ -51,7 +52,7 @@ public class UserDetailViewModel : ViewModelBase, IUserDetailViewModel
         UploadingImage = true;
         try
         {
-            var imageUrl = await UserFacade.UploadImageAsync(filePath);
+            var imageUrl = await BusinessLogic.UploadImageAsync(filePath);
             DetailModel.ImageUrl = imageUrl;
         }
         finally

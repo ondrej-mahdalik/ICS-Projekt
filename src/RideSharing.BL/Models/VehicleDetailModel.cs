@@ -28,7 +28,8 @@ public record VehicleDetailModel(
         public MapperProfile()
         {
             CreateMap<VehicleEntity, VehicleDetailModel>()
-                .ReverseMap();
+                .ReverseMap()
+                .ForMember(entity => entity.Owner, action => action.Ignore());
         }
     }
 }

@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using MaterialDesignThemes.Wpf;
 using Microsoft.Toolkit.Mvvm.Input;
-using RideSharing.App.Factories;
 using RideSharing.App.Messages;
 using RideSharing.App.Services;
 using RideSharing.App.Wrappers;
+using RideSharing.Common.Enums;
 
 namespace RideSharing.App.ViewModels;
 
@@ -14,12 +12,6 @@ public class MainViewModel : ViewModelBase
 {
     public event EventHandler? OnLogout;
     private readonly IMediator _mediator;
-
-
-    private readonly IFactory<IDashboardViewModel> _dashboardViewModelFactory;
-    private readonly IFactory<IFindRideViewModel> _findRideViewModelFactory;
-
-    private Guid? _loggedUserId;
 
     public MainViewModel(
         IDashboardViewModel dashboardViewModel,
@@ -30,12 +22,8 @@ public class MainViewModel : ViewModelBase
         IUserDetailViewModel userDetailViewModel,
         IVehicleDetailViewModel vehicleDetailViewModel,
         IVehicleListViewModel vehicleListViewModel,
-        IMediator mediator,
-        IFactory<IDashboardViewModel> dashboardViewModelFactory,
-        IFactory<IFindRideViewModel> findRideViewModelFactory) : base(mediator)
+        IMediator mediator) : base(mediator)
     {
-        _dashboardViewModelFactory = dashboardViewModelFactory;
-        _findRideViewModelFactory = findRideViewModelFactory;
 
         DashboardViewModel = dashboardViewModel;
         FindRideViewModel = findRideViewModel;
@@ -50,22 +38,37 @@ public class MainViewModel : ViewModelBase
         MenuTabCommand = new RelayCommand<string>(MenuTab);
 
         _mediator = mediator;
-        mediator.Register<NewMessage<UserWrapper>>(OnNewUserMessage);
         mediator.Register<LoginMessage<UserWrapper>>(LoggedIn);
         mediator.Register<LogoutMessage<UserWrapper>>(LoggedOut);
 
+        // Switch tab messages
+        mediator.Register<DetailMessage<RideWrapper>>(delegate
+        {
+            TransitionerSelectedIndex = ViewIndex.RideDetail;
+        });
+        mediator.Register<ManageMessage<RideWrapper>>(delegate
+        {
+            TransitionerSelectedIndex = ViewIndex.RideManage;
+        });
+        mediator.Register<ManageMessage<VehicleWrapper>>(delegate
+        {
+            TransitionerSelectedIndex = ViewIndex.VehicleManage;
+        });
+        mediator.Register<UpdateMessage<VehicleWrapper>>(delegate
+        {
+            TransitionerSelectedIndex = ViewIndex.ManageVehicles;
+        });
     }
 
     private void MenuTab(string? selectedIndex)
     {
-        TransitionerSelectedIndex = selectedIndex ?? "0";
+        TransitionerSelectedIndex = Enum.TryParse(selectedIndex, out ViewIndex result) ? result : ViewIndex.Dashboard;
     }
 
     private void LoggedIn(LoginMessage<UserWrapper> obj)
     {
-        _loggedUserId = obj.Id;
-        TransitionerSelectedIndex = "0";
-            IsLoggedIn = true;
+        TransitionerSelectedIndex = 0;
+        IsLoggedIn = true;
     }
 
     private void LoggedOut(LogoutMessage<UserWrapper> obj) => LogOut();
@@ -75,8 +78,7 @@ public class MainViewModel : ViewModelBase
     private void LogOut()
     {
         IsLoggedIn = false;
-        TransitionerSelectedIndex = "0";
-        _loggedUserId = null;
+        TransitionerSelectedIndex = 0;
         OnLogout?.Invoke(this, EventArgs.Empty);
     }
 
@@ -101,11 +103,7 @@ public class MainViewModel : ViewModelBase
     /// 4 - Profile settings
     /// 5 - Ride detail (non-driver)
     /// 6 - Rude detail (driver)
+    /// 7 - Vehicle detail
     /// </summary>
-    public string TransitionerSelectedIndex { get; set; } = "0";
-
-    private void OnNewUserMessage(NewMessage<UserWrapper> _)
-    {
-        
-    }
+    public ViewIndex TransitionerSelectedIndex { get; set; }
 }
