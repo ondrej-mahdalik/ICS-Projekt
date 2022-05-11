@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using Microsoft.Web.WebView2.Core;
+using Microsoft.Web.WebView2.Wpf;
 
 namespace RideSharing.App.Views
 {
@@ -16,6 +18,13 @@ namespace RideSharing.App.Views
         {
             if (MapView.IsEnabled)
                 await MapView.ExecuteScriptAsync($"setRoute(\"{FromToBlock.FromName}\", \"{FromToBlock.ToName}\")");
+        }
+
+        private async void MapView_OnNavigationCompleted(object? sender, CoreWebView2NavigationCompletedEventArgs e)
+        {
+            // Hide scroll bars
+            if (e.IsSuccess)
+                await MapView.ExecuteScriptAsync("document.querySelector('body').style.overflow='hidden'");
         }
     }
 }

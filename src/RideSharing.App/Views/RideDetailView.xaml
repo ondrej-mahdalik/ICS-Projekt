@@ -2,34 +2,39 @@
                        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                        xmlns:local="clr-namespace:RideSharing.App.Views"
                        xmlns:viewModels="clr-namespace:RideSharing.App.ViewModels"
                        xmlns:controls="clr-namespace:RideSharing.App.Controls"
                        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
                        mc:Ignorable="d"
                        FontSize="14"
-                       d:DesignHeight="600" d:DesignWidth="1000"
+                       d:DesignHeight="600"
+                       d:DesignWidth="1000"
                        Background="{StaticResource MaterialDesignLightBackground}"
                        d:DataContext="{d:DesignInstance viewModels:RideDetailViewModel}">
 
     <Grid x:Name="Root">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
         </Grid.RowDefinitions>
-        <TextBlock TextAlignment="Center" Padding="20px" Style="{StaticResource MaterialDesignHeadline4TextBlock}">Detail of upcoming ride</TextBlock>
+        <TextBlock TextAlignment="Center"
+                   Padding="20px"
+                   Style="{StaticResource MaterialDesignHeadline4TextBlock}">Detail of upcoming ride</TextBlock>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="4*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
-            <materialDesign:Card Grid.RowSpan="2" Padding="20px" Margin="20px 20px 10px 20px">
+            <materialDesign:Card Grid.RowSpan="2"
+                                 Padding="20px"
+                                 Margin="20px 20px 10px 20px">
                 <StackPanel>
                     <controls:FromToBlock x:Name="FromToBlock"
                                           FromName="{Binding DetailModel.FromName, FallbackValue=''}"
@@ -37,7 +42,7 @@
                                           Departure="{Binding DetailModel.Departure, FallbackValue=''}"
                                           Arrival="{Binding DetailModel.Arrival, FallbackValue=''}"
                                           FontSize="20px"
-                                          HorizontalAlignment="Center"/>
+                                          HorizontalAlignment="Center" />
                     <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}"
                                HorizontalAlignment="Center"
                                Padding="0px 20px">Route Map</TextBlock>
@@ -45,64 +50,82 @@
                                   Height="150px"
                                   Source="https://ondrej-mahdalik.github.io/ridesharing-cdn/EmbedMap/"
                                   IsEnabled="{Binding MapEnabled}"
-                                  IsEnabledChanged="MapView_OnIsEnabledChanged"/>
+                                  IsEnabledChanged="MapView_OnIsEnabledChanged"
+                                  NavigationCompleted="MapView_OnNavigationCompleted"/>
                     <Grid Margin="0px 40px">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <TextBlock FontWeight="Bold"
                                    Text="{Binding DetailModel.Distance, StringFormat='Distance: {0} km', FallbackValue=''}" />
-                        <TextBlock Grid.Column="1" FontWeight="Bold"
+                        <TextBlock Grid.Column="1"
+                                   FontWeight="Bold"
                                    HorizontalAlignment="Right"
                                    Text="{Binding Duration, StringFormat='Duration: {0} h'}" />
                     </Grid>
-                    <TextBlock FontWeight="Bold" Text="Driver's note:"/>
+                    <TextBlock FontWeight="Bold"
+                               Text="Driver's note:" />
                     <materialDesign:Chip HorizontalAlignment="Stretch">
-                        <TextBlock TextAlignment="Center" Text="{Binding DetailModel.Note, FallbackValue='No note.'}"/>
+                        <TextBlock TextAlignment="Center"
+                                   Text="{Binding DetailModel.Note, FallbackValue='No note.'}" />
                     </materialDesign:Chip>
                 </StackPanel>
             </materialDesign:Card>
-            <materialDesign:Card Grid.Row="0" Grid.Column="1"
+            <materialDesign:Card Grid.Row="0"
+                                 Grid.Column="1"
                                  Padding="20px"
                                  Margin="10px 20px 20px 10px">
                 <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                    <Image Width="150px" Height="150px"
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Image Width="130px"
+                           Height="130px"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            Stretch="UniformToFill"
                            Source="{Binding Driver.ImageUrl, FallbackValue='{StaticResource ProfileDefault}', TargetNullValue='{StaticResource ProfileDefault}'}" />
-                        <Grid Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
+                    <Grid Grid.Row="0"
+                          Grid.Column="1"
+                          Grid.ColumnSpan="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
                         <TextBlock Margin="20px 0px"
                                    Style="{StaticResource MaterialDesignHeadline6TextBlock}">
                             <TextBlock.Text>
                                 <MultiBinding StringFormat="{}{0} {1}">
-                                    <Binding Path="Driver.Name" FallbackValue=""/>
-                                    <Binding Path="Driver.Surname" FallbackValue=""/>
+                                    <Binding Path="Driver.Name"
+                                             FallbackValue="" />
+                                    <Binding Path="Driver.Surname"
+                                             FallbackValue="" />
                                 </MultiBinding>
                             </TextBlock.Text>
                         </TextBlock>
-                            <StackPanel Grid.Row="1" Margin="20px 20px 20px 0px" Orientation="Horizontal">
-                                <materialDesign:RatingBar  Value="{Binding DriverRating, Converter={StaticResource FloatToIntConverter}}" Margin="0px -3px 5px 0px" IsReadOnly="True"/>
-                                <TextBlock />
-                            </StackPanel>
-                        </Grid>
-                        <Button Grid.Row="1" Grid.Column="2" VerticalAlignment="Bottom" Style="{StaticResource MaterialDesignOutlinedButton}"
-                            Cursor="Hand">Contact driver</Button>
+                        <StackPanel Grid.Row="1"
+                                    Margin="20px 20px 20px 0px"
+                                    Orientation="Horizontal">
+                            <materialDesign:RatingBar  Value="{Binding DriverRating, Converter={StaticResource FloatToIntConverter}}"
+                                                       Margin="0px -3px 5px 0px"
+                                                       IsReadOnly="True" />
+                            <TextBlock />
+                        </StackPanel>
                     </Grid>
+                    <Button Grid.Row="1"
+                            Grid.Column="2"
+                            VerticalAlignment="Bottom"
+                            Style="{StaticResource MaterialDesignOutlinedButton}"
+                            Margin="20px 0px"
+                            Cursor="Hand">Contact driver</Button>
+                </Grid>
             </materialDesign:Card>
             <materialDesign:Card Grid.Row="1"
                                  Grid.Column="1"
@@ -111,47 +134,62 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
-                        <RowDefinition/>
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <Image Width="150px" HorizontalAlignment="Left" Height="150px" Stretch="UniformToFill"
+                    <Image Width="130px"
+                           HorizontalAlignment="Left"
+                           Height="130px"
+                           Stretch="UniformToFill"
                            VerticalAlignment="Top"
                            Source="{Binding Vehicle.ImageUrl, FallbackValue={StaticResource VehicleDefault}, TargetNullValue={StaticResource VehicleDefault}}" />
-                    <Grid Grid.Row="0" Grid.Column="1"
+                    <Grid Grid.Row="0"
+                          Grid.Column="1"
                           Grid.ColumnSpan="2">
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <StackPanel>
                             <TextBlock Margin="20px 0px"
                                        Style="{StaticResource MaterialDesignHeadline6TextBlock}">
                                 <TextBlock.Text>
                                     <MultiBinding StringFormat="{}{0} {1}">
-                                        <Binding Path="Vehicle.Make" FallbackValue=""/>
-                                        <Binding Path="Vehicle.Model" FallbackValue=""/>
+                                        <Binding Path="Vehicle.Make"
+                                                 FallbackValue="" />
+                                        <Binding Path="Vehicle.Model"
+                                                 FallbackValue="" />
                                     </MultiBinding>
                                 </TextBlock.Text>
                             </TextBlock>
                             <TextBlock  Margin="20px 0px"
                                         Text="{Binding AvailableSeats, StringFormat='Available seats: {0}'}" />
                         </StackPanel>
-                        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="20px 0px">
-                            <TextBlock Text="Select number of seats to reserve:"/>
-                            <Slider Minimum="1" Maximum="{Binding AvailableSeats}" Value="{Binding SelectedSeats}" Width="150px" HorizontalAlignment="Left" Orientation="Horizontal"/>
+                        <StackPanel Grid.Row="1"
+                                    Orientation="Vertical"
+                                    Margin="20px 0px">
+                            <TextBlock Text="Select number of seats to reserve:" />
+                            <Slider Minimum="1"
+                                    Maximum="{Binding DetailModel.SharedSeats}"
+                                    Value="{Binding SelectedSeats, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource MaterialDesignDiscreteHorizontalSlider}"
+                                    materialDesign:SliderAssist.OnlyShowFocusVisualWhileDragging="True"
+                                    Width="150px"
+                                    HorizontalAlignment="Left"
+                                    Orientation="Horizontal" />
                         </StackPanel>
                     </Grid>
-                    
+
                     <Button Grid.Row="1"
                             Grid.Column="2"
+                            Margin="20px 0px"
                             VerticalAlignment="Bottom"
                             Style="{StaticResource MaterialDesignOutlinedButton}"
-                            IsEnabled="{Binding ReservationPossible, UpdateSourceTrigger=PropertyChanged}"
-                            Cursor="Hand">Create Reservation</Button>
+                            IsEnabled="{Binding ReservationPossible}">Create Reservation</Button>
                 </Grid>
             </materialDesign:Card>
         </Grid>

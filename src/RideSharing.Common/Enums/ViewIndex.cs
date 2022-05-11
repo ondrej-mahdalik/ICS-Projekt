@@ -5,7 +5,7 @@ public enum ViewIndex
     Dashboard,
     FindRide,
     ShareRide,
-    ManageVehicles,
+    VehicleList,
     ProfileSettings,
     RideDetail,
     RideManage,

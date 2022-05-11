@@ -42,22 +42,12 @@ public class MainViewModel : ViewModelBase
         mediator.Register<LogoutMessage<UserWrapper>>(LoggedOut);
 
         // Switch tab messages
-        mediator.Register<DetailMessage<RideWrapper>>(delegate
-        {
-            TransitionerSelectedIndex = ViewIndex.RideDetail;
-        });
-        mediator.Register<ManageMessage<RideWrapper>>(delegate
-        {
-            TransitionerSelectedIndex = ViewIndex.RideManage;
-        });
-        mediator.Register<ManageMessage<VehicleWrapper>>(delegate
-        {
-            TransitionerSelectedIndex = ViewIndex.VehicleManage;
-        });
-        mediator.Register<UpdateMessage<VehicleWrapper>>(delegate
-        {
-            TransitionerSelectedIndex = ViewIndex.ManageVehicles;
-        });
+        mediator.Register<SwitchTabMessage>(SwitchTab);
+    }
+
+    private void SwitchTab(SwitchTabMessage obj)
+    {
+        TransitionerSelectedIndex = obj.index;
     }
 
     private void MenuTab(string? selectedIndex)

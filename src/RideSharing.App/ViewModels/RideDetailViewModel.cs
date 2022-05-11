@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using RideSharing.App.Commands;
@@ -16,6 +17,7 @@ namespace RideSharing.App.ViewModels
         private readonly RideFacade _rideFacade;
         private readonly UserFacade _userFacade;
         private readonly VehicleFacade _vehicleFacade;
+        private readonly ReservationFacade _reservationFacade;
         private readonly IMediator _mediator;
         private readonly IMessageDialogService _messageDialogService;
 
@@ -23,16 +25,18 @@ namespace RideSharing.App.ViewModels
             RideFacade rideFacade,
             UserFacade userFacade,
             VehicleFacade vehicleFacade,
+            ReservationFacade reservationFacade,
             IMediator mediator,
             IMessageDialogService messageDialogService) : base(mediator)
         {
             _rideFacade = rideFacade;
             _userFacade = userFacade;
             _vehicleFacade = vehicleFacade;
+            _reservationFacade = reservationFacade;
             _mediator = mediator;
             _messageDialogService = messageDialogService;
 
-            UserReservationCommand = new AsyncRelayCommand<ushort>(CreateReservationAsync);
+            UserReservationCommand = new AsyncRelayCommand<ushort>(CreateOrEditReservationAsync);
             ContactDriverCommand = new AsyncRelayCommand(ContactDriver);
 
             mediator.Register<DetailMessage<RideWrapper>>(RideSelected);
@@ -42,22 +46,30 @@ namespace RideSharing.App.ViewModels
 
         public RideWrapper? DetailModel { get; private set; }
         public UserWrapper? Driver { get; private set; }
+        public VehicleWrapper? Vehicle { get; private set; }
+        public ReservationWrapper? Reservation { get; private set; }
         public float DriverRating { get; private set; }
         public int TotalNumberOfReviews { get; private set; }
         public int AvailableSeats { get; private set; }
-        public VehicleWrapper? Vehicle { get; private set; }
         public ICommand UserReservationCommand { get; }
         public ICommand ContactDriverCommand { get; }
         public int SelectedSeats { get; set; } = 1;
 
 
         public bool MapEnabled { get; set; }
-        public bool ReservationPossible { get; private set; }
+
+        public bool ReservationPossible
+        {
+            get => _reservationPossible && SelectedSeats <= AvailableSeats;
+        }
         public TimeSpan? Duration { get; private set; }
 
         public async Task ContactDriver()
         {
-            throw new NotImplementedException();
+            if (Driver?.Phone is null)
+                return;
+
+            System.Diagnostics.Process.Start($"tel:{Regex.Replace(Driver.Phone, @"\s+", "")}");
         }
 
         public Task SaveAsync()
@@ -68,14 +80,17 @@ namespace RideSharing.App.ViewModels
 
         private async void RideSelected(DetailMessage<RideWrapper> obj)
         {
-            if (obj.Model is null)
+            if (!obj.Id.HasValue)
                 return;
 
-            await LoadAsync(obj.Model.Id);
+            await LoadAsync(obj.Id.Value);
         }
 
         public async Task LoadAsync(Guid rideId)
         {
+            if (LoggedUser is null)
+                return;
+
             MapEnabled = false;
             DetailModel = await _rideFacade.GetAsync(rideId) ?? throw new InvalidOperationException("Failed to load the selected ride");
             Duration = DetailModel.Arrival - DetailModel.Departure;
@@ -86,8 +101,13 @@ namespace RideSharing.App.ViewModels
 
             Vehicle = await _vehicleFacade.GetAsync(currentRide.Vehicle.Id);
             Driver = await _userFacade.GetAsync(currentRide.Vehicle.OwnerId);
+            Reservation = await _reservationFacade.GetUserReservationByRide(LoggedUser.Id, rideId);
+            if (Reservation is not null)
+            {
+                SelectedSeats = Reservation.Seats;
+                AvailableSeats += Reservation.Seats;
+            }
 
-            AvailableSeats = DetailModel.SharedSeats - DetailModel.OccupiedSeats;
             CheckReservationPossibility();
         }
 
@@ -96,31 +116,42 @@ namespace RideSharing.App.ViewModels
             throw new NotImplementedException();
         }
 
-        public async Task CreateReservationAsync(ushort seats)
+        public async Task CreateOrEditReservationAsync(ushort seats)
         {
             if (LoggedUser is null || DetailModel is null)
                 return;
 
-            ReservationDetailModel reservation = new ReservationDetailModel(DateTime.Now, seats)
+            if (Reservation is null)
             {
-                ReservingUser = await _userFacade.GetAsync(LoggedUser.Id),
-                Ride = DetailModel
-            };
-
-            if (DetailModel.SharedSeats - DetailModel.OccupiedSeats < seats)
-            {
-                throw new InvalidOperationException("This ride is full");
+                Reservation = new ReservationDetailModel(DateTime.Now, seats)
+                {
+                    ReservingUser = await _userFacade.GetAsync(LoggedUser.Id),
+                    Ride = DetailModel
+                };
             }
-            throw new NotImplementedException();
+            else
+            {
+                Reservation.Seats = seats;
+            }
+
+            await _reservationFacade.SaveAsync(Reservation);
         }
 
-        private void CheckReservationPossibility()
+
+        private bool _reservationPossible { get; set; }
+        private async void CheckReservationPossibility()
         {
-            if (AvailableSeats == 0 || SelectedSeats > AvailableSeats)
-                ReservationPossible = false;
-            else
-                ReservationPossible = true;
+            if (LoggedUser is null || DetailModel is null)
+                return;
+
+            if (await _reservationFacade.CanCreateReservation(LoggedUser.Id, DetailModel.Id))
+            {
+                _reservationPossible = false;
+                return;
+            }
         }
+
+
     }
 
     

@@ -10,6 +10,7 @@ using RideSharing.App.Services;
 using RideSharing.App.Wrappers;
 using RideSharing.BL.Facades;
 using RideSharing.BL.Models;
+using RideSharing.Common.Enums;
 
 namespace RideSharing.App.ViewModels;
 
@@ -125,9 +126,15 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
             return;
 
         if (rideListModel.IsDriver)
-            _mediator.Send(new ManageMessage<RideWrapper> { Id = rideListModel.Id});
+        {
+            _mediator.Send(new ManageMessage<RideWrapper> { Id = rideListModel.Id });
+            _mediator.Send(new SwitchTabMessage(ViewIndex.RideManage));
+        }
         else
-            _mediator.Send(new DetailMessage<RideWrapper> { Id = rideListModel.Id});
+        {
+            _mediator.Send(new DetailMessage<RideWrapper> { Id = rideListModel.Id });
+            _mediator.Send(new SwitchTabMessage(ViewIndex.RideDetail));
+        }
     }
 
     public async Task LoadAsync()

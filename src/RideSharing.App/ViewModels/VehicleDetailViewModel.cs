@@ -83,6 +83,7 @@ namespace RideSharing.App.ViewModels
 
             DetailModel = await _vehicleFacade.SaveAsync(DetailModel);
             _mediator.Send(new UpdateMessage<VehicleWrapper> { Model = DetailModel });
+            _mediator.Send(new SwitchTabMessage(ViewIndex.VehicleList));
         }
     }
 

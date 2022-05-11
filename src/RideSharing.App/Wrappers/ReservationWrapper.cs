@@ -10,7 +10,7 @@ namespace RideSharing.App.Wrappers;
 
 public class ReservationWrapper : ModelWrapper<ReservationDetailModel>
 {
-    public ReservationWrapper(ReservationDetailModel model) : base(model)
+    public ReservationWrapper(ReservationDetailModel? model) : base(model)
     {
 
     }
@@ -40,7 +40,7 @@ public class ReservationWrapper : ModelWrapper<ReservationDetailModel>
     }
 
 
-    public static implicit operator ReservationWrapper(ReservationDetailModel detailModel)
+    public static implicit operator ReservationWrapper(ReservationDetailModel? detailModel)
         => new(detailModel);
 
     public static implicit operator ReservationDetailModel(ReservationWrapper wrapper)

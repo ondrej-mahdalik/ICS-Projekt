@@ -114,7 +114,8 @@
                 </ListView.ItemTemplate>
             </ListView>
             <ListView Style="{StaticResource MaterialDesignListViewNoRippleEffect}"
-                      Grid.Row="2" Grid.Column="1"
+                      Grid.Row="2"
+                      Grid.Column="1"
                       Background="{StaticResource MaterialDesignLightBackground}"
                       materialDesign:ListViewAssist.ListViewItemPadding="10px"
                       ScrollViewer.VerticalScrollBarVisibility="Visible"
@@ -126,9 +127,9 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <materialDesign:Card HorizontalContentAlignment="Stretch"
-                                         VerticalContentAlignment="Stretch"
-                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                         Padding="10px">
+                                             VerticalContentAlignment="Stretch"
+                                             ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                             Padding="10px">
                             <Grid HorizontalAlignment="Stretch"
                                   Width="300px">
                                 <Grid.ColumnDefinitions>
@@ -142,7 +143,7 @@
                                 <controls:FromToBlock FromName="{Binding FromName}"
                                                       ToName="{Binding ToName}"
                                                       Departure="{Binding Departure}"
-                                                      Arrival="{Binding Arrival}"/>
+                                                      Arrival="{Binding Arrival}" />
                                 <TextBlock Grid.Row="1"
                                            Grid.Column="0"
                                            HorizontalAlignment="Left"
@@ -160,19 +161,23 @@
                                                           Visibility="{Binding CanReview, Converter={StaticResource BoolToVisibilityConverter}}"
                                                           Value="{Binding UserRating, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}"
                                                           ValueChanged="RatingBar_OnValueChanged"
-                                                          Tag="{Binding}"/>
-                                <TextBlock Grid.Row="1" Grid.Column="0"
-                                           VerticalAlignment="Bottom" Margin="5px 0px" Visibility="{Binding CanReview, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}"
-                                           Text="{Binding IsDriver, Converter={StaticResource BoolToReviewMessageConverter}}"/>
+                                                          Tag="{Binding}" />
+                                <TextBlock Grid.Row="1"
+                                           Grid.Column="0"
+                                           VerticalAlignment="Bottom"
+                                           Margin="5px 0px"
+                                           Visibility="{Binding CanReview, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}"
+                                           Text="{Binding IsDriver, Converter={StaticResource BoolToReviewMessageConverter}}" />
                                 <TextBlock Grid.Row="0"
                                            Grid.Column="1"
                                            VerticalAlignment="Center"
                                            HorizontalAlignment="Center"
-                                           Text="{Binding StringFormat=d, Path=Departure}"/>
+                                           Text="{Binding StringFormat=d, Path=Departure}" />
                             </Grid>
                         </materialDesign:Card>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-            </ListView>        </Grid>
+            </ListView>
+        </Grid>
     </Grid>
 </local:UserControlBase>
