@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
+using MaterialDesignThemes.Wpf;
 using Microsoft.Toolkit.Mvvm.Input;
 using RideSharing.App.Extensions;
 using RideSharing.App.Messages;
 using RideSharing.App.Services;
-using RideSharing.App.Services.MessageDialog;
+using RideSharing.App.Services.Dialogs;
 using RideSharing.App.Wrappers;
 using RideSharing.BL.Facades;
 using RideSharing.BL.Models;
@@ -17,18 +19,15 @@ public class LoginViewModel : ViewModelBase
 {
     private readonly IMediator _mediator;
     private readonly UserFacade _userFacade;
-    private readonly IMessageDialogService _messageDialogService;
 
 
     public event EventHandler? OnLogin;
 
     public LoginViewModel(UserFacade userFacade,
-        IMessageDialogService messageDialogService,
         IMediator mediator) : base(mediator)
     {
         _userFacade = userFacade;
         _mediator = mediator;
-        _messageDialogService = messageDialogService;
 
         DeleteUserCommand = new Commands.AsyncRelayCommand<UserListModel>(DeleteUserAsync);
         NewUserCommand = new RelayCommand(NewUser);
@@ -47,23 +46,16 @@ public class LoginViewModel : ViewModelBase
         throw new NotImplementedException();
     }
 
-    private async Task DeleteUserAsync(UserListModel? Model)
+    private async Task DeleteUserAsync(UserListModel? model)
     {
-        if (Model is null)
+        if (model is null)
             return;
 
-        var delete = _messageDialogService.Show(
-            "Delete profile",
-            $"Do you really want to delete profile {Model?.Name} {Model?.Surname}?",
-            MessageDialogButtonConfiguration.DeleteCancel,
-            MessageDialogResult.Cancel);
-
-        if (delete == MessageDialogResult.Cancel)
-        {
+        var delete = await DialogHost.Show(new MessageDialog("Delete Profile", $"Do you really want to delete profile {Model?.Name} {Model?.Surname}?", DialogType.YesNo));
+        if (delete is not ButtonType.Yes)
             return;
-        }
 
-        await _userFacade.DeleteAsync(Model.Id);
+        await _userFacade.DeleteAsync(model.Id);
         await LoadAsync();
     }
 

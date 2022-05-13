@@ -2,13 +2,13 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Documents;
 using System.Windows.Input;
+using MaterialDesignThemes.Wpf;
 using RideSharing.App.Commands;
 using RideSharing.App.Extensions;
 using RideSharing.App.Messages;
 using RideSharing.App.Services;
-using RideSharing.App.Services.MessageDialog;
+using RideSharing.App.Services.Dialogs;
 using RideSharing.App.Wrappers;
 using RideSharing.BL.Facades;
 using RideSharing.BL.Models;
@@ -21,20 +21,17 @@ namespace RideSharing.App.ViewModels
         private readonly ReservationFacade _reservationFacade;
         private readonly VehicleFacade _vehicleFacade;
         private readonly IMediator _mediator;
-        private readonly IMessageDialogService _messageDialogService;
 
         public RideManagementViewModel(
             RideFacade rideFacade,
             ReservationFacade reservationFacade,
             VehicleFacade vehicleFacade,
-            IMediator mediator,
-            IMessageDialogService messageDialogService) : base(mediator)
+            IMediator mediator) : base(mediator)
         {
             _rideFacade = rideFacade;
             _reservationFacade = reservationFacade;
             _vehicleFacade = vehicleFacade;
             _mediator = mediator;
-            _messageDialogService = messageDialogService;
 
             DeleteRideCommand = new AsyncRelayCommand(DeleteAsync);
             SaveCommand = new AsyncRelayCommand(SaveAsync, CanSave);
@@ -57,13 +54,11 @@ namespace RideSharing.App.ViewModels
                 throw new InvalidOperationException("Null model cannot be deleted");
             }
 
-            var delete = _messageDialogService.Show(
-                $"Delete",
-                $"Do you want to delete this ride?.",
-                MessageDialogButtonConfiguration.YesNo,
-                MessageDialogResult.No);
+            var delete = await DialogHost.Show(new MessageDialog("Delete Ride",
+                "Do you really want to delete this ride?", DialogType.YesNo));
 
-            if (delete == MessageDialogResult.No) return;
+            if (delete is not ButtonType.Yes)
+                return;
 
             try
             {
@@ -71,11 +66,8 @@ namespace RideSharing.App.ViewModels
             }
             catch
             {
-                var _ = _messageDialogService.Show(
-                    $"Deleting of the ride failed!",
-                    "Deleting failed",
-                    MessageDialogButtonConfiguration.OK,
-                    MessageDialogResult.OK);
+                await DialogHost.Show(new MessageDialog("Deleting Failed", "Failed to delete the ride.",
+                    DialogType.OK));
             }
 
             _mediator.Send(new DeleteMessage<RideWrapper>
@@ -86,7 +78,7 @@ namespace RideSharing.App.ViewModels
 
         public async Task DeleteReservationAsync(Guid reservingUserId)
         {
-            if (DetailModel.Reservations is not null)
+            if (DetailModel?.Reservations is not null)
             {
                 var reservationId = DetailModel.Reservations.First(i => i.ReservingUserId == reservingUserId).Id;
                 try
@@ -95,11 +87,8 @@ namespace RideSharing.App.ViewModels
                 }
                 catch
                 {
-                    var _ = _messageDialogService.Show(
-                        $"Deleting of vehicle failed!",
-                        "Deleting failed",
-                        MessageDialogButtonConfiguration.OK,
-                        MessageDialogResult.OK);
+                    await DialogHost.Show(new MessageDialog("Deleting Failed", "Failed to delete the reservation.",
+                        DialogType.OK));
                 }
                 finally
                 {

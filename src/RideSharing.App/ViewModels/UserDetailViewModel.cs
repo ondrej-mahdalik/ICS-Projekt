@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MaterialDesignThemes.Wpf;
 using RideSharing.App.Commands;
 using RideSharing.App.Messages;
 using RideSharing.App.Services;
-using RideSharing.App.Services.MessageDialog;
+using RideSharing.App.Services.Dialogs;
 using RideSharing.App.Wrappers;
 using RideSharing.BL;
 using RideSharing.BL.Facades;
@@ -15,7 +16,6 @@ public class UserDetailViewModel : ViewModelBase, IUserDetailViewModel
 {
     private readonly UserFacade _userFacade;
     private readonly IMediator _mediator;
-    private readonly IMessageDialogService _messageDialogService;
 
 
     public UserWrapper? DetailModel { get; private set; }
@@ -29,13 +29,11 @@ public class UserDetailViewModel : ViewModelBase, IUserDetailViewModel
     public ICommand SaveChanges { get; }
     public ICommand ChangeImage { get; }
 
-    public UserDetailViewModel(UserFacade userFacade, 
-        IMessageDialogService messageDialogService,
+    public UserDetailViewModel(UserFacade userFacade,
         IMediator mediator) : base(mediator)
     {
         _userFacade = userFacade;
         _mediator = mediator;
-        _messageDialogService = messageDialogService;
 
 
         DeleteUser = new RelayCommand(UserDeleted);
@@ -72,23 +70,7 @@ public class UserDetailViewModel : ViewModelBase, IUserDetailViewModel
     private async void UserUpdated(UpdateMessage<UserWrapper> _) => await LoadAsync(DetailModel.Id);
     private async void UserDeleted()
     {
-        if (LoggedUser is null)
-            return;
-
-        var delete = _messageDialogService.Show(
-            "Delete profile",
-            $"Do you really want to delete your profile?",
-            MessageDialogButtonConfiguration.DeleteCancel,
-            MessageDialogResult.Cancel);
-
-        if (delete == MessageDialogResult.Cancel)
-        {
-            return;
-        }
-
-        await _userFacade.DeleteAsync(LoggedUser.Id);
-        _mediator.Send(new DeleteMessage<UserWrapper> { });
-        _mediator.Send(new LogoutMessage<UserWrapper> { });
+        await DeleteAsync();
     }
     
     public async Task LoadAsync(Guid id)
@@ -102,14 +84,10 @@ public class UserDetailViewModel : ViewModelBase, IUserDetailViewModel
 
         if (!DetailModel!.IsValid)
         {
-           _ = _messageDialogService.Show(
-                "Error",
-                $"Couldn't save profile due to invalid values.",
-                MessageDialogButtonConfiguration.OK,
-                MessageDialogResult.OK);
+            await DialogHost.Show(new MessageDialog("Saving Failed",
+                "Could not save the changes due to invalid values.", DialogType.OK));
 
-                return;
-
+            return;
         }
 
         DetailModel = await _userFacade.SaveAsync(DetailModel);
@@ -118,6 +96,16 @@ public class UserDetailViewModel : ViewModelBase, IUserDetailViewModel
 
     public async Task DeleteAsync()
     {
-        throw new NotImplementedException();
+        if (LoggedUser is null)
+            return;
+
+        var delete = await DialogHost.Show(new MessageDialog("Delete Profile", "Do you really want to delete your profile?",
+            DialogType.YesNo));
+        if (delete is not ButtonType.Yes)
+            return;
+
+        await _userFacade.DeleteAsync(LoggedUser.Id);
+        _mediator.Send(new DeleteMessage<UserWrapper> { });
+        _mediator.Send(new LogoutMessage<UserWrapper> { });
     }
 }

@@ -19,4 +19,15 @@ public class VehicleFacade : CRUDFacade<VehicleEntity, VehicleListModel, Vehicle
             .Where(e => e.OwnerId == ownerId);
         return await Mapper.ProjectTo<VehicleListModel>(query).ToArrayAsync().ConfigureAwait(false);
     }
+
+    public override async Task DeleteAsync(Guid id)
+    {
+        // Delete related rides (and their reservations)
+        await using var uow = UnitOfWorkFactory.Create();
+        var rides = uow.GetRepository<RideEntity>().Get().Where(x => x.VehicleId == id);
+        uow.GetRepository<RideEntity>().DeleteRange(rides.Select(x => x.Id));
+        await uow.CommitAsync();
+
+        await base.DeleteAsync(id);
+    }
 }

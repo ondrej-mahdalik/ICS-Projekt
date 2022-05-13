@@ -2,13 +2,14 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MaterialDesignThemes.Wpf;
 using Microsoft.Toolkit.Mvvm.Input;
 using RideSharing.BL.Facades;
 using RideSharing.BL.Models;
 using RideSharing.App.Extensions;
 using RideSharing.App.Messages;
 using RideSharing.App.Services;
-using RideSharing.App.Services.MessageDialog;
+using RideSharing.App.Services.Dialogs;
 using RideSharing.App.Wrappers;
 
 namespace RideSharing.App.ViewModels
@@ -17,16 +18,13 @@ namespace RideSharing.App.ViewModels
     {
         private readonly VehicleFacade _vehicleFacade;
         private readonly IMediator _mediator;
-        private readonly IMessageDialogService _messageDialogService;
 
         public VehicleListViewModel(
             VehicleFacade vehicleFacade,
-            IMediator mediator,
-            IMessageDialogService messageDialogService) : base(mediator)
+            IMediator mediator) : base(mediator)
         {
             _vehicleFacade = vehicleFacade;
             _mediator = mediator;
-            _messageDialogService = messageDialogService;
 
             VehicleNewCommand = new RelayCommand(NewVehicle);
             VehicleDeleteCommand = new AsyncRelayCommand<VehicleListModel>(DeleteVehicle);
@@ -75,6 +73,12 @@ namespace RideSharing.App.ViewModels
             if (vehicle is null)
                 return;
 
+            var delete = await DialogHost.Show(new MessageDialog("Delete Vehicle",
+                "Do you really want to delete the vehicle?\n All related rides and their reservations will be deleted as well.",
+                DialogType.YesNo));
+            if (delete is not ButtonType.Yes)
+                return;
+
             try
             {
                 await _vehicleFacade.DeleteAsync(vehicle.Id);
@@ -82,11 +86,8 @@ namespace RideSharing.App.ViewModels
 
             catch
             {
-                var _ = _messageDialogService.Show(
-                    $"Deleting of vehicle failed!",
-                    "Deleting failed",
-                    MessageDialogButtonConfiguration.OK,
-                    MessageDialogResult.OK);
+                await DialogHost.Show(new MessageDialog("Deleting Failed", "Failed to delete the vehicle.",
+                    DialogType.OK));
             }
             finally
             {

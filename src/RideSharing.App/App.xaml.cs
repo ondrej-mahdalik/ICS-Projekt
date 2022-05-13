@@ -9,7 +9,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using RideSharing.App.Extensions;
 using RideSharing.App.Services;
-using RideSharing.App.Services.MessageDialog;
 using RideSharing.App.Settings;
 using RideSharing.App.ViewModels;
 using RideSharing.App.Views;
@@ -59,7 +58,6 @@ namespace RideSharing.App
             services.AddSingleton<LoginWindow>();
             services.AddSingleton<MainWindow>();
 
-            services.AddSingleton<IMessageDialogService, MessageDialogService>();
             services.AddSingleton<IMediator, Mediator>();
 
             services.AddSingleton<MainViewModel>();
