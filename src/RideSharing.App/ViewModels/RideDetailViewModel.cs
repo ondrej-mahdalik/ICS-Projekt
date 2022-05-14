@@ -77,7 +77,9 @@ public ICommand UserReservationCommand { get; }
             if (Driver?.Phone is null)
                 return;
 
-            System.Diagnostics.Process.Start($"tel:{Regex.Replace(Driver.Phone, @"\s+", "")}");
+            ProcessStartInfo ps =
+                new($"tel:{Regex.Replace(Driver.Phone, @"\s+", "")}") { UseShellExecute = true, Verb = "open" };
+            Process.Start(ps);
         }
 
         public Task SaveAsync()
@@ -110,7 +112,7 @@ public ICommand UserReservationCommand { get; }
 
             Vehicle = await _vehicleFacade.GetAsync(currentRide.Vehicle.Id);
             Driver = await _userFacade.GetAsync(currentRide.Vehicle.OwnerId);
-            var reservation = await _reservationFacade.GetUserReservationByRide(LoggedUser.Id, rideId);
+            var reservation = await _reservationFacade.GetUserReservationByRideAsync(LoggedUser.Id, rideId);
             if (reservation is not null)
             { // editing reservation
                 MaxAvailableSeats += reservation.Seats;

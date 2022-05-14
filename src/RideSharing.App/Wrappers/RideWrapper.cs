@@ -15,6 +15,12 @@ public class RideWrapper : ModelWrapper<RideDetailModel>
         InitializeCollectionProperties(model);
     }
 
+    public Guid VehicleId
+    {
+        get => GetValue<Guid>();
+        set => SetValue(value);
+    }
+
     public string? FromName
     {
         get => GetValue<string>();

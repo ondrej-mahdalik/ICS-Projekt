@@ -10,6 +10,7 @@ public record RideDetailModel(
     int SharedSeats,
     DateTime Departure,
     DateTime Arrival,
+    Guid VehicleId,
     string? Note = null) : ModelBase
 {
     public string FromName { get; set; } = FromName;
@@ -24,6 +25,7 @@ public record RideDetailModel(
     public int DriverReviewCount { get; set; }
 
     public List<ReservationDetailModel> Reservations { get; init; } = new();
+    public Guid VehicleId { get; set; } = VehicleId;
     public VehicleListModel? Vehicle { get; set; }
 
     public TimeSpan Duration { get; set; } = Arrival - Departure;
