@@ -22,7 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{85DC0A63
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RideSharing.Common.Tests", "RideSharing.Common.Tests\RideSharing.Common.Tests.csproj", "{558EE2FD-5A31-478E-974F-C77EA5249AB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RideSharing.App", "RideSharing.App\RideSharing.App.csproj", "{8378183E-EAB4-4998-80BF-A3AD4C409EA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RideSharing.App", "RideSharing.App\RideSharing.App.csproj", "{8378183E-EAB4-4998-80BF-A3AD4C409EA2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,7 +43,6 @@ Global
 		{2F5C47D3-8772-4144-BC07-53399763B8C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F5C47D3-8772-4144-BC07-53399763B8C1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A034B59B-327F-42FD-B419-51D0C7917B2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A034B59B-327F-42FD-B419-51D0C7917B2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A034B59B-327F-42FD-B419-51D0C7917B2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A034B59B-327F-42FD-B419-51D0C7917B2B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{81F238BA-4822-4D78-9A08-F30B5858AF9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

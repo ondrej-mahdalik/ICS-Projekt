@@ -35,6 +35,9 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
 
         mediator.Register<UpdateMessage<RideWrapper>>(RideUpdated);
         mediator.Register<DeleteMessage<RideWrapper>>(RideDeleted);
+        mediator.Register<NewMessage<ReservationWrapper>>(ReservationAdded);
+        mediator.Register<UpdateMessage<ReservationWrapper>>(ReservationUpdated);
+        mediator.Register<DeleteMessage<ReservationWrapper>>(ReservationDeleted);
     }
 
     public string? UserName { get; set; } = "User";
@@ -111,6 +114,10 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
 
     private async void RideUpdated(UpdateMessage<RideWrapper> _) => await LoadAsync();
     private async void RideDeleted(DeleteMessage<RideWrapper> _) => await LoadAsync();
+    private async void ReservationUpdated(UpdateMessage<ReservationWrapper> _) => await LoadAsync();
+    private async void ReservationDeleted(DeleteMessage<ReservationWrapper> _) => await LoadAsync();
+    private async void ReservationAdded(NewMessage<ReservationWrapper> _) => await LoadAsync();
+
 
     private async void ReviewSubmitted(RideRecentListModel? rideListModel)
     {

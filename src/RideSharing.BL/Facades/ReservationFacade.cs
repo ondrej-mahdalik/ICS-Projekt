@@ -28,27 +28,31 @@ public class ReservationFacade : CRUDFacade<ReservationEntity, ReservationListMo
         return reservation is null ? null : Mapper.Map<ReservationDetailModel>(reservation);
     }
 
-    public async Task<bool> CanCreateReservationAsync(Guid userId, Guid rideId)
+    public async Task<bool> HasConflictingRide(Guid userId, Guid rideId)
     {
         var uow = UnitOfWorkFactory.Create();
         var dbSetReservations = uow.GetRepository<ReservationEntity>().Get();
-        var dbSetRides = uow.GetRepository<RideEntity>().Get();
+        var dbSetRides = uow.GetRepository<RideEntity>().Get().Include(x => x.Vehicle);
 
         // Check if the user is the driver
-        var ride = await dbSetRides.Include(x => x.Vehicle).SingleOrDefaultAsync(x => x.Id == rideId);
+        var ride = await dbSetRides.SingleOrDefaultAsync(x => x.Id == rideId);
         if (ride is null)
             throw new ArgumentException("Invalid ride id");
 
         if (ride.Vehicle is not null && ride.Vehicle.OwnerId == userId)
-            return false;
-            
+            return true;
+
         // Check for conflicting rides
-        return await dbSetReservations.AnyAsync(
+        bool conflictReservation = await dbSetReservations.AnyAsync(
             x => x.ReservingUserId == userId && x.Ride != null &&
-                (
-                     (ride.Departure >= x.Ride.Departure && ride.Departure <=x.Ride.Arrival) || 
-                     (ride.Arrival >= x.Ride.Departure && ride.Arrival <= x.Ride.Arrival)
-                )
-            );
+                 (ride.Departure <= x.Ride.Arrival || ride.Arrival >= x.Ride.Departure)
+        );
+
+        bool conflictRide = await dbSetRides.AnyAsync(
+            x => x.Vehicle != null && x.Vehicle.Owner != null && x.Vehicle.Owner.Id == userId &&
+                 (ride.Departure <= x.Arrival || ride.Arrival >= x.Departure)
+        );
+        return conflictRide || conflictReservation;
+
     }
 }
