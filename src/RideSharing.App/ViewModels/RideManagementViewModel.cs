@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -12,6 +11,7 @@ using RideSharing.App.Services;
 using RideSharing.App.Services.Dialogs;
 using RideSharing.App.Wrappers;
 using RideSharing.BL.Facades;
+using RideSharing.BL.Models;
 using RideSharing.Common.Enums;
 
 namespace RideSharing.App.ViewModels
@@ -41,9 +41,9 @@ namespace RideSharing.App.ViewModels
             _messageQueue = messageQueue;
 
             DeleteRideCommand = new AsyncRelayCommand(DeleteAsync);
-            SaveCommand = new AsyncRelayCommand(SaveAsync, CanSave);
-            DeleteReservationCommand = new AsyncRelayCommand<ReservationWrapper>(DeleteReservationAsync);
-            ContactUserCommand = new AsyncRelayCommand<ReservationWrapper>(ContactUser);
+            SaveCommand = new AsyncRelayCommand(SaveAsync, EnoughSeats);
+            DeleteReservationCommand = new AsyncRelayCommand<ReservationDetailModel>(DeleteReservationAsync);
+            ContactUserCommand = new AsyncRelayCommand<ReservationDetailModel>(ContactUser);
 
             _mediator.Register<ManageMessage<RideWrapper>>(RideSelected);
         }
@@ -56,7 +56,7 @@ namespace RideSharing.App.ViewModels
             await LoadAsync(obj.Id.Value);
         }
 
-        private async Task ContactUser(ReservationWrapper? reservation)
+        private async Task ContactUser(ReservationDetailModel? reservation)
         {
             if (reservation is null)
                 return;
@@ -76,12 +76,18 @@ namespace RideSharing.App.ViewModels
         public ICommand ContactUserCommand { get; }
         public RideWrapper? DetailModel { get; private set; }
         public VehicleWrapper? Vehicle { get; private set; }
-        public List<ReservationWrapper> Reservations { get; private set; }
+        public List<ReservationDetailModel>? Reservations { get; private set; }
         public TimeSpan? Duration { get => DetailModel?.Arrival - DetailModel?.Departure; }
 
-        private bool CanSave() => DetailModel?.IsValid ?? false;
         public bool MapEnabled { get; set; }
-        public bool EnoughSeats { get => DetailModel?.SharedSeats > DetailModel?.OccupiedSeats; }
+
+        public bool EnoughSeats()
+        {
+            if (DetailModel is null)
+                return false;
+
+            return DetailModel.SharedSeats >= DetailModel.OccupiedSeats;
+        }
 
         public async Task DeleteAsync()
         {
@@ -113,13 +119,13 @@ namespace RideSharing.App.ViewModels
             });
         }
 
-        public async Task DeleteReservationAsync(ReservationWrapper? reservation)
+        public async Task DeleteReservationAsync(ReservationDetailModel? reservation)
         {
             if (DetailModel is null || reservation is null)
                 return;
 
             var delete = await DialogHost.Show(new MessageDialog("Remove Reservation",
-                $"Do you really wish to remove {reservation.ReservingUserName}'s reservation?", DialogType.YesNo));
+                $"Do you really wish to remove {reservation.ReservingUser?.Name} {reservation.ReservingUser?.Surname}'s reservation?", DialogType.YesNo));
             if (delete is not ButtonType.Yes)
                 return;
 
@@ -145,7 +151,7 @@ namespace RideSharing.App.ViewModels
             DetailModel = await _rideFacade.GetAsync(id); // TODO Add empty model
             var vehicle = await _vehicleFacade.GetAsync(DetailModel.VehicleId);
             Vehicle = vehicle;
-            Reservations = (await _reservationFacade.GetReservationsByRideAsync(id)).Select(x => (ReservationWrapper)x).ToList();
+            Reservations = await _reservationFacade.GetReservationsByRideAsync(id);
             MapEnabled = true;
         }
 
@@ -158,6 +164,7 @@ namespace RideSharing.App.ViewModels
 
             DetailModel = await _rideFacade.SaveAsync(DetailModel);
             _mediator.Send(new UpdateMessage<RideWrapper> { Model = DetailModel });
+            _messageQueue.Enqueue("Changes have been successfully saved.");
         }
     }
 }

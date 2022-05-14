@@ -129,17 +129,10 @@ namespace RideSharing.App.ViewModels
                 return;
 
             if (Reservation is null)
-            {
-                Reservation = new ReservationDetailModel(DateTime.Now, seats)
-                {
-                    ReservingUser = await _userFacade.GetAsync(LoggedUser.Id),
-                    Ride = DetailModel
-                };
-            }
+                Reservation = new ReservationDetailModel(DateTime.Now, seats, LoggedUser.Id, DetailModel.Id);
             else
-            {
                 Reservation.Seats = seats;
-            }
+
             await _reservationFacade.SaveAsync(Reservation);
             
             _messageQueue.Enqueue($"Reservation has been successfully {(_reservationCreation ? "created" : "edited")}.");

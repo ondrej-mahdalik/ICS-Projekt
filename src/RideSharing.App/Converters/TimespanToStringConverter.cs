@@ -7,8 +7,11 @@ namespace RideSharing.App.Converters;
 public class TimespanToStringConverter : IValueConverter
 {
 
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
     {
+        if (value is null)
+            return "";
+
         var timeSpan = (TimeSpan)value;
 
         if (timeSpan > TimeSpan.FromDays(1) && timeSpan.Hours != 0)
