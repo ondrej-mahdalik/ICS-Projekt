@@ -167,7 +167,8 @@
                                     </MultiBinding>
                                 </TextBlock.Text>
                             </TextBlock>
-                            <TextBlock Margin="20px 5px 20px 0px">
+                            <TextBlock Margin="20px 5px 20px 0px"
+                                       Visibility="{Binding ReservationConflict, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
                                 <TextBlock.Text>
                                     <MultiBinding StringFormat="Selected seats: {0}/{1}">
                                         <Binding Path="SelectedSeats"
@@ -180,7 +181,8 @@
                         </StackPanel>
                         <StackPanel Grid.Row="1"
                                     Orientation="Vertical"
-                                    Margin="20px 0px">
+                                    Margin="20px 0px"
+                                    Visibility="{Binding ReservationConflict, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
                             <TextBlock Text="Select number of seats to reserve:" />
                             <Slider Minimum="1"
                                     Maximum="{Binding MaxAvailableSeats}"
@@ -191,6 +193,9 @@
                                     HorizontalAlignment="Left"
                                     Orientation="Horizontal" />
                         </StackPanel>
+                        <Label Grid.Row="1"
+                               Visibility="{Binding ReservationConflict, Converter={StaticResource BoolToVisibilityConverter}}"
+                               Content="Can't reserve this ride - you have a ride during the time of this ride."/>
                     </Grid>
 
                     <Button Grid.Row="1"
@@ -198,7 +203,6 @@
                             Margin="20px 0px"
                             VerticalAlignment="Bottom"
                             Style="{StaticResource MaterialDesignOutlinedButton}"
-                            IsEnabled="{Binding ReservationNoConflict}"
                             Content="{Binding Reservation, Converter={StaticResource NullToCreateOrEditConverter}}"
                             Command="{Binding UserReservationCommand}"/>
                 </Grid>

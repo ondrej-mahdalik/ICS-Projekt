@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics.Eventing.Reader;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Automation.Provider;
 using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
 using RideSharing.App.Commands;
@@ -36,7 +38,7 @@ namespace RideSharing.App.ViewModels
             _mediator = mediator;
             _messageQueue = messageQueue;
 
-            UserReservationCommand = new AsyncRelayCommand<ushort>(CreateOrEditReservationAsync);
+            UserReservationCommand = new AsyncRelayCommand(CreateOrEditReservationAsync, CanSave);
             ContactDriverCommand = new AsyncRelayCommand(ContactDriver);
 
             mediator.Register<DetailMessage<RideWrapper>>(RideSelected);
@@ -45,17 +47,24 @@ namespace RideSharing.App.ViewModels
 
         private bool _reservationCreation = true;
 
-
         public RideWrapper? DetailModel { get; private set; }
         public UserWrapper? Driver { get; private set; }
         public VehicleWrapper? Vehicle { get; private set; }
         public ReservationWrapper? Reservation { get; private set; }
+
         public int MaxAvailableSeats { get; private set; }
+
         public int SelectedSeats { get; set; }
 
-        public bool ReservationNoConflict { get; set; }
+        public bool ReservationConflict { get; set; } = false;
 
-        public ICommand UserReservationCommand { get; }
+        public bool CanSave()
+        {
+            return _reservationCreation || SelectedSeats != Reservation?.Seats;
+        }
+
+
+public ICommand UserReservationCommand { get; }
         public ICommand ContactDriverCommand { get; }
 
 
@@ -91,8 +100,9 @@ namespace RideSharing.App.ViewModels
 
             MapEnabled = false;
             DetailModel = await _rideFacade.GetAsync(rideId) ?? throw new InvalidOperationException("Failed to load the selected ride");
-            MaxAvailableSeats = DetailModel.SharedSeats - DetailModel.OccupiedSeats;
             Duration = DetailModel.Arrival - DetailModel.Departure;
+            MaxAvailableSeats = DetailModel.SharedSeats - DetailModel.OccupiedSeats;
+
             MapEnabled = true;
             var currentRide = await _rideFacade.GetAsync(DetailModel.Id);
             if (currentRide?.Vehicle is null)
@@ -102,17 +112,17 @@ namespace RideSharing.App.ViewModels
             Driver = await _userFacade.GetAsync(currentRide.Vehicle.OwnerId);
             var reservation = await _reservationFacade.GetUserReservationByRide(LoggedUser.Id, rideId);
             if (reservation is not null)
-            {
+            { // editing reservation
+                MaxAvailableSeats += reservation.Seats;
+                _reservationCreation = false;
                 Reservation = reservation;
                 SelectedSeats = Reservation.Seats;
-                _reservationCreation = false;
             }
             else
-            {
+            { // creating reservation
                 Reservation = null;
+                CheckReservationConflict();
             }
-            
-            CheckReservationNoConflict();
         }
 
         public Task DeleteAsync()
@@ -120,34 +130,30 @@ namespace RideSharing.App.ViewModels
             throw new NotImplementedException(); // TODO Delete reservation (not ride)
         }
 
-        public async Task CreateOrEditReservationAsync(ushort seats)
+        public async Task CreateOrEditReservationAsync()
         {
             if (LoggedUser is null || DetailModel is null)
                 return;
 
             if (Reservation is null)
             {
-                Reservation = new ReservationDetailModel(DateTime.Now, seats)
-                {
-                    ReservingUser = await _userFacade.GetAsync(LoggedUser.Id),
-                    Ride = DetailModel
-                };
+                Reservation = new ReservationDetailModel(DateTime.Now, (ushort)SelectedSeats, LoggedUser.Id, DetailModel.Id);
             }
             else
             {
-                Reservation.Seats = seats;
+                Reservation.Seats = (ushort) SelectedSeats;
             }
             await _reservationFacade.SaveAsync(Reservation);
             
             _messageQueue.Enqueue($"Reservation has been successfully {(_reservationCreation ? "created" : "edited")}.");
         }
 
-        private async void CheckReservationNoConflict()
+        private async void CheckReservationConflict()
         {
             if (LoggedUser is null || DetailModel is null)
                 return;
 
-            ReservationNoConflict = !(_reservationCreation && await _reservationFacade.CanCreateReservation(LoggedUser.Id, DetailModel.Id));
+            ReservationConflict = _reservationCreation && await _reservationFacade.HasConflictingRide(LoggedUser.Id, DetailModel.Id);
         }
 
 
