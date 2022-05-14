@@ -116,6 +116,18 @@ public static class RideSeeds
         Note: "We may need to do some repairs on the way. Bring a screwdriver and a hammer."
     );
 
+    public static readonly RideEntity ElonAsOstrava = new(
+        Guid.Parse("d4c33221-2196-40d8-b45c-49ec23a627fd"),
+        FromName: "Aš",
+        ToName: "Ostrava",
+        Distance: 564,
+        SharedSeats: 19,
+        Departure: DateTime.Parse("2023-02-05 12:00", CultureInfo.InvariantCulture),
+        Arrival: DateTime.Parse("2023-02-15 18:00", CultureInfo.InvariantCulture),
+        VehicleId: VehicleSeeds.Karosa.Id,
+        Note: "Toilet is broken."
+    );
+
     static RideSeeds()
     {
         //PrahaBrno.Reservations.Add(ReservationSeeds.BrnoTwoSeats);
@@ -125,7 +137,7 @@ public static class RideSeeds
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<RideEntity>().HasData(
-            PrahaBrno, BrnoOstrava, OlomoucOstrava, OlomoucBrno, TynecOlomouc, TynecPraha, BrnoOlomouc, BrnoPrague, BrnoOstrava2
+            PrahaBrno, BrnoOstrava, OlomoucOstrava, OlomoucBrno, TynecOlomouc, TynecPraha, BrnoOlomouc, BrnoPrague, BrnoOstrava2, ElonAsOstrava
         );
     }
 }

@@ -87,12 +87,20 @@ public static class ReservationSeeds
         DateTime.Parse("2021-02-02 11:00", CultureInfo.InvariantCulture)
     );
 
+    public static readonly ReservationEntity AsOstravaJonDoe = new(
+        Id: Guid.Parse("203ffbdc-98a1-47cb-8124-693e74a39dfc"),
+        UserSeeds.JohnDoe.Id,
+        RideSeeds.ElonAsOstrava.Id,
+        6,
+        DateTime.Parse("2022-02-01 18:25", CultureInfo.InvariantCulture)
+    );
+
 
 
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ReservationEntity>().HasData(
-            PrahaBrnoJanNovotnny, OlomoucOstravaJohnDoe, OlomoucBrnoJanNovotny, OlomoucOstravaJanNovotny, PrahaBrnoPavelNovak, OlomoucOstravaPavelNovak, TynecOlomoucElonTusk, TynecPrahaElonTusk, TynecPrahaJohnDoe, TynecPrahaJanNovotny
+            PrahaBrnoJanNovotnny, OlomoucOstravaJohnDoe, OlomoucBrnoJanNovotny, OlomoucOstravaJanNovotny, PrahaBrnoPavelNovak, OlomoucOstravaPavelNovak, TynecOlomoucElonTusk, TynecPrahaElonTusk, TynecPrahaJohnDoe, TynecPrahaJanNovotny, AsOstravaJonDoe
         );
     }
 }

@@ -124,6 +124,7 @@
                             VerticalAlignment="Bottom"
                             Style="{StaticResource MaterialDesignOutlinedButton}"
                             Margin="20px 0px"
+                            Command="{Binding ContactDriverCommand}"
                             Cursor="Hand">Contact driver</Button>
                 </Grid>
             </materialDesign:Card>
@@ -166,15 +167,23 @@
                                     </MultiBinding>
                                 </TextBlock.Text>
                             </TextBlock>
-                            <TextBlock  Margin="20px 0px"
-                                        Text="{Binding AvailableSeats, StringFormat='Available seats: {0}'}" />
+                            <TextBlock Margin="20px 5px 20px 0px">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="Selected seats: {0}/{1}">
+                                        <Binding Path="SelectedSeats"
+                                                 FallbackValue="" />
+                                        <Binding Path="MaxAvailableSeats"
+                                                 FallbackValue="" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
                         </StackPanel>
                         <StackPanel Grid.Row="1"
                                     Orientation="Vertical"
                                     Margin="20px 0px">
                             <TextBlock Text="Select number of seats to reserve:" />
                             <Slider Minimum="1"
-                                    Maximum="{Binding DetailModel.SharedSeats}"
+                                    Maximum="{Binding MaxAvailableSeats}"
                                     Value="{Binding SelectedSeats, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource MaterialDesignDiscreteHorizontalSlider}"
                                     materialDesign:SliderAssist.OnlyShowFocusVisualWhileDragging="True"
@@ -189,8 +198,9 @@
                             Margin="20px 0px"
                             VerticalAlignment="Bottom"
                             Style="{StaticResource MaterialDesignOutlinedButton}"
-                            IsEnabled="{Binding ReservationPossible}"
-                            Content="{Binding Reservation, Converter={StaticResource NullToCreateOrEditConverter}}"/>
+                            IsEnabled="{Binding ReservationNoConflict}"
+                            Content="{Binding Reservation, Converter={StaticResource NullToCreateOrEditConverter}}"
+                            Command="{Binding UserReservationCommand}"/>
                 </Grid>
             </materialDesign:Card>
         </Grid>

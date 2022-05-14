@@ -42,26 +42,25 @@ namespace RideSharing.App.ViewModels
             mediator.Register<DetailMessage<RideWrapper>>(RideSelected);
         }
 
-        
+
+        private bool _reservationCreation = true;
+
 
         public RideWrapper? DetailModel { get; private set; }
         public UserWrapper? Driver { get; private set; }
         public VehicleWrapper? Vehicle { get; private set; }
         public ReservationWrapper? Reservation { get; private set; }
-        public float DriverRating { get; private set; }
-        public int TotalNumberOfReviews { get; private set; }
-        public int AvailableSeats { get; private set; }
+        public int MaxAvailableSeats { get; private set; }
+        public int SelectedSeats { get; set; }
+
+        public bool ReservationNoConflict { get; set; }
+
         public ICommand UserReservationCommand { get; }
         public ICommand ContactDriverCommand { get; }
-        public int SelectedSeats { get; set; } = 1;
 
 
         public bool MapEnabled { get; set; }
 
-        public bool ReservationPossible
-        {
-            get => _reservationPossible && SelectedSeats <= AvailableSeats;
-        }
         public TimeSpan? Duration { get; private set; }
 
         public async Task ContactDriver()
@@ -92,7 +91,7 @@ namespace RideSharing.App.ViewModels
 
             MapEnabled = false;
             DetailModel = await _rideFacade.GetAsync(rideId) ?? throw new InvalidOperationException("Failed to load the selected ride");
-            AvailableSeats = DetailModel.SharedSeats - DetailModel.OccupiedSeats;
+            MaxAvailableSeats = DetailModel.SharedSeats - DetailModel.OccupiedSeats;
             Duration = DetailModel.Arrival - DetailModel.Departure;
             MapEnabled = true;
             var currentRide = await _rideFacade.GetAsync(DetailModel.Id);
@@ -103,17 +102,17 @@ namespace RideSharing.App.ViewModels
             Driver = await _userFacade.GetAsync(currentRide.Vehicle.OwnerId);
             var reservation = await _reservationFacade.GetUserReservationByRide(LoggedUser.Id, rideId);
             if (reservation is not null)
-                Reservation = reservation;
-            else
-                Reservation = null;
-
-
-            if (Reservation is not null)
             {
+                Reservation = reservation;
                 SelectedSeats = Reservation.Seats;
+                _reservationCreation = false;
             }
-
-            CheckReservationPossibility();
+            else
+            {
+                Reservation = null;
+            }
+            
+            CheckReservationNoConflict();
         }
 
         public Task DeleteAsync()
@@ -125,7 +124,7 @@ namespace RideSharing.App.ViewModels
         {
             if (LoggedUser is null || DetailModel is null)
                 return;
-            bool creation = true;
+
             if (Reservation is null)
             {
                 Reservation = new ReservationDetailModel(DateTime.Now, seats)
@@ -136,22 +135,19 @@ namespace RideSharing.App.ViewModels
             }
             else
             {
-                creation = false;
                 Reservation.Seats = seats;
             }
             await _reservationFacade.SaveAsync(Reservation);
             
-            _messageQueue.Enqueue($"Reservation has been successfully {(creation ? "created" : "edited")}.");
+            _messageQueue.Enqueue($"Reservation has been successfully {(_reservationCreation ? "created" : "edited")}.");
         }
 
-
-        private bool _reservationPossible { get; set; }
-        private async void CheckReservationPossibility()
+        private async void CheckReservationNoConflict()
         {
             if (LoggedUser is null || DetailModel is null)
                 return;
 
-            _reservationPossible = await _reservationFacade.CanCreateReservation(LoggedUser.Id, DetailModel.Id); // TODO
+            ReservationNoConflict = !(_reservationCreation && await _reservationFacade.CanCreateReservation(LoggedUser.Id, DetailModel.Id));
         }
 
 
