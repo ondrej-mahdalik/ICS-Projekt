@@ -130,7 +130,7 @@
                               Height="120px">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid HorizontalAlignment="Stretch">
+                                <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition />
                                         <ColumnDefinition />
@@ -172,6 +172,12 @@
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment"
+                                        Value="Stretch"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
                     </ListView>
                     <Button Grid.Row="3"
                             Style="{StaticResource MaterialDesignOutlinedSecondaryButton}"
@@ -216,7 +222,7 @@
                     <TextBlock Grid.Row="1"
                                Grid.Column="1"
                                Margin="10px"
-                               Text="{Binding Vehicle.Registered, StringFormat='Registration date: {0:s}', FallbackValue=''}" />
+                               Text="{Binding Vehicle.Registered, StringFormat='Registration date: {0:Y}', FallbackValue=''}" />
 
                 </Grid>
             </materialDesign:Card>

@@ -198,9 +198,11 @@
                                             </MultiBinding>
                                         </TextBlock.Text>
                                     </TextBlock>
-                                    <controls:VehicleIcon Grid.Column="1"
-                                                          Grid.Row="3"
-                                                          VehicleType="{Binding Vehicle.VehicleType}" />
+                                    <TextBlock Grid.Column="1"
+                                               Grid.Row="3"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Center"
+                                               Text="{Binding Vehicle.VehicleType, FallbackValue='Car'}" />
                                     <TextBlock Grid.Row="3"
                                                Grid.Column="0" />
                                     <Button Grid.Row="3"

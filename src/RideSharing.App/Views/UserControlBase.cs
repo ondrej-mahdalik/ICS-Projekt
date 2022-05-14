@@ -15,7 +15,7 @@ public abstract class UserControlBase : UserControl
     {
         //if (DataContext is IListViewModel viewModel)
         //    await viewModel.LoadAsync();
-        if (DataContext is LoginViewModel loginViewModel)
+        if (DataContext is SelectUserViewModel loginViewModel)
             await loginViewModel.LoadAsync();
     }
 }

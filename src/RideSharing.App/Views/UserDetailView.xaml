@@ -32,7 +32,7 @@
                 Grid.Column="2"
                 HorizontalAlignment="Center"
                 Style="{StaticResource MaterialDesignOutlinedButton}"
-                Command="{Binding DeleteUser}">Delete user</Button>
+                Command="{Binding DeleteUserCommand}">Delete user</Button>
         <StackPanel Grid.Row="1"
                     Grid.Column="1">
             <Image Width="150px"
@@ -63,7 +63,8 @@
                     HorizontalAlignment="Right"
                     Margin="10px"
                     IsEnabled="{Binding IsValid}"
-                    Command="{Binding SaveChanges}">Save Changes</Button>
+                    Command="{Binding SaveChangesCommand}"
+                    Cursor="Hand">Save Changes</Button>
         </StackPanel>
     </Grid>
 </local:UserControlBase>

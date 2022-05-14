@@ -3,9 +3,9 @@
     /// <summary>
     /// Interakční logika pro LoginView.xaml
     /// </summary>
-    public partial class LoginView
+    public partial class SelectUserView
     {
-        public LoginView()
+        public SelectUserView()
         {
             InitializeComponent();
         }

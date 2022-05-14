@@ -76,7 +76,7 @@ namespace RideSharing.App.ViewModels
             if (vehicle is null)
                 return;
 
-            var delete = await DialogHost.Show(new MessageDialog("Delete Vehicle",
+            var delete = await DialogHost.Show( new MessageDialog("Delete Vehicle",
                 "Do you really want to delete the vehicle?\n All related rides and their reservations will be deleted as well.",
                 DialogType.YesNo));
             if (delete is not ButtonType.Yes)
@@ -85,6 +85,7 @@ namespace RideSharing.App.ViewModels
             try
             {
                 await _vehicleFacade.DeleteAsync(vehicle.Id);
+                _mediator.Send(new DeleteMessage<VehicleWrapper>());
                 _messageQueue.Enqueue("Vehicle has been successfully deleted");
             }
 

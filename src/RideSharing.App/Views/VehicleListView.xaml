@@ -103,7 +103,7 @@
                                         Grid.Column="3"
                                         VerticalAlignment="Bottom"
                                         materialDesign:RippleAssist.IsDisabled="False"
-                                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                                        Style="{StaticResource MaterialDesignOutlinedSecondaryButton}"
                                         Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:UserControlBase}},
                                         Path=DataContext.VehicleDeleteCommand}"
                                         CommandParameter="{Binding }">Delete Vehicle</Button>

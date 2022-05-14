@@ -27,9 +27,9 @@ public class UserDetailViewModel : ViewModelBase, IUserDetailViewModel
         get => DetailModel is not null && DetailModel.IsValid && !UploadingImage;
     }
 
-    public ICommand DeleteUser { get; }
-    public ICommand SaveChanges { get; }
-    public ICommand ChangeImage { get; }
+    public ICommand DeleteUserCommand { get; }
+    public ICommand SaveChangesCommand { get; }
+    public ICommand ChangeImageCommand { get; }
 
     public UserDetailViewModel(UserFacade userFacade,
         IMediator mediator,
@@ -39,9 +39,9 @@ public class UserDetailViewModel : ViewModelBase, IUserDetailViewModel
         _mediator = mediator;
         _messageQueue = messageQueue;
 
-        DeleteUser = new RelayCommand(UserDeleted);
-        SaveChanges = new AsyncRelayCommand(SaveAsync);
-        ChangeImage = new AsyncRelayCommand<string>(ChangeImageAsync);
+        DeleteUserCommand = new RelayCommand(UserDeleted);
+        SaveChangesCommand = new AsyncRelayCommand(SaveAsync);
+        ChangeImageCommand = new AsyncRelayCommand<string>(ChangeImageAsync);
     }
     public bool UploadingImage { get; private set; }
 

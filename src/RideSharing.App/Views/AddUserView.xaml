@@ -9,11 +9,67 @@
                        xmlns:local="clr-namespace:RideSharing.App.Views"
                        mc:Ignorable="d"
                        FontSize="14"
-                       d:DesignHeight="600"
-                       d:DesignWidth="1000"
+                       d:DesignHeight="450"
+                       d:DesignWidth="800"
                        Background="{StaticResource MaterialDesignLightBackground}"
                        d:DataContext="{d:DesignInstance viewModels:AddUserViewModel}">
     <Grid x:Name="Root">
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Column="1"
+                   Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                   Padding="20px"
+                   Text="Create New Profile"
+                   TextAlignment="Center" />
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1">
+            <Image Width="100px"
+                   HorizontalAlignment="Center"
+                   Margin="10px"
+                   Height="100px"
+                   Stretch="UniformToFill"
+                   IsEnabled="{Binding UploadingImage, Converter={StaticResource InvertBooleanConverter}}"
+                   Source="{Binding DetailModel.ImageUrl, FallbackValue={StaticResource ProfileDefault}, TargetNullValue={StaticResource ProfileDefault}}" />
+            <Button x:Name="UploadImageBtn"
+                    HorizontalAlignment="Center"
+                    Style="{StaticResource MaterialDesignOutlinedButton}"
+                    Click="UploadImageBtn_OnClick">Upload photo</Button>
+            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="Name"
+                     Margin="5px"
+                     Text="{Binding DetailModel.Name}"
+                     Cursor="Arrow" />
+            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="Surname"
+                     Margin="5px"
+                     Text="{Binding DetailModel.Surname}" />
+
+            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="Phone"
+                     Margin="5px"
+                     Text="{Binding DetailModel.Phone}" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Style="{StaticResource MaterialDesignOutlinedSecondaryButton}"
+                        HorizontalAlignment="Left"
+                        Margin="5px"
+                        Command="{Binding CancelCommand}"
+                        Cursor="Hand">Cancel</Button>
+                <Button Grid.Column="1" Style="{StaticResource MaterialDesignOutlinedButton}"
+                        HorizontalAlignment="Right"
+                        Margin="5px"
+                        Command="{Binding SaveCommand}">Save Changes</Button>
+            </Grid>
+        </StackPanel>
     </Grid>
 </local:UserControlBase>

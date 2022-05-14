@@ -25,7 +25,7 @@ namespace RideSharing.App.Views
             if (result.HasValue && result.Value && dialog.CheckFileExists)
             {
                 var vm = DataContext as UserDetailViewModel;
-                vm?.ChangeImage.Execute(dialog.FileName);
+                vm?.ChangeImageCommand.Execute(dialog.FileName);
             }
         }
     }

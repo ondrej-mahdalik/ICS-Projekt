@@ -7,6 +7,7 @@
         xmlns:views="clr-namespace:RideSharing.App.Views"
         xmlns:viewModels="clr-namespace:RideSharing.App.ViewModels"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:dialogs="clr-namespace:RideSharing.App.Services.Dialogs"
         FontFamily="{materialDesign:MaterialDesignFont}"
         d:DataContext="{d:DesignInstance viewModels:LoginViewModel}"
         TextElement.FontWeight="Medium"
@@ -14,7 +15,14 @@
         mc:Ignorable="d"
         Title="LoginWindow" Height="450" Width="800"
         Closing="Window_Closing">
-    <Grid Margin="30px">
-        <views:LoginView DataContext="{Binding}" />
+    <Grid>
+        <materialDesign:Transitioner SelectedIndex="{Binding TransitionerSelectedIndex, Converter={StaticResource LoginViewIndexToIntConverter}}">
+            <materialDesign:TransitionerSlide>
+                <views:SelectUserView DataContext="{Binding SelectUserViewModel}" />
+            </materialDesign:TransitionerSlide>
+            <materialDesign:TransitionerSlide>
+                <views:AddUserView DataContext="{Binding AddUserViewModel}" />
+            </materialDesign:TransitionerSlide>
+        </materialDesign:Transitioner>
     </Grid>
 </Window>
