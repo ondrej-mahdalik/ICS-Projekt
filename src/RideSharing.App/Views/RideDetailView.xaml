@@ -189,7 +189,8 @@
                             Margin="20px 0px"
                             VerticalAlignment="Bottom"
                             Style="{StaticResource MaterialDesignOutlinedButton}"
-                            IsEnabled="{Binding ReservationPossible}">Create Reservation</Button>
+                            IsEnabled="{Binding ReservationPossible}"
+                            Content="{Binding Reservation, Converter={StaticResource NullToCreateOrEditConverter}}"/>
                 </Grid>
             </materialDesign:Card>
         </Grid>

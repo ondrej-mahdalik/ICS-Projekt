@@ -92,6 +92,7 @@ namespace RideSharing.App.ViewModels
 
             MapEnabled = false;
             DetailModel = await _rideFacade.GetAsync(rideId) ?? throw new InvalidOperationException("Failed to load the selected ride");
+            AvailableSeats = DetailModel.SharedSeats - DetailModel.OccupiedSeats;
             Duration = DetailModel.Arrival - DetailModel.Departure;
             MapEnabled = true;
             var currentRide = await _rideFacade.GetAsync(DetailModel.Id);
@@ -104,7 +105,6 @@ namespace RideSharing.App.ViewModels
             if (Reservation is not null)
             {
                 SelectedSeats = Reservation.Seats;
-                AvailableSeats += Reservation.Seats;
             }
 
             CheckReservationPossibility();
@@ -119,7 +119,7 @@ namespace RideSharing.App.ViewModels
         {
             if (LoggedUser is null || DetailModel is null)
                 return;
-
+            bool creation = true;
             if (Reservation is null)
             {
                 Reservation = new ReservationDetailModel(DateTime.Now, seats)
@@ -130,10 +130,12 @@ namespace RideSharing.App.ViewModels
             }
             else
             {
+                creation = false;
                 Reservation.Seats = seats;
             }
             await _reservationFacade.SaveAsync(Reservation);
-            _messageQueue.Enqueue("Reservation has been successfully created/edited"); // TODO recognize creation from edit
+            
+            _messageQueue.Enqueue($"Reservation has been successfully {(creation ? "created" : "edited")}.");
         }
 
 

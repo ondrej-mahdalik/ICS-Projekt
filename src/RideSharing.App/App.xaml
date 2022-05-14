@@ -14,6 +14,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <converters:TimespanToStringConverter x:Key="TimespanToStringConverter"/>
+            <converters:NullToCreateOrEditConverter x:Key="NullToCreateOrEditConverter"/>
             <converters:FloatToIntConverter x:Key="FloatToIntConverter"/>
             <converters:RideFilterEnumToBoolConverter x:Key="RideFilterEnumToBoolConverter"/>
             <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
