@@ -44,17 +44,17 @@
             <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="Name"
                      Margin="5px"
-                     Text="{Binding DetailModel.Name}"
+                     Text="{Binding DetailModel.Name, UpdateSourceTrigger=PropertyChanged}"
                      Cursor="Arrow" />
             <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="Surname"
                      Margin="5px"
-                     Text="{Binding DetailModel.Surname}" />
+                     Text="{Binding DetailModel.Surname, UpdateSourceTrigger=PropertyChanged}" />
 
             <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="Phone"
                      Margin="5px"
-                     Text="{Binding DetailModel.Phone}" />
+                     Text="{Binding DetailModel.Phone, UpdateSourceTrigger=PropertyChanged}" />
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>

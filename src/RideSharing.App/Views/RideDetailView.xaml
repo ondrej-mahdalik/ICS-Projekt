@@ -62,7 +62,7 @@
                         <TextBlock Grid.Column="1"
                                    FontWeight="Bold"
                                    HorizontalAlignment="Right"
-                                   Text="{Binding Duration, StringFormat='Duration: {0} h'}" />
+                                   Text="{Binding Duration, StringFormat='Duration: {0}', Converter={StaticResource TimespanToStringConverter}}" />
                     </Grid>
                     <TextBlock FontWeight="Bold"
                                Text="Driver's note:" />

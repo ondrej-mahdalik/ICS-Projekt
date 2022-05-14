@@ -19,9 +19,11 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <TextBlock FontWeight="Bold"
-                       Text="{Binding FromName}" />
+                       Text="{Binding FromName}"
+                       HorizontalAlignment="Center"/>
             <TextBlock Grid.Row="1"
                        Grid.Column="0"
+                       HorizontalAlignment="Center"
                        Text="{Binding Path=Departure, StringFormat=t}" />
             <Canvas Grid.Row="0"
                     Grid.Column="1"
@@ -34,9 +36,11 @@
             <TextBlock Grid.Row="0"
                        Grid.Column="2"
                        FontWeight="Bold"
+                       HorizontalAlignment="Center"
                        Text="{Binding ToName}" />
             <TextBlock Grid.Row="1"
                        Grid.Column="2"
+                       HorizontalAlignment="Center"
                        Text="{Binding StringFormat=t, Path=Arrival }" />
         </Grid>
     </Grid>
