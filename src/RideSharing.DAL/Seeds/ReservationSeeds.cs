@@ -95,12 +95,87 @@ public static class ReservationSeeds
         DateTime.Parse("2022-02-01 18:25", CultureInfo.InvariantCulture)
     );
 
+    public static readonly ReservationEntity BrnoOstravaJanNovotny = new(
+        Id: Guid.Parse("f6379225-d0e3-4cea-b1d0-388dd1c1e936"),
+        ReservingUserId: UserSeeds.JanNovotny.Id,
+        RideId: RideSeeds.BrnoOstrava.Id,
+        Seats: 1,
+        Timestamp: DateTime.Parse("2022-01-19 14:33",CultureInfo.InvariantCulture)
+    );
 
+    public static readonly ReservationEntity PragueOstravaJanNovotny = new(
+        Id: Guid.Parse("110f0a30-9713-431c-b81b-0855506697ad"),
+        ReservingUserId: UserSeeds.JanNovotny.Id,
+        RideId: RideSeeds.NovakPragueOstrava.Id,
+        Seats: 1,
+        Timestamp: DateTime.Parse("2022-05-16 14:41",CultureInfo.InvariantCulture)
+
+    );
+
+    public static readonly ReservationEntity BrnoOlomoucElonTusk = new(
+        Id: Guid.Parse("e9db7543-0b84-426c-ae46-82b1aacd1f34"),
+        ReservingUserId: UserSeeds.ElonTusk.Id,
+        RideId: RideSeeds.BrnoOlomouc.Id,
+        Seats: 2,
+        Timestamp: DateTime.Parse("2022-04-14 12:02", CultureInfo.InvariantCulture)
+        );
+
+    public static readonly ReservationEntity TuskJihlavaOstrava = new(
+        Id: Guid.Parse("97095b30-4b61-495a-8605-3dfbff5fd71a"),
+        ReservingUserId: UserSeeds.ElonTusk.Id,
+        RideId: RideSeeds.DoeJihlavaOstrava.Id,
+        Seats: 1,
+        Timestamp: DateTime.Parse("2021-03-20 10:11", CultureInfo.InvariantCulture)
+    );
+
+    public static readonly ReservationEntity NovakJihlavaMohelnice = new(
+        Id: Guid.Parse("a9ecb9f8-d6a3-4e45-8706-ff2f84c6af21"),
+        ReservingUserId: UserSeeds.PavelNovak.Id,
+        RideId: RideSeeds.TuskJihlavaMohelnice.Id,
+        Seats: 2,
+        Timestamp: DateTime.Parse("2019-11-11 11:11", CultureInfo.InvariantCulture)
+    );
+
+    public static readonly ReservationEntity DoeJihlavaBrno = new(
+        Id: Guid.Parse("c75067e8-c579-4251-a82b-92500581ff70"),
+        ReservingUserId: UserSeeds.JohnDoe.Id,
+        RideId: RideSeeds.NovakJihlavaBrno.Id,
+        Seats: 1,
+        Timestamp: DateTime.Parse("2021-02-01 11:11", CultureInfo.InvariantCulture)
+    );
+
+    public static readonly ReservationEntity NovotnyJihlavaOlomouc = new(
+        Id: Guid.Parse("cab44259-8594-42d4-b5bc-ba5b9b4bcbd5"),
+        ReservingUserId: UserSeeds.JanNovotny.Id,
+        RideId: RideSeeds.DoeJihlavaOlomouc.Id,
+        Seats: 1,
+        Timestamp: DateTime.Parse("2020-04-02 09:00", CultureInfo.InvariantCulture)
+    );
+
+    public static readonly ReservationEntity NovotnyBrnoPrague = new(
+        Id: Guid.Parse("6466a7fb-3128-4c5d-a95c-32459e494bb4"),
+        ReservingUserId: UserSeeds.JanNovotny.Id,
+        RideId: RideSeeds.BrnoPrague.Id,
+        Seats: 4,
+        Timestamp: DateTime.Parse("2022-05-13 13:13", CultureInfo.InvariantCulture)
+    );
+
+    public static readonly ReservationEntity NovotnyJihlavaMohelnice = new(
+        Id: Guid.Parse("8953c7ca-a1aa-47ae-93a4-05518eea81f8"),
+        ReservingUserId: UserSeeds.JanNovotny.Id,
+        RideId: RideSeeds.TuskJihlavaMohelnice.Id,
+        Seats: 2,
+        Timestamp: DateTime.Parse("2019-08-13 12:19", CultureInfo.InvariantCulture)
+    );
 
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ReservationEntity>().HasData(
-            PrahaBrnoJanNovotnny, OlomoucOstravaJohnDoe, OlomoucBrnoJanNovotny, OlomoucOstravaJanNovotny, PrahaBrnoPavelNovak, OlomoucOstravaPavelNovak, TynecOlomoucElonTusk, TynecPrahaElonTusk, TynecPrahaJohnDoe, TynecPrahaJanNovotny, AsOstravaJonDoe
+            PrahaBrnoJanNovotnny, OlomoucOstravaJohnDoe, OlomoucBrnoJanNovotny, OlomoucOstravaJanNovotny,
+            PrahaBrnoPavelNovak, OlomoucOstravaPavelNovak, TynecOlomoucElonTusk, TynecPrahaElonTusk,
+            TynecPrahaJohnDoe, TynecPrahaJanNovotny, AsOstravaJonDoe, BrnoOstravaJanNovotny,
+            PragueOstravaJanNovotny, BrnoOlomoucElonTusk, TuskJihlavaOstrava, NovakJihlavaMohelnice,
+            DoeJihlavaBrno, NovotnyJihlavaOlomouc, NovotnyBrnoPrague, NovotnyJihlavaMohelnice
         );
     }
 }

@@ -57,10 +57,21 @@ public static class VehicleSeeds
         8,
         "https://www.bazos.cz/img/1/430/151570430.jpg");
 
+    public static readonly VehicleEntity AudiA8 = new(
+        Id: Guid.Parse("1dfd76ec-51cc-41a5-a133-99af4b87524e"),
+        OwnerId: UserSeeds.PavelNovak.Id,
+        VehicleType: VehicleType.Car,
+        Make: "Audi",
+        Model: "A8",
+        Registered: DateTime.Parse("2000-04-04", CultureInfo.InvariantCulture),
+        Seats: 5,
+        ImageUrl: "https://i.ytimg.com/vi/W_KorO42ZkA/maxresdefault.jpg"
+        );
+
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<VehicleEntity>().HasData(
-            Felicia, Karosa, YBR125, Bicycle, Van
+            Felicia, Karosa, YBR125, Bicycle, Van, AudiA8
         );
     }
 }

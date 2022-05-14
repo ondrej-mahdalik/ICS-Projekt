@@ -5,12 +5,6 @@ namespace RideSharing.DAL.Seeds;
 
 public static class ReviewSeeds
 {
-    public static readonly ReviewEntity Perfect = new(
-        Guid.Parse("e6364fdc-2f2a-46a4-bd7f-1016096801fd"),
-        RideSeeds.PrahaBrno.Id,
-        UserSeeds.JohnDoe.Id,
-        5
-    );
 
     public static readonly ReviewEntity Bad = new(
         Guid.Parse("4d809131-db36-47ed-8f95-3292ba018635"),
@@ -34,9 +28,9 @@ public static class ReviewSeeds
     );
 
     public static readonly ReviewEntity VanRideElonTusk = new(
-        Guid.Parse("3d3d171d-0d6a-4d2f-a587-59ac49d56003"),
-        RideSeeds.TynecPraha.Id,
-        UserSeeds.ElonTusk.Id,
+        Id: Guid.Parse("3d3d171d-0d6a-4d2f-a587-59ac49d56003"),
+        RideId: RideSeeds.TynecPraha.Id,
+        AuthorUserId: UserSeeds.ElonTusk.Id,
         2
     );
 
@@ -54,11 +48,35 @@ public static class ReviewSeeds
         3
     );
 
+    public static readonly ReviewEntity NovakJihlavaMohelniceRev = new(
+        Id: Guid.Parse("ce8f9d9d-d1ff-4399-941d-a8f936503e5a"),
+        RideId: RideSeeds.TuskJihlavaMohelnice.Id,
+        AuthorUserId: UserSeeds.PavelNovak.Id,
+        Rating: 4
+    );
+
+    public static readonly ReviewEntity DoeJihlavaBrnoRev = new(
+        Id: Guid.Parse("52fd72a1-aef2-46bf-8313-a6b52b183332"),
+        RideId: RideSeeds.NovakJihlavaBrno.Id,
+        AuthorUserId: UserSeeds.JohnDoe.Id,
+        Rating: 4
+    );
+
+    public static readonly ReviewEntity NovotnyJihlavaOlomoucRev = new(
+        Id: Guid.Parse("66030f16-e246-4c1c-af9e-ddf0a268094d"),
+        RideId: RideSeeds.DoeJihlavaOlomouc.Id,
+        AuthorUserId: UserSeeds.JanNovotny.Id,
+        Rating: 1
+    );
+
+
 
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ReviewEntity>().HasData(
-            Perfect, Bad, Average, BadBicycleRide, VanRideElonTusk, VanRideJohnDoe, VanRideJanNovotny
+            Bad, Average, BadBicycleRide, VanRideElonTusk, VanRideJohnDoe,
+            VanRideJanNovotny, NovakJihlavaMohelniceRev, DoeJihlavaBrnoRev,
+            NovotnyJihlavaOlomoucRev
         );
     }
 }

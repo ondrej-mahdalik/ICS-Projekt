@@ -51,7 +51,7 @@ public static class RideSeeds
         SharedSeats: 4,
         Departure: DateTime.Parse("10/22/2022 13:00", CultureInfo.InvariantCulture),
         Arrival: DateTime.Parse("10/22/2022 15:40", CultureInfo.InvariantCulture),
-        VehicleId: VehicleSeeds.Felicia.Id,
+        VehicleId: VehicleSeeds.AudiA8.Id,
         Note: "No eating in the car !"
     );
 
@@ -128,6 +128,68 @@ public static class RideSeeds
         Note: "Toilet is broken."
     );
 
+    public static readonly RideEntity NovakPragueOstrava = new(
+        Id: Guid.Parse("1768425c-17d0-4b6f-8f54-fb242949fa1a"),
+        FromName: "Prague",
+        ToName: "Ostrava",
+        Distance: 371,
+        SharedSeats: 5,
+        Departure: DateTime.Parse("2023-05-05 11:11", CultureInfo.InvariantCulture),
+        Arrival: DateTime.Parse("2023-05-05 14:44", CultureInfo.InvariantCulture),
+        VehicleId: VehicleSeeds.Van.Id,
+        Note: null
+        );
+    
+    public static readonly RideEntity DoeJihlavaOstrava = new(
+        Id: Guid.Parse("bb420321-1f68-4ff0-9204-95880c084dff"),
+        FromName: "Jihlava",
+        ToName: "Ostrava",
+        Distance: 253,
+        SharedSeats: 1,
+        Departure: DateTime.Parse("2021-04-01 12:00", CultureInfo.InvariantCulture),
+        Arrival: DateTime.Parse("2021-04-01 14:22", CultureInfo.InvariantCulture),
+        VehicleId: VehicleSeeds.YBR125.Id,
+        Note: "Bring a helmet!"
+    );
+
+    // 3 past rides for all users that have a vehicle
+    // These have a reservation and a review, so all user that can share a ride have a rating
+    public static readonly RideEntity TuskJihlavaMohelnice = new(
+        Id: Guid.Parse("fe78f17d-e9e2-448f-ab15-68b2b14e06bc"),
+        FromName: "Jihlava",
+        ToName: "Mohelnice",
+        Distance: 198,
+        SharedSeats: 5,
+        Departure: DateTime.Parse("2020-01-01 08:00",CultureInfo.InvariantCulture),
+        Arrival: DateTime.Parse("2020-01-01 09:55", CultureInfo.InvariantCulture),
+        VehicleId: VehicleSeeds.Karosa.Id,
+        Note: null
+    );
+
+    public static readonly RideEntity NovakJihlavaBrno = new(
+        Id: Guid.Parse("58698380-09c7-4e88-9839-39ed1428b2f6"),
+        FromName: "Jihlava",
+        ToName: "Brno",
+        Distance: 89,
+        SharedSeats: 2,
+        Departure: DateTime.Parse("2021-02-02 14:02",CultureInfo.InvariantCulture),
+        Arrival: DateTime.Parse("2021-02-02 15:02",CultureInfo.InvariantCulture),
+        VehicleId: VehicleSeeds.AudiA8.Id,
+        Note: null
+    );
+
+    public static readonly RideEntity DoeJihlavaOlomouc = new(
+        Id: Guid.Parse("d8108381-5dcd-4237-b621-41a21Ašfc56734"),
+        FromName: "Jihlava",
+        ToName: "Olomouc",
+        Distance: 167,
+        SharedSeats: 1,
+        Departure: DateTime.Parse("2020-04-08 09:00", CultureInfo.InvariantCulture),
+        Arrival: DateTime.Parse("2020-04-08 11:00", CultureInfo.InvariantCulture),
+        VehicleId: VehicleSeeds.Felicia.Id,
+        Note: null
+    );
+
     static RideSeeds()
     {
         //PrahaBrno.Reservations.Add(ReservationSeeds.BrnoTwoSeats);
@@ -137,7 +199,10 @@ public static class RideSeeds
     public static void Seed(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<RideEntity>().HasData(
-            PrahaBrno, BrnoOstrava, OlomoucOstrava, OlomoucBrno, TynecOlomouc, TynecPraha, BrnoOlomouc, BrnoPrague, BrnoOstrava2, ElonAsOstrava
+            PrahaBrno, BrnoOstrava, OlomoucOstrava, OlomoucBrno, TynecOlomouc,
+            TynecPraha, BrnoOlomouc, BrnoPrague, BrnoOstrava2, ElonAsOstrava,
+            NovakPragueOstrava, DoeJihlavaOstrava, TuskJihlavaMohelnice, NovakJihlavaBrno,
+            DoeJihlavaOlomouc
         );
     }
 }
