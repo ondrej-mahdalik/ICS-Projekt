@@ -133,6 +133,7 @@ namespace RideSharing.App.ViewModels
                 Reservation.Seats = seats;
             }
             await _reservationFacade.SaveAsync(Reservation);
+            _messageQueue.Enqueue("Reservation has been successfully created/edited"); // TODO recognize creation from edit
         }
 
 
