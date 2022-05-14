@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Diagnostics.Eventing.Reader;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Automation.Provider;
