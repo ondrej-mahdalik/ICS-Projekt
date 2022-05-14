@@ -113,10 +113,10 @@
                         <StackPanel Grid.Row="1"
                                     Margin="20px 20px 20px 0px"
                                     Orientation="Horizontal">
-                            <materialDesign:RatingBar  Value="{Binding DriverRating, Converter={StaticResource FloatToIntConverter}}"
+                            <materialDesign:RatingBar  Value="{Binding DetailModel.DriverRating, Converter={StaticResource FloatToIntConverter}}"
                                                        Margin="0px -3px 5px 0px"
                                                        IsReadOnly="True" />
-                            <TextBlock />
+                            <TextBlock Text="{Binding DetailModel.DriverReviewCount, StringFormat='{}{0} reviews'}" />
                         </StackPanel>
                     </Grid>
                     <Button Grid.Row="1"
@@ -168,7 +168,7 @@
                                 </TextBlock.Text>
                             </TextBlock>
                             <TextBlock Margin="20px 5px 20px 0px"
-                                       Visibility="{Binding ReservationConflict, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
+                                       Visibility="{Binding ReservationConflict, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <TextBlock.Text>
                                     <MultiBinding StringFormat="Selected seats: {0}/{1}">
                                         <Binding Path="SelectedSeats"
@@ -182,7 +182,7 @@
                         <StackPanel Grid.Row="1"
                                     Orientation="Vertical"
                                     Margin="20px 0px"
-                                    Visibility="{Binding ReservationConflict, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}">
+                                    Visibility="{Binding ReservationConflict, Converter={StaticResource BoolToVisibilityConverter}}">
                             <TextBlock Text="Select number of seats to reserve:" />
                             <Slider Minimum="1"
                                     Maximum="{Binding MaxAvailableSeats}"
@@ -193,18 +193,32 @@
                                     HorizontalAlignment="Left"
                                     Orientation="Horizontal" />
                         </StackPanel>
-                        <Label Grid.Row="1"
-                               Visibility="{Binding ReservationConflict, Converter={StaticResource BoolToVisibilityConverter}}"
-                               Content="Can't reserve this ride - you have a ride during the time of this ride."/>
+                        <TextBlock Grid.Row="1"
+                                   Margin="20px, 20px"
+                                   Visibility="{Binding ReservationConflict, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}"
+                               TextWrapping="Wrap">
+                             Can't reserve this ride.
+                             You have a ride during the time of this ride." 
+                        </TextBlock>
                     </Grid>
 
-                    <Button Grid.Row="1"
-                            Grid.Column="2"
+                    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="2">
+                        <Button 
+                            Visibility="{Binding ReservationCreation, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}"
                             Margin="20px 0px"
                             VerticalAlignment="Bottom"
                             Style="{StaticResource MaterialDesignOutlinedButton}"
-                            Content="{Binding Reservation, Converter={StaticResource NullToCreateOrEditConverter}}"
-                            Command="{Binding UserReservationCommand}"/>
+                            Content="Delete reservation"
+                            Command="{Binding DeleteReservationCommand}"/>
+                        <Button 
+                                Margin="20px 0px"
+                                VerticalAlignment="Bottom"
+                                Style="{StaticResource MaterialDesignOutlinedButton}"
+                                Content="{Binding Reservation, Converter={StaticResource NullToCreateOrEditConverter}}"
+                                Command="{Binding UserReservationCommand}"/>    
+
+                    </StackPanel>
+                    
                 </Grid>
             </materialDesign:Card>
         </Grid>

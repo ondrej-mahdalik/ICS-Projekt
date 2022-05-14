@@ -24,7 +24,7 @@ public class RideFacade : CRUDFacade<RideEntity, RideRecentListModel, RideDetail
         var reservations = uow.GetRepository<ReservationEntity>().Get().Where(x => x.RideId == id);
         Mapper.ProjectTo<ReservationDetailModel>(reservations);
 
-        var reviews = uow.GetRepository<ReviewEntity>().Get().Where(x => x.RideId == model.Id);
+        var reviews = uow.GetRepository<ReviewEntity>().Get().Where(x => x.Ride.Vehicle.OwnerId == ride.Vehicle.OwnerId);
         model.DriverReviewCount = await reviews.CountAsync();
         model.DriverRating = await reviews.SumAsync(x => x.Rating) / (float)model.DriverReviewCount;
         model.OccupiedSeats = await uow.GetRepository<ReservationEntity>().Get().Where(x => x.RideId == model.Id).SumAsync(x => x.Seats);
@@ -74,7 +74,7 @@ public class RideFacade : CRUDFacade<RideEntity, RideRecentListModel, RideDetail
 
         foreach (var ride in rideModels)
         {
-            var reviews = uow.GetRepository<ReviewEntity>().Get().Where(x => x.RideId == ride.Id);
+            var reviews = uow.GetRepository<ReviewEntity>().Get().Where(x => x.Ride.Vehicle.OwnerId == ride.Vehicle.OwnerId);
             ride.ReviewCount = await reviews.CountAsync();
             ride.Rating = await reviews.SumAsync(x => x.Rating) / (float) ride.ReviewCount;
             ride.OccupiedSeats = await uow.GetRepository<ReservationEntity>().Get().Where(x => x.RideId == ride.Id).SumAsync(x => x.Seats);

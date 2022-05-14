@@ -93,6 +93,18 @@ public class RideWrapper : ModelWrapper<RideDetailModel>
         set => SetValue(value);
     }
 
+    public float DriverRating
+    {
+        get => GetValue<float>();
+        set => SetValue(value);
+    }
+
+    public int DriverReviewCount
+    {
+        get => GetValue<int>();
+        set => SetValue(value);
+    }
+
     public ObservableCollection<ReservationWrapper> Reservations { get; set; } = new();
 
     private void InitializeCollectionProperties(RideDetailModel model)

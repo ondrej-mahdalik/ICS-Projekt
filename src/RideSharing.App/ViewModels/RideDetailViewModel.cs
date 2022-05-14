@@ -8,9 +8,11 @@ using MaterialDesignThemes.Wpf;
 using RideSharing.App.Commands;
 using RideSharing.App.Messages;
 using RideSharing.App.Services;
+using RideSharing.App.Services.Dialogs;
 using RideSharing.App.Wrappers;
 using RideSharing.BL.Facades;
 using RideSharing.BL.Models;
+using RideSharing.Common.Enums;
 
 namespace RideSharing.App.ViewModels
 {
@@ -39,13 +41,14 @@ namespace RideSharing.App.ViewModels
             _messageQueue = messageQueue;
 
             UserReservationCommand = new AsyncRelayCommand(CreateOrEditReservationAsync, CanSave);
+            DeleteReservationCommand = new AsyncRelayCommand(DeleteAsync);
             ContactDriverCommand = new AsyncRelayCommand(ContactDriver);
 
             mediator.Register<DetailMessage<RideWrapper>>(RideSelected);
         }
 
 
-        private bool _reservationCreation = true;
+        public bool ReservationCreation { get; set; } = true;
 
         public RideWrapper? DetailModel { get; private set; }
         public UserWrapper? Driver { get; private set; }
@@ -60,11 +63,12 @@ namespace RideSharing.App.ViewModels
 
         public bool CanSave()
         {
-            return _reservationCreation || SelectedSeats != Reservation?.Seats;
+            return ReservationCreation || SelectedSeats != Reservation?.Seats;
         }
 
 
-public ICommand UserReservationCommand { get; }
+        public ICommand UserReservationCommand { get; }
+        public ICommand DeleteReservationCommand { get; }
         public ICommand ContactDriverCommand { get; }
 
 
@@ -116,7 +120,7 @@ public ICommand UserReservationCommand { get; }
             if (reservation is not null)
             { // editing reservation
                 MaxAvailableSeats += reservation.Seats;
-                _reservationCreation = false;
+                ReservationCreation = false;
                 Reservation = reservation;
                 SelectedSeats = Reservation.Seats;
             }
@@ -124,15 +128,35 @@ public ICommand UserReservationCommand { get; }
             { // creating reservation
                 Reservation = null;
                 CheckReservationConflict();
+                SelectedSeats = 1;
             }
+
         }
 
-        public Task DeleteAsync()
+        public async Task DeleteAsync()
         {
-            throw new NotImplementedException(); // TODO Delete reservation (not ride)
-        }
+            if (LoggedUser is null || Reservation is null)
+                return;
 
-        public async Task CreateOrEditReservationAsync()
+            var delete = await DialogHost.Show(new MessageDialog("Delete Reservation", "Do you really want to delete your reservation?",
+                DialogType.YesNo));
+            if (delete is not ButtonType.Yes)
+                return;
+            try
+            {
+                await _reservationFacade.DeleteAsync(Reservation.Id);
+                _mediator.Send(new DeleteMessage<ReservationWrapper> {});
+                _mediator.Send(new SwitchTabMessage(ViewIndex.Dashboard));
+                _messageQueue.Enqueue("Changes have been successfully saved");
+            }
+            catch
+            {
+                await DialogHost.Show(new MessageDialog("Deleting Failed", "Failed to save the changes.", DialogType.OK));
+            }
+
+}
+
+public async Task CreateOrEditReservationAsync()
         {
             if (LoggedUser is null || DetailModel is null)
                 return;
@@ -145,9 +169,11 @@ public ICommand UserReservationCommand { get; }
             {
                 Reservation.Seats = (ushort) SelectedSeats;
             }
-            await _reservationFacade.SaveAsync(Reservation);
             
-            _messageQueue.Enqueue($"Reservation has been successfully {(_reservationCreation ? "created" : "edited")}.");
+            await _reservationFacade.SaveAsync(Reservation);
+            _mediator.Send(new NewMessage<ReservationWrapper> { });
+            _mediator.Send(new SwitchTabMessage(ViewIndex.Dashboard));
+            _messageQueue.Enqueue($"Reservation has been successfully {(ReservationCreation ? "created" : "edited")}.");
         }
 
         private async void CheckReservationConflict()
@@ -155,7 +181,7 @@ public ICommand UserReservationCommand { get; }
             if (LoggedUser is null || DetailModel is null)
                 return;
 
-            ReservationConflict = _reservationCreation && await _reservationFacade.HasConflictingRide(LoggedUser.Id, DetailModel.Id);
+            ReservationConflict = ReservationCreation && await _reservationFacade.HasConflictingRide(LoggedUser.Id, DetailModel.Id);
         }
 
 
