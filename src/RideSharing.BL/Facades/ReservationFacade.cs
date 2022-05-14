@@ -1,7 +1,5 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
 using RideSharing.BL.Models;
 using RideSharing.DAL.Entities;
 using RideSharing.DAL.UnitOfWork;
@@ -12,7 +10,17 @@ public class ReservationFacade : CRUDFacade<ReservationEntity, ReservationListMo
 {
     public ReservationFacade(IUnitOfWorkFactory unitOfWorkFactory, IMapper mapper) : base(unitOfWorkFactory, mapper) { }
 
-    public async Task<ReservationDetailModel?> GetUserReservationByRide(Guid userId, Guid rideId)
+    public async Task<List<ReservationDetailModel>> GetReservationsByRideAsync(Guid rideId)
+    {
+        var uow = UnitOfWorkFactory.Create();
+        var dbSet = uow.GetRepository<ReservationEntity>().Get()
+            .Include(x => x.ReservingUser)
+            .Where(x => x.RideId == rideId);
+
+        return await Mapper.ProjectTo<ReservationDetailModel>(dbSet).ToListAsync().ConfigureAwait(false);
+    }
+
+    public async Task<ReservationDetailModel?> GetUserReservationByRideAsync(Guid userId, Guid rideId)
     {
         var uow = UnitOfWorkFactory.Create();
         var dbSet = uow.GetRepository<ReservationEntity>().Get();
@@ -20,7 +28,7 @@ public class ReservationFacade : CRUDFacade<ReservationEntity, ReservationListMo
         return reservation is null ? null : Mapper.Map<ReservationDetailModel>(reservation);
     }
 
-    public async Task<bool> CanCreateReservation(Guid userId, Guid rideId)
+    public async Task<bool> CanCreateReservationAsync(Guid userId, Guid rideId)
     {
         var uow = UnitOfWorkFactory.Create();
         var dbSetReservations = uow.GetRepository<ReservationEntity>().Get();

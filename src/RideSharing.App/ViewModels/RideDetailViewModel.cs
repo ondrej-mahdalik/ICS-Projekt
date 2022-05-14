@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -68,7 +69,9 @@ namespace RideSharing.App.ViewModels
             if (Driver?.Phone is null)
                 return;
 
-            System.Diagnostics.Process.Start($"tel:{Regex.Replace(Driver.Phone, @"\s+", "")}");
+            ProcessStartInfo ps =
+                new($"tel:{Regex.Replace(Driver.Phone, @"\s+", "")}") { UseShellExecute = true, Verb = "open" };
+            Process.Start(ps);
         }
 
         public Task SaveAsync()
@@ -100,7 +103,7 @@ namespace RideSharing.App.ViewModels
 
             Vehicle = await _vehicleFacade.GetAsync(currentRide.Vehicle.Id);
             Driver = await _userFacade.GetAsync(currentRide.Vehicle.OwnerId);
-            var reservation = await _reservationFacade.GetUserReservationByRide(LoggedUser.Id, rideId);
+            var reservation = await _reservationFacade.GetUserReservationByRideAsync(LoggedUser.Id, rideId);
             if (reservation is not null)
             {
                 Reservation = reservation;
@@ -147,7 +150,7 @@ namespace RideSharing.App.ViewModels
             if (LoggedUser is null || DetailModel is null)
                 return;
 
-            ReservationNoConflict = !(_reservationCreation && await _reservationFacade.CanCreateReservation(LoggedUser.Id, DetailModel.Id));
+            ReservationNoConflict = !(_reservationCreation && await _reservationFacade.CanCreateReservationAsync(LoggedUser.Id, DetailModel.Id));
         }
 
 

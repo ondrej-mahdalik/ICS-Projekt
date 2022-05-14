@@ -165,7 +165,7 @@
                     </materialDesign:TransitionerSlide>
                 </materialDesign:Transitioner>
             </Grid>
-            <materialDesign:Snackbar MessageQueue="{Binding MessageQueue}" />
+            <materialDesign:Snackbar Margin="10px" MessageQueue="{Binding MessageQueue}" />
         </Grid>
     </materialDesign:DialogHost>
 </Window>
