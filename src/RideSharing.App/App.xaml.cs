@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Threading;
 using System.Windows;
+using MaterialDesignThemes.Wpf;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -59,6 +60,7 @@ namespace RideSharing.App
             services.AddSingleton<MainWindow>();
 
             services.AddSingleton<IMediator, Mediator>();
+            services.AddSingleton<ISnackbarMessageQueue, SnackbarMessageQueue>();
 
             services.AddSingleton<MainViewModel>();
             services.AddSingleton<LoginViewModel>();

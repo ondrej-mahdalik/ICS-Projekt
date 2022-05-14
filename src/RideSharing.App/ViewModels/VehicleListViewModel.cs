@@ -18,13 +18,16 @@ namespace RideSharing.App.ViewModels
     {
         private readonly VehicleFacade _vehicleFacade;
         private readonly IMediator _mediator;
+        private readonly ISnackbarMessageQueue _messageQueue;
 
         public VehicleListViewModel(
             VehicleFacade vehicleFacade,
-            IMediator mediator) : base(mediator)
+            IMediator mediator,
+            ISnackbarMessageQueue messageQueue) : base(mediator)
         {
             _vehicleFacade = vehicleFacade;
             _mediator = mediator;
+            _messageQueue = messageQueue;
 
             VehicleNewCommand = new RelayCommand(NewVehicle);
             VehicleDeleteCommand = new AsyncRelayCommand<VehicleListModel>(DeleteVehicle);
@@ -82,6 +85,7 @@ namespace RideSharing.App.ViewModels
             try
             {
                 await _vehicleFacade.DeleteAsync(vehicle.Id);
+                _messageQueue.Enqueue("Vehicle has been successfully deleted");
             }
 
             catch

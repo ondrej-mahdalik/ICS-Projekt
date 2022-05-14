@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MaterialDesignThemes.Wpf;
 using RideSharing.App.Commands;
 using RideSharing.App.Messages;
 using RideSharing.App.Services;
@@ -18,19 +19,22 @@ namespace RideSharing.App.ViewModels
         private readonly VehicleFacade _vehicleFacade;
         private readonly ReservationFacade _reservationFacade;
         private readonly IMediator _mediator;
+        private readonly ISnackbarMessageQueue _messageQueue;
 
         public RideDetailViewModel(
             RideFacade rideFacade,
             UserFacade userFacade,
             VehicleFacade vehicleFacade,
             ReservationFacade reservationFacade,
-            IMediator mediator) : base(mediator)
+            IMediator mediator,
+            ISnackbarMessageQueue messageQueue) : base(mediator)
         {
             _rideFacade = rideFacade;
             _userFacade = userFacade;
             _vehicleFacade = vehicleFacade;
             _reservationFacade = reservationFacade;
             _mediator = mediator;
+            _messageQueue = messageQueue;
 
             UserReservationCommand = new AsyncRelayCommand<ushort>(CreateOrEditReservationAsync);
             ContactDriverCommand = new AsyncRelayCommand(ContactDriver);
@@ -71,7 +75,6 @@ namespace RideSharing.App.ViewModels
         public Task SaveAsync()
         {
             throw new NotImplementedException();
-
         }
 
         private async void RideSelected(DetailMessage<RideWrapper> obj)
@@ -109,7 +112,7 @@ namespace RideSharing.App.ViewModels
 
         public Task DeleteAsync()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(); // TODO Delete reservation (not ride)
         }
 
         public async Task CreateOrEditReservationAsync(ushort seats)
@@ -129,7 +132,6 @@ namespace RideSharing.App.ViewModels
             {
                 Reservation.Seats = seats;
             }
-
             await _reservationFacade.SaveAsync(Reservation);
         }
 
@@ -140,11 +142,7 @@ namespace RideSharing.App.ViewModels
             if (LoggedUser is null || DetailModel is null)
                 return;
 
-            if (await _reservationFacade.CanCreateReservation(LoggedUser.Id, DetailModel.Id))
-            {
-                _reservationPossible = false;
-                return;
-            }
+            _reservationPossible = await _reservationFacade.CanCreateReservation(LoggedUser.Id, DetailModel.Id); // TODO
         }
 
 

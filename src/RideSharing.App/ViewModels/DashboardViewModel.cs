@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MaterialDesignThemes.Wpf;
 using RideSharing.App.Commands;
 using RideSharing.App.Extensions;
 using RideSharing.App.Messages;
@@ -19,12 +18,17 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
     private readonly RideFacade _rideFacade;
     private readonly ReviewFacade _reviewFacade;
     private readonly IMediator _mediator;
+    private readonly ISnackbarMessageQueue _messageQueue;
 
-    public DashboardViewModel(RideFacade rideFacade, ReviewFacade reviewFacade, IMediator mediator) : base(mediator)
+    public DashboardViewModel(RideFacade rideFacade,
+        ReviewFacade reviewFacade,
+        IMediator mediator,
+        ISnackbarMessageQueue messageQueue) : base(mediator)
     {
         _rideFacade = rideFacade;
         _reviewFacade = reviewFacade;
         _mediator = mediator;
+        _messageQueue = messageQueue;
 
         ReviewSubmittedCommand = new RelayCommand<RideRecentListModel>(ReviewSubmitted);
         UpcomingRideDetailClickedCommand = new RelayCommand<RideUpcomingListModel>(UpcomingRideDetailClicked);
@@ -115,6 +119,7 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
 
         var review = new ReviewDetailModel(rideListModel.Id, LoggedUser.Id, rideListModel.UserRating);
         await _reviewFacade.SaveAsync(review);
+        _messageQueue.Enqueue("Rating has been successfully submitted.");
 
         await Task.Delay(500); // Allow animation to finish
         await LoadAsync();

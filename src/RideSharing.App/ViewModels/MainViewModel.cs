@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
+using MaterialDesignThemes.Wpf;
 using Microsoft.Toolkit.Mvvm.Input;
 using RideSharing.App.Messages;
 using RideSharing.App.Services;
@@ -22,7 +23,8 @@ public class MainViewModel : ViewModelBase
         IUserDetailViewModel userDetailViewModel,
         IVehicleDetailViewModel vehicleDetailViewModel,
         IVehicleListViewModel vehicleListViewModel,
-        IMediator mediator) : base(mediator)
+        IMediator mediator,
+        ISnackbarMessageQueue messageQueue) : base(mediator)
     {
 
         DashboardViewModel = dashboardViewModel;
@@ -43,7 +45,11 @@ public class MainViewModel : ViewModelBase
 
         // Switch tab messages
         mediator.Register<SwitchTabMessage>(SwitchTab);
+
+        MessageQueue = messageQueue;
     }
+
+    public ISnackbarMessageQueue MessageQueue { get; set; }
 
     private void SwitchTab(SwitchTabMessage obj)
     {

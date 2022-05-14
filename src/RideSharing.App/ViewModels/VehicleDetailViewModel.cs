@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using MaterialDesignThemes.Wpf;
 using RideSharing.App.Commands;
 using RideSharing.BL.Facades;
 using RideSharing.App.Services;
@@ -16,13 +17,16 @@ namespace RideSharing.App.ViewModels
     {
         private readonly VehicleFacade _vehicleFacade;
         private readonly IMediator _mediator;
+        private readonly ISnackbarMessageQueue _messageQueue;
 
         public VehicleDetailViewModel(
             VehicleFacade vehicleFacade,
-            IMediator mediator) : base(mediator)
+            IMediator mediator,
+            ISnackbarMessageQueue messageQueue) : base(mediator)
         {
             _vehicleFacade = vehicleFacade;
             _mediator = mediator;
+            _messageQueue = messageQueue;
 
             SaveCommand = new AsyncRelayCommand(SaveAsync, CanSave);
             ChangeImage = new AsyncRelayCommand<string>(ChangeImageAsync);
@@ -80,6 +84,7 @@ namespace RideSharing.App.ViewModels
             DetailModel = await _vehicleFacade.SaveAsync(DetailModel);
             _mediator.Send(new UpdateMessage<VehicleWrapper> { Model = DetailModel });
             _mediator.Send(new SwitchTabMessage(ViewIndex.VehicleList));
+            _messageQueue.Enqueue("Changes have been successfully saved.");
         }
     }
 

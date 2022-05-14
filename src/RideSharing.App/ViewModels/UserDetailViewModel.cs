@@ -9,6 +9,7 @@ using RideSharing.App.Services.Dialogs;
 using RideSharing.App.Wrappers;
 using RideSharing.BL;
 using RideSharing.BL.Facades;
+using RideSharing.Common.Enums;
 
 namespace RideSharing.App.ViewModels;
 
@@ -16,6 +17,7 @@ public class UserDetailViewModel : ViewModelBase, IUserDetailViewModel
 {
     private readonly UserFacade _userFacade;
     private readonly IMediator _mediator;
+    private readonly ISnackbarMessageQueue _messageQueue;
 
 
     public UserWrapper? DetailModel { get; private set; }
@@ -30,11 +32,12 @@ public class UserDetailViewModel : ViewModelBase, IUserDetailViewModel
     public ICommand ChangeImage { get; }
 
     public UserDetailViewModel(UserFacade userFacade,
-        IMediator mediator) : base(mediator)
+        IMediator mediator,
+        ISnackbarMessageQueue messageQueue) : base(mediator)
     {
         _userFacade = userFacade;
         _mediator = mediator;
-
+        _messageQueue = messageQueue;
 
         DeleteUser = new RelayCommand(UserDeleted);
         SaveChanges = new AsyncRelayCommand(SaveAsync);
@@ -52,6 +55,7 @@ public class UserDetailViewModel : ViewModelBase, IUserDetailViewModel
         {
             var imageUrl = await BusinessLogic.UploadImageAsync(filePath);
             DetailModel.ImageUrl = imageUrl;
+            _messageQueue.Enqueue("Image has been uploaded.");
         }
         finally
         {
@@ -90,8 +94,17 @@ public class UserDetailViewModel : ViewModelBase, IUserDetailViewModel
             return;
         }
 
-        DetailModel = await _userFacade.SaveAsync(DetailModel);
-        _mediator.Send(new UpdateMessage<UserWrapper> { Model = DetailModel });
+        try
+        {
+            DetailModel = await _userFacade.SaveAsync(DetailModel);
+            _mediator.Send(new UpdateMessage<UserWrapper> { Model = DetailModel });
+            _mediator.Send(new SwitchTabMessage(ViewIndex.Dashboard));
+            _messageQueue.Enqueue("Changes have been successfully saved");
+        }
+        catch
+        {
+            await DialogHost.Show(new MessageDialog("Saving Failed", "Failed to save the changes.", DialogType.OK));
+        }
     }
 
     public async Task DeleteAsync()
