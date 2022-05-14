@@ -179,7 +179,7 @@ public static class RideSeeds
     );
 
     public static readonly RideEntity DoeJihlavaOlomouc = new(
-        Id: Guid.Parse("d8108381-5dcd-4237-b621-41a21Ašfc56734"),
+        Id: Guid.Parse("d8108381-5dcd-4237-b621-41a21fc56734"),
         FromName: "Jihlava",
         ToName: "Olomouc",
         Distance: 167,
