@@ -49,6 +49,13 @@ public class MainViewModel : ViewModelBase
         MessageQueue = messageQueue;
     }
 
+    private void LoggedOut(LogoutMessage<UserWrapper> obj)
+    {
+        IsLoggedIn = false;
+        TransitionerSelectedIndex = 0;
+        OnLogout?.Invoke(this, EventArgs.Empty);
+    }
+
     public ISnackbarMessageQueue MessageQueue { get; set; }
 
     private void SwitchTab(SwitchTabMessage obj)
@@ -67,15 +74,13 @@ public class MainViewModel : ViewModelBase
         IsLoggedIn = true;
     }
 
-    private void LoggedOut(LogoutMessage<UserWrapper> obj) => LogOut();
+    //private void LoggedOut(LogoutMessage<UserWrapper> obj) => LogOut();
 
     public bool IsLoggedIn { get; private set; }
 
     private void LogOut()
     {
-        IsLoggedIn = false;
-        TransitionerSelectedIndex = 0;
-        OnLogout?.Invoke(this, EventArgs.Empty);
+        _mediator.Send(new LogoutMessage<UserWrapper>());
     }
 
     public IDashboardViewModel DashboardViewModel { get; }
