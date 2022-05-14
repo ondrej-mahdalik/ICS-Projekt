@@ -24,8 +24,8 @@ public class FindRideViewModel : ViewModelBase, IFindRideViewModel
         _rideFacade = rideFacade;
         _mediator = mediator;
 
-        FindRideCommand = new RelayCommand(FindRides);
-
+        FindRideCommand = new AsyncRelayCommand(FindRides);
+        ShowRideDetailCommand = new RelayCommand<RideFoundListModel>(ShowRideDetail);
 
         mediator.Register<UpdateMessage<RideWrapper>>(RideUpdated);
         mediator.Register<NewMessage<RideWrapper>>(RideNew);
@@ -51,7 +51,17 @@ public class FindRideViewModel : ViewModelBase, IFindRideViewModel
     }
 
     public ICommand FindRideCommand { get; }
-    private async void FindRides() => await LoadAsync();
+    private async Task FindRides() => await LoadAsync();
+
+    public ICommand ShowRideDetailCommand { get; }
+    private void ShowRideDetail(RideFoundListModel? ride)
+    {
+        if (ride is null)
+            return;
+
+        _mediator.Send(new DetailMessage<RideWrapper> { Id = ride.Id });
+        _mediator.Send(new SwitchTabMessage(ViewIndex.RideDetail));
+    }
 
     public override void UserLoggedOut(LogoutMessage<UserWrapper> obj)
     {

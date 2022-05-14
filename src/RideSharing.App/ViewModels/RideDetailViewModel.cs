@@ -101,7 +101,13 @@ namespace RideSharing.App.ViewModels
 
             Vehicle = await _vehicleFacade.GetAsync(currentRide.Vehicle.Id);
             Driver = await _userFacade.GetAsync(currentRide.Vehicle.OwnerId);
-            Reservation = await _reservationFacade.GetUserReservationByRide(LoggedUser.Id, rideId);
+            var reservation = await _reservationFacade.GetUserReservationByRide(LoggedUser.Id, rideId);
+            if (reservation is not null)
+                Reservation = reservation;
+            else
+                Reservation = null;
+
+
             if (Reservation is not null)
             {
                 SelectedSeats = Reservation.Seats;
