@@ -33,6 +33,8 @@ public class SelectUserViewModel : ViewModelBase, ISelectUserViewModel
         mediator.Register<AddedMessage<UserWrapper>>(async _ => await LoadAsync());
         mediator.Register<DeleteMessage<UserWrapper>>(async _ => await LoadAsync());
 
+        mediator.Register<LogoutMessage<UserWrapper>>(async _ => await LoadAsync());
+
         mediator.Register<AddedMessage<VehicleWrapper>>(async _ => await LoadAsync());
         mediator.Register<DeleteMessage<VehicleWrapper>>(async _ => await LoadAsync());
 
