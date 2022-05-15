@@ -58,10 +58,11 @@ public sealed class UserFacadeTests : CRUDFacadeTestsBase
     }
 
     [Fact]
-    public async Task SeededUserWithRide_DeleteById_Throws()
+    public async Task SeededUserWithRide_DeleteById_DoesNotThrow()
     {
-        await Assert.ThrowsAsync<DbUpdateException>(async () =>
-            await _userFacadeSUT.DeleteAsync(UserSeeds.DriverUser.Id));
+        await _userFacadeSUT.DeleteAsync(UserSeeds.DriverUser.Id);
+        await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
+        Assert.False(await dbxAssert.UserEntities.AnyAsync(i => i.Id == UserSeeds.DriverUser.Id));
     }
 
     [Fact]

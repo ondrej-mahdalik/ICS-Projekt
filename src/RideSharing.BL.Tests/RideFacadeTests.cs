@@ -48,7 +48,7 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
     {
         var ride = await _rideFacadeSUT.GetAsync(RideSeeds.BrnoBratislava.Id);
         DeepAssert.Equal(Mapper.Map<RideDetailModel>(RideSeeds.BrnoBratislava), ride, "Driver", "Vehicle",
-            "Reservations");
+            "Reservations", "DriverRating", "DriverReviewCount", "OccupiedSeats");
     }
 
     [Fact]
@@ -83,7 +83,8 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
 
         await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
         var rideFromDb = await dbxAssert.RideEntities.SingleAsync(i => i.Id == ride.Id);
-        DeepAssert.Equal(ride, Mapper.Map<RideDetailModel>(rideFromDb), "Reservations", "Vehicle");
+        DeepAssert.Equal(ride, Mapper.Map<RideDetailModel>(rideFromDb), "Reservations", "Vehicle",
+            "Reservations", "DriverRating", "DriverReviewCount", "OccupiedSeats");
         DeepAssert.Equal(ride.Vehicle, Mapper.Map<VehicleListModel>(VehicleSeeds.Felicia));
     }
 
@@ -113,6 +114,7 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
         var rideFromDb = await dbxAssert.RideEntities.Include(entity => entity.Vehicle)
             .SingleAsync(i => i.Id == ride.Id);
         var updatedRide = Mapper.Map<RideDetailModel>(rideFromDb);
-        DeepAssert.Equal(ride, updatedRide);
+        DeepAssert.Equal(ride, updatedRide, "Driver", "Vehicle",
+            "Reservations", "DriverRating", "DriverReviewCount", "OccupiedSeats");
     }
 }

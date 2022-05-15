@@ -127,8 +127,7 @@
                       VerticalContentAlignment="Top"
                       HorizontalContentAlignment="Center"
                       ItemsSource="{Binding RecentRides}"
-                      materialDesign:ScrollBarAssist.ButtonsVisibility="Visible"
-                      Height="370">
+                      materialDesign:ScrollBarAssist.ButtonsVisibility="Visible">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <materialDesign:Card HorizontalContentAlignment="Stretch"
