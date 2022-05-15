@@ -7,6 +7,7 @@
                        xmlns:viewModels="clr-namespace:RideSharing.App.ViewModels"
                        xmlns:controls="clr-namespace:RideSharing.App.Controls"
                        xmlns:local="clr-namespace:RideSharing.App.Views"
+                       xmlns:System="clr-namespace:System;assembly=System.Runtime"
                        mc:Ignorable="d"
                        FontSize="14"
                        d:DesignHeight="600"
@@ -84,6 +85,7 @@
                         Margin="10px"
                         Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                         materialDesign:HintAssist.Hint="Registration Date"
+                        DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static System:DateTime.Today}}"
                         Text="{Binding DetailModel.Registered}" />
             <StackPanel Orientation="Horizontal"
                         Grid.Row="4"
