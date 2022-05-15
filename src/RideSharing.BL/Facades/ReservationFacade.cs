@@ -61,4 +61,30 @@ public class ReservationFacade : CRUDFacade<ReservationEntity, ReservationListMo
         return conflictRide || conflictReservation;
 
     }
+
+    public async Task<bool> HasConflictingRide(Guid userId, DateTime departure, DateTime arrival)
+    {
+        var uow = UnitOfWorkFactory.Create();
+        var dbSetReservations = uow.GetRepository<ReservationEntity>().Get();
+        var dbSetRides = uow.GetRepository<RideEntity>().Get();
+
+        // Check for conflicting rides
+        bool conflictReservation = await dbSetReservations.AnyAsync(
+            x => x.ReservingUserId == userId && x.Ride != null && (
+                (departure <= x.Ride.Arrival && x.Ride.Arrival <= arrival) ||
+                (departure <= x.Ride.Departure && x.Ride.Departure <= arrival) ||
+                (x.Ride.Departure <= arrival && arrival <= x.Ride.Arrival) ||
+                (x.Ride.Departure <= departure && departure <= x.Ride.Arrival))
+        );
+
+        bool conflictRide = await dbSetRides.AnyAsync(
+            x => x.Vehicle != null && x.Vehicle.Owner != null && x.Vehicle.Owner.Id == userId && (
+                (departure <= x.Arrival && x.Arrival <= arrival) ||
+                (departure <= x.Departure && x.Departure <= arrival) ||
+                (x.Departure <= arrival && arrival <= x.Arrival) ||
+                (x.Departure <= departure && departure <= x.Arrival))
+        );
+        return conflictRide || conflictReservation;
+
+    }
 }

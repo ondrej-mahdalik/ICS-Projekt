@@ -27,36 +27,11 @@ public class RideWrapper : ModelWrapper<RideDetailModel>
         set => SetValue(value);
     }
 
-    public double FromLatitude
-    {
-        get => GetValue<double>();
-        set => SetValue(value);
-    }
-
-    public double FromLongitude
-    {
-        get => GetValue<double>();
-        set => SetValue(value);
-    }
-
     public string? ToName
     {
         get => GetValue<string>();
         set => SetValue(value);
     }
-
-    public double ToLatitude
-    {
-        get => GetValue<double>();
-        set => SetValue(value);
-    }
-
-    public double ToLongitude
-    {
-        get => GetValue<double>();
-        set => SetValue(value);
-    }
-
     public int Distance
     {
         get => GetValue<int>();
@@ -122,31 +97,15 @@ public class RideWrapper : ModelWrapper<RideDetailModel>
         {
             yield return new ValidationResult($"{nameof(FromName)} is required", new[] { nameof(FromName) });
         }
-        if (FromLatitude == default)
-        {
-            yield return new ValidationResult($"{nameof(FromLatitude)} is required", new[] { nameof(FromLatitude) });
-        }
-        if (FromLongitude == default)
-        {
-            yield return new ValidationResult($"{nameof(FromLongitude)} is required", new[] { nameof(FromLongitude) });
-        }
         if (string.IsNullOrWhiteSpace(ToName))
         {
             yield return new ValidationResult($"{nameof(ToName)} is required", new[] { nameof(ToName) });
         }
-        if (ToLatitude == default)
-        {
-            yield return new ValidationResult($"{nameof(ToLatitude)} is required", new[] { nameof(ToLatitude) });
-        }
-        if (ToLongitude == default)
-        {
-            yield return new ValidationResult($"{nameof(ToLongitude)} is required", new[] { nameof(ToLongitude) });
-        }
         if (SharedSeats <= 0)
         {
-            yield return new ValidationResult($"{nameof(ToLongitude)} has to be positive", new[] { nameof(SharedSeats) });
+            yield return new ValidationResult($"{nameof(SharedSeats)} has to be positive", new[] { nameof(SharedSeats) });
         }
-        if(Departure == default)
+        if (Departure == default)
         {
             yield return new ValidationResult($"{nameof(Departure)} is required", new[] { nameof(Departure) });
 

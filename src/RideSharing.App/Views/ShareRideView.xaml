@@ -5,8 +5,8 @@
                        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                        xmlns:viewModels="clr-namespace:RideSharing.App.ViewModels"
-                       xmlns:controls="clr-namespace:RideSharing.App.Controls"
                        xmlns:local="clr-namespace:RideSharing.App.Views"
+                       xmlns:wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
                        mc:Ignorable="d"
                        FontSize="14"
                        d:DesignHeight="600"
@@ -14,6 +14,161 @@
                        Background="{StaticResource MaterialDesignLightBackground}"
                        d:DataContext="{d:DesignInstance viewModels:ShareRideViewModel}">
     <Grid x:Name="Root">
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.ColumnSpan="2"
+                   HorizontalAlignment="Center"
+                   Text="Share my Ride"
+                   Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                   Margin="20px" />
+        <StackPanel Grid.Row="1"
+                    Grid.Column="0"
+                    Margin="20px">
+            <TextBlock Text="Select Route"
+                       Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                       HorizontalAlignment="Center" />
+            <TextBox x:Name="FromTextbox"
+                     Margin="10px"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="From"
+                     Text="{Binding DetailModel.FromName, FallbackValue=''}"
+                     LostFocus="Textbox_LostFocus" />
+            <TextBox x:Name="ToTextbox"
+                     Margin="10px"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="To"
+                     Text="{Binding DetailModel.ToName, FallbackValue=''}"
+                     LostFocus="Textbox_LostFocus" />
+            <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                       Text="Route Map"
+                       Margin="10px"
+                       HorizontalAlignment="Center" />
+            <wpf:WebView2 x:Name="MapView"
+                          Height="150px"
+                          Margin="10px"
+                          Source="https://ondrej-mahdalik.github.io/ridesharing-cdn/EmbedMap/"
+                          NavigationCompleted="MapView_OnNavigationCompleted" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock TextAlignment="Left"
+                           Margin="10px"
+                           Text="{Binding DetailModel.Distance, StringFormat='Distance: {0} km', FallbackValue='Distance: No route'}" />
+                <TextBlock Grid.Column="1"
+                           TextAlignment="Right"
+                           Margin="10px"
+                           Text="{Binding Duration, StringFormat='Duration: {0}', Converter={StaticResource TimespanToStringConverter}}"></TextBlock>
+            </Grid>
+        </StackPanel>
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1"
+                    Margin="20px">
+            <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                       Text="Select Vehicle"
+                       HorizontalAlignment="Center"/>
+
+            <ComboBox Margin="10px"
+                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                      materialDesign:HintAssist.Hint="Select Vehicle"
+                      ItemsSource="{Binding Vehicles}"
+                      SelectedItem="{Binding SelectedVehicle}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="30px"
+                                   Height="30px"
+                                   Stretch="UniformToFill"
+                                   Margin="5px"
+                                   Source="{Binding ImageUrl}" />
+                            <TextBlock Margin="5px">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}, {2}, Capacity: {3}">
+                                        <Binding Path="Make" />
+                                        <Binding Path="Model" />
+                                        <Binding Path="Registered.Year" />
+                                        <Binding Path="Seats" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <TextBlock Margin="10px"
+                           Text="Shared seats:"></TextBlock>
+                <Slider Margin="10px"
+                        Width="200px"
+                        Minimum="1"
+                        AutoToolTipPlacement="TopLeft"
+                        Maximum="{Binding SelectedVehicle.Seats, FallbackValue='0'}"
+                        Value="{Binding DetailModel.SharedSeats, FallbackValue='0'}"></Slider>
+                <TextBlock Margin="10px">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0} out of {1}">
+                            <Binding Path="DetailModel.SharedSeats"
+                                     FallbackValue="0" />
+                            <Binding Path="SelectedVehicle.Seats"
+                                     FallbackValue="0" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </StackPanel>
+            <TextBlock Margin="10px 0"
+                       HorizontalAlignment="Center"
+                       Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                       Text="Departure &amp; Arrival" />
+            <StackPanel Orientation="Horizontal">
+                <DatePicker DisplayDateStart="{Binding Today}"
+                            Width="195px"
+                            Margin="10px"
+                            SelectedDate="{Binding DetailModel.Departure}"
+                            Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                            materialDesign:HintAssist.Hint="Departure Date" />
+                <materialDesign:TimePicker Is24Hours="True"
+                                           Width="195px"
+                                           Margin="10px"
+                                           SelectedTime="{Binding DetailModel.Departure}"
+                                           Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
+                                           materialDesign:HintAssist.Hint="Departure Time"></materialDesign:TimePicker>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <DatePicker DisplayDateStart="{Binding Today}"
+                            Width="195px"
+                            Margin="10px"
+                            SelectedDate="{Binding DetailModel.Arrival}"
+                            Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                            materialDesign:HintAssist.Hint="Arrival Date" />
+                <materialDesign:TimePicker Is24Hours="True"
+                                           Width="195px"
+                                           Margin="10px"
+                                           SelectedTime="{Binding DetailModel.Arrival}"
+                                           Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
+                                           materialDesign:HintAssist.Hint="Arrival Time"/>
+            </StackPanel>
+            <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                       HorizontalAlignment="Center"
+                       Text="Note" />
+            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="Enter your note for passengers here (Optional)"
+                     TextWrapping="Wrap"
+                     VerticalScrollBarVisibility="Auto"
+                     Height="60px"
+                     VerticalContentAlignment="Bottom"
+                     Text="{Binding DetailModel.Note, FallbackValue=''}" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Margin="5px" Content="Clear Fields" Style="{StaticResource MaterialDesignFlatSecondaryButton}" Command="{Binding ClearCommand}"></Button>
+                <Button Margin="5px" Content="Create Ride" Style="{StaticResource MaterialDesignOutlinedButton}" Command="{Binding SaveCommand}"></Button>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </local:UserControlBase>

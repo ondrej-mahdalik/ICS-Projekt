@@ -157,16 +157,16 @@ namespace RideSharing.App.ViewModels
                 await _reservationFacade.DeleteAsync(Reservation.Id);
                 _mediator.Send(new DeleteMessage<ReservationWrapper> {});
                 _mediator.Send(new SwitchTabMessage(ViewIndex.Dashboard));
-                _messageQueue.Enqueue("Changes have been successfully saved");
+                _messageQueue.Enqueue("Reservation has been successfully deleted.");
             }
             catch
             {
-                await DialogHost.Show(new MessageDialog("Deleting Failed", "Failed to save the changes.", DialogType.OK));
+                await DialogHost.Show(new MessageDialog("Deleting Failed", "Failed to delete the reservation.", DialogType.OK));
             }
 
 }
 
-public async Task CreateOrEditReservationAsync()
+        public async Task CreateOrEditReservationAsync()
         {
             if (LoggedUser is null || DetailModel is null)
                 return;
@@ -181,9 +181,9 @@ public async Task CreateOrEditReservationAsync()
             }
             
             await _reservationFacade.SaveAsync(Reservation);
-            _mediator.Send(new NewMessage<ReservationWrapper> { });
-            _mediator.Send(new SwitchTabMessage(ViewIndex.Dashboard));
+            _mediator.Send(new NewMessage<ReservationWrapper>());
             _messageQueue.Enqueue($"Reservation has been successfully {(ReservationCreation ? "created" : "edited")}.");
+            await LoadAsync(DetailModel.Id);
         }
 
         private async void CheckReservationConflict()

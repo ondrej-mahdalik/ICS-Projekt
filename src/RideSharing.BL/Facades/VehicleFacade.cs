@@ -10,14 +10,14 @@ public class VehicleFacade : CRUDFacade<VehicleEntity, VehicleListModel, Vehicle
 {
     public VehicleFacade(IUnitOfWorkFactory unitOfWorkFactory, IMapper mapper) : base(unitOfWorkFactory, mapper) { }
 
-    public async Task<IEnumerable<VehicleListModel>> GetByOwnerAsync(Guid ownerId)
+    public async Task<List<VehicleListModel>> GetByOwnerAsync(Guid ownerId)
     {
         await using var uow = UnitOfWorkFactory.Create();
         var query = uow
             .GetRepository<VehicleEntity>()
             .Get()
             .Where(e => e.OwnerId == ownerId);
-        return await Mapper.ProjectTo<VehicleListModel>(query).ToArrayAsync().ConfigureAwait(false);
+        return await Mapper.ProjectTo<VehicleListModel>(query).ToListAsync().ConfigureAwait(false);
     }
 
     public override async Task DeleteAsync(Guid id)

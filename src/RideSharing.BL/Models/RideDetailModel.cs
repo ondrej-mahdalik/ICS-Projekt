@@ -45,4 +45,7 @@ public record RideDetailModel(
                 .ForMember(entity => entity.Reservations, action => action.Ignore());
         }
     }
+
+    public static RideDetailModel Empty =>
+        new(string.Empty, string.Empty, 0, 0, DateTime.Now, DateTime.Now, Guid.Empty);
 }

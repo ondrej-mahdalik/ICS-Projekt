@@ -1,6 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
+using GoogleApi.Entities.Common;
+using GoogleApi.Entities.Common.Enums;
+using GoogleApi.Entities.Maps.Common;
+using GoogleApi.Entities.Maps.Directions.Request;
+
 
 [assembly: InternalsVisibleTo("RideSharing.BL.Tests")]
 
@@ -30,5 +35,27 @@ public class BusinessLogic
             fileStream);
 
         return result.MediaLink;
+    }
+
+    public static async Task<Tuple<bool, int?, TimeSpan?>> GetRouteInfoAsync(string from, string to)
+    {
+        DirectionsRequest request = new()
+        {
+            Key = await File.ReadAllTextAsync(@"google-maps-credentials.txt"),
+            Origin = new LocationEx(new Address(from)),
+            Destination = new LocationEx(new Address(to))
+        };
+
+        var response = await GoogleApi.GoogleMaps.Directions.QueryAsync(request);
+        if (response.Status != Status.Ok)
+            return new Tuple<bool, int?, TimeSpan?>(false, null, null);
+
+        var distance = response.Routes.FirstOrDefault()?.Legs.FirstOrDefault()?.Distance;
+        var duration = response.Routes.FirstOrDefault()?.Legs.FirstOrDefault()?.Duration;
+        if (distance is null || duration is null)
+            return new Tuple<bool, int?, TimeSpan?>(false, null, null);
+
+        return new Tuple<bool, int?, TimeSpan?>(true, distance.Value, TimeSpan.FromSeconds(duration.Value));
+
     }
 }
