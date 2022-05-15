@@ -31,7 +31,7 @@
         <Button Grid.Row="0"
                 Grid.Column="2"
                 HorizontalAlignment="Center"
-                Style="{StaticResource MaterialDesignOutlinedButton}"
+                Style="{StaticResource MaterialDesignOutlinedSecondaryButton}"
                 Command="{Binding DeleteUserCommand}">Delete user</Button>
         <StackPanel Grid.Row="1"
                     Grid.Column="1">

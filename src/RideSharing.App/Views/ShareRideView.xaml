@@ -145,13 +145,13 @@
                 <DatePicker DisplayDateStart="{Binding Today}"
                             Width="195px"
                             Margin="10px"
-                            SelectedDate="{Binding DetailModel.Arrival}"
+                            SelectedDate="{Binding DetailModel.Arrival, UpdateSourceTrigger=PropertyChanged}"
                             Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                             materialDesign:HintAssist.Hint="Arrival Date" />
                 <materialDesign:TimePicker Is24Hours="True"
                                            Width="195px"
                                            Margin="10px"
-                                           SelectedTime="{Binding DetailModel.Arrival}"
+                                           SelectedTime="{Binding DetailModel.Arrival, UpdateSourceTrigger=PropertyChanged}"
                                            Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
                                            materialDesign:HintAssist.Hint="Arrival Time"/>
             </StackPanel>

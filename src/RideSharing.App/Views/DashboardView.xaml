@@ -161,7 +161,7 @@
                                                           Grid.Column="0"
                                                           HorizontalAlignment="Left"
                                                           VerticalAlignment="Bottom"
-                                                          Margin="5px -5px 5px 0px"
+                                                          Margin="5px 0px 5px 0px"
                                                           Visibility="{Binding CanReview, Converter={StaticResource BoolToVisibilityConverter}}"
                                                           Value="{Binding UserRating, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}"
                                                           ValueChanged="RatingBar_OnValueChanged"
