@@ -7,6 +7,7 @@
                        xmlns:viewModels="clr-namespace:RideSharing.App.ViewModels"
                        xmlns:controls="clr-namespace:RideSharing.App.Controls"
                        xmlns:local="clr-namespace:RideSharing.App.Views"
+                       xmlns:System="clr-namespace:System;assembly=System.Runtime"
                        mc:Ignorable="d"
                        FontSize="14"
                        d:DesignHeight="600"
@@ -58,13 +59,13 @@
                      Margin="10px"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="Make"
-                     Text="{Binding DetailModel.Make}" />
+                     Text="{Binding DetailModel.Make, UpdateSourceTrigger=PropertyChanged}" />
             <TextBox Grid.Row="1"
                      Grid.Column="1"
                      Margin="10px"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="Model"
-                     Text="{Binding DetailModel.Model}" />
+                     Text="{Binding DetailModel.Model, UpdateSourceTrigger=PropertyChanged}" />
             <ComboBox Grid.Row="2"
                       Grid.Column="0"
                       Margin="10px"
@@ -77,13 +78,14 @@
                      Margin="10px"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="Seats"
-                     Text="{Binding DetailModel.Seats}"
+                     Text="{Binding DetailModel.Seats, UpdateSourceTrigger=PropertyChanged}"
                      PreviewTextInput="SeatsTextBox_OnPreviewTextInput" />
             <DatePicker Grid.Row="3"
                         Grid.Column="0"
                         Margin="10px"
                         Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                         materialDesign:HintAssist.Hint="Registration Date"
+                        DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static System:DateTime.Today}}"
                         Text="{Binding DetailModel.Registered}" />
             <StackPanel Orientation="Horizontal"
                         Grid.Row="4"

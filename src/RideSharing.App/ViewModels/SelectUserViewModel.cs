@@ -29,20 +29,8 @@ public class SelectUserViewModel : ViewModelBase, ISelectUserViewModel
 
         NewUserCommand = new RelayCommand(NewUser);
 
-        mediator.Register<UpdateMessage<UserWrapper>>(async _ => await LoadAsync());
         mediator.Register<AddedMessage<UserWrapper>>(async _ => await LoadAsync());
-        mediator.Register<DeleteMessage<UserWrapper>>(async _ => await LoadAsync());
-
         mediator.Register<LogoutMessage<UserWrapper>>(async _ => await LoadAsync());
-
-        mediator.Register<AddedMessage<VehicleWrapper>>(async _ => await LoadAsync());
-        mediator.Register<DeleteMessage<VehicleWrapper>>(async _ => await LoadAsync());
-
-        mediator.Register<AddedMessage<ReservationWrapper>>(async _ => await LoadAsync());
-        mediator.Register<DeleteMessage<ReservationWrapper>>(async _ => await LoadAsync());
-
-        mediator.Register<AddedMessage<RideWrapper>>(async _ => await LoadAsync());
-        mediator.Register<DeleteMessage<RideWrapper>>(async _ => await LoadAsync());
 
         LoginCommand = new Commands.RelayCommand<Guid>(Login);
     }
