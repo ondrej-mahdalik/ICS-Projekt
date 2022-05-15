@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using GoogleApi.Entities.Maps.Common;
 using MaterialDesignThemes.Wpf;
 using RideSharing.App.Messages;
 using RideSharing.App.Services;
@@ -85,8 +84,7 @@ namespace RideSharing.App.ViewModels
             set
             {
                 _duration = value;
-                ArrTime = _depTime + Duration;
-                ArrDate = _depDate + Duration;
+                ArrTime = ArrDate = Combine(DepDate, DepTime) + Duration;
             }
         }
 
@@ -97,7 +95,7 @@ namespace RideSharing.App.ViewModels
             set
             {
                 _depTime = value;
-                ArrTime = _depTime + Duration;
+                ArrTime = ArrDate = Combine(DepDate, DepTime) + Duration;
             }
         }
 
@@ -108,26 +106,13 @@ namespace RideSharing.App.ViewModels
             set
             {
                 _depDate = value;
-                ArrDate = _depDate + Duration;
+                ArrTime = ArrDate = Combine(DepDate, DepTime) + Duration;
             }
         }
 
-        private DateTime _arrTime;
-        public DateTime ArrTime
-        {
-            get { return _arrTime; }
-            set { _arrTime = value; }
-        }
+        public DateTime ArrTime { get; set; }
 
-        private DateTime _arrDate;
-        public DateTime ArrDate
-        {
-            get { return _arrDate; }
-            set
-            {
-                _arrDate = value;
-            }
-        }
+        public DateTime ArrDate { get; set; }
 
         public async Task ClearView()
         {
@@ -143,8 +128,7 @@ namespace RideSharing.App.ViewModels
             MapEnabled = false;
             DetailModel = new(RideDetailModel.Empty);
             Vehicles = await _vehicleFacade.GetByOwnerAsync(LoggedUser.Id);
-            ArrDate = DepDate = DateTime.Today;
-            ArrTime  = DepTime = DateTime.Now;
+            ArrDate = DepDate = ArrTime = DepTime = DateTime.Now;
             Duration = TimeSpan.Zero;
             RefreshMap();
         }
@@ -210,6 +194,7 @@ namespace RideSharing.App.ViewModels
         {
             return date.Date.Add(time.TimeOfDay);
         }
+
     }
 
 
