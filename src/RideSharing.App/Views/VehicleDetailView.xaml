@@ -83,13 +83,19 @@
                         Margin="10px" Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
                         materialDesign:HintAssist.Hint="Registration Date"
                         Text="{Binding DetailModel.Registered}"/>
-            <Button Grid.Row="4"
-                    Grid.Column="1"
-                    Margin="10px"
-                    HorizontalAlignment="Right"
-                    Style="{StaticResource MaterialDesignOutlinedButton}"
-                    Command="{Binding SaveCommand}"
-                    Cursor="Hand">Save Changes</Button>
+            <StackPanel Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button Margin="10px"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource MaterialDesignFlatSecondaryButton}"
+                        Command="{Binding CancelCommand}"
+                        Cursor="Hand">Cancel</Button>
+                <Button Margin="10px"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Command="{Binding SaveCommand}"
+                        Cursor="Hand">Save Changes</Button>
+            </StackPanel>
+            
         </Grid>
     </Grid>
 </local:UserControlBase>

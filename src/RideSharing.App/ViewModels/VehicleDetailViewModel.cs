@@ -29,7 +29,8 @@ namespace RideSharing.App.ViewModels
             _messageQueue = messageQueue;
 
             SaveCommand = new AsyncRelayCommand(SaveAsync, CanSave);
-            ChangeImage = new AsyncRelayCommand<string>(ChangeImageAsync);
+            ChangeImageCommand = new AsyncRelayCommand<string>(ChangeImageAsync);
+            CancelCommand = new RelayCommand(() => _mediator.Send(new SwitchTabMessage(ViewIndex.VehicleList)));
             mediator.Register<ManageMessage<VehicleWrapper>>(async delegate(ManageMessage<VehicleWrapper> message)
             {
                 if (message.Id.HasValue)
@@ -37,7 +38,8 @@ namespace RideSharing.App.ViewModels
             });
         }
         public ICommand SaveCommand { get; }
-        public ICommand ChangeImage { get; }
+        public ICommand ChangeImageCommand { get; }
+        public ICommand CancelCommand { get; }
         public VehicleWrapper? DetailModel { get; private set; }
 
         public static IEnumerable<string> VehicleTypes

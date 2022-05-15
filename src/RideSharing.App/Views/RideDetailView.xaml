@@ -224,9 +224,10 @@
                             Visibility="{Binding ReservationCreation, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}"
                             Margin="15px 0px"
                             VerticalAlignment="Bottom"
-                            Style="{StaticResource MaterialDesignOutlinedButton}"
+                            Style="{StaticResource MaterialDesignOutlinedSecondaryButton}"
                             Content="Delete reservation"
-                            Command="{Binding DeleteReservationCommand}"/>
+                            Command="{Binding DeleteReservationCommand}"
+                                Cursor="Hand" />
                         <Button 
                                 Margin="20px 0px"
                                 VerticalAlignment="Bottom"
