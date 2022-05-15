@@ -73,6 +73,7 @@ public class FindRideViewModel : ViewModelBase, IFindRideViewModel
         SelTime = null;
         SelDeparture = true;
         RideOrder = RideSortType.Departure;
+        FoundRides = new ObservableCollection<RideFoundListModel>();
     }
 
     private async void RideUpdated(UpdateMessage<RideWrapper> _) => await LoadAsync();

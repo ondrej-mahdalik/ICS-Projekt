@@ -54,12 +54,13 @@
                                   NavigationCompleted="MapView_OnNavigationCompleted"/>
                     <Grid Margin="0px 40px">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock FontWeight="Bold"
                                    Text="{Binding DetailModel.Distance, StringFormat='Distance: {0} km', FallbackValue=''}" />
-                        <TextBlock Grid.Column="1"
+                        <TextBlock Grid.Column="2"
                                    FontWeight="Bold"
                                    HorizontalAlignment="Right"
                                    Text="{Binding Duration, StringFormat='Duration: {0}', Converter={StaticResource TimespanToStringConverter}}" />
@@ -68,7 +69,7 @@
                                Text="Driver's note:" />
                     <materialDesign:Chip HorizontalAlignment="Stretch">
                         <TextBlock TextAlignment="Center"
-                                   Text="{Binding DetailModel.Note, FallbackValue='No note.'}" />
+                                   Text="{Binding DetailModel.Note, FallbackValue='No note.'}"/>
                     </materialDesign:Chip>
                 </StackPanel>
             </materialDesign:Card>
@@ -118,14 +119,21 @@
                                                        IsReadOnly="True" />
                             <TextBlock Text="{Binding DetailModel.DriverReviewCount, StringFormat='{}{0} reviews'}" />
                         </StackPanel>
-                    </Grid>
-                    <Button Grid.Row="1"
-                            Grid.Column="2"
+                        <TextBlock 
+                            Grid.Row="1"
                             VerticalAlignment="Bottom"
-                            Style="{StaticResource MaterialDesignOutlinedButton}"
-                            Margin="20px 0px"
-                            Command="{Binding ContactDriverCommand}"
-                            Cursor="Hand">Contact driver</Button>
+                            Padding ="  20px 0px 20px 24px"
+                            Text="{Binding Driver.Phone, StringFormat='Phone number: {0}'}"/>
+                    </Grid>
+
+                    <Button 
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        VerticalAlignment="Bottom"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Margin="20px 0px"
+                        Command="{Binding ContactDriverCommand}"
+                        Cursor="Hand">Contact driver</Button>
                 </Grid>
             </materialDesign:Card>
             <materialDesign:Card Grid.Row="1"
@@ -168,7 +176,7 @@
                                 </TextBlock.Text>
                             </TextBlock>
                             <TextBlock Margin="20px 5px 20px 0px"
-                                       Visibility="{Binding ReservationConflict, Converter={StaticResource BoolToVisibilityConverter}}">
+                                       Visibility="{Binding SliderVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                 <TextBlock.Text>
                                     <MultiBinding StringFormat="Selected seats: {0}/{1}">
                                         <Binding Path="SelectedSeats"
@@ -182,7 +190,7 @@
                         <StackPanel Grid.Row="1"
                                     Orientation="Vertical"
                                     Margin="20px 0px"
-                                    Visibility="{Binding ReservationConflict, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    Visibility="{Binding SliderVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                             <TextBlock Text="Select number of seats to reserve:" />
                             <Slider Minimum="1"
                                     Maximum="{Binding MaxAvailableSeats}"
@@ -193,19 +201,28 @@
                                     HorizontalAlignment="Left"
                                     Orientation="Horizontal" />
                         </StackPanel>
-                        <TextBlock Grid.Row="1"
+                        <TextBlock Grid.Row="0"
                                    Margin="20px, 20px"
-                                   Visibility="{Binding ReservationConflict, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}"
-                               TextWrapping="Wrap">
-                             Can't reserve this ride.
-                             You have a ride during the time of this ride." 
+                                   Padding="0px 25px 0px 0px"
+
+                                   Visibility="{Binding ReservationConflict, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    TextWrapping="Wrap">
+                             You can not reserve this ride.
+                             You have another ride during the time of this ride.
+                        </TextBlock>
+                        <TextBlock Grid.Row="0"
+                                   Margin="20px, 20px"
+                                   Padding="0px 68px 0px 0px"
+                                   Visibility="{Binding RideFull , Converter={StaticResource BoolToVisibilityConverter}}"
+                                   TextWrapping="Wrap">
+                            This ride is currently full. Try again later.
                         </TextBlock>
                     </Grid>
 
                     <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="2">
                         <Button 
                             Visibility="{Binding ReservationCreation, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter='true'}"
-                            Margin="20px 0px"
+                            Margin="15px 0px"
                             VerticalAlignment="Bottom"
                             Style="{StaticResource MaterialDesignOutlinedButton}"
                             Content="Delete reservation"

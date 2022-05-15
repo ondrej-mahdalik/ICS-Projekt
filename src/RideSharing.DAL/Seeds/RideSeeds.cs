@@ -110,7 +110,7 @@ public static class RideSeeds
         ToName: "Praha",
         Distance: 288,
         SharedSeats: 7,
-        Departure: DateTime.Parse("2021-02-05 12:00", CultureInfo.InvariantCulture),
+        Departure: DateTime.Parse("2021-02-15 12:00", CultureInfo.InvariantCulture),
         Arrival: DateTime.Parse("2021-02-15 14:00", CultureInfo.InvariantCulture),
         VehicleId: VehicleSeeds.Van.Id,
         Note: "We may need to do some repairs on the way. Bring a screwdriver and a hammer."
@@ -122,9 +122,20 @@ public static class RideSeeds
         ToName: "Ostrava",
         Distance: 564,
         SharedSeats: 19,
-        Departure: DateTime.Parse("2023-02-05 12:00", CultureInfo.InvariantCulture),
+        Departure: DateTime.Parse("2023-02-15 12:00", CultureInfo.InvariantCulture),
         Arrival: DateTime.Parse("2023-02-15 18:00", CultureInfo.InvariantCulture),
         VehicleId: VehicleSeeds.Karosa.Id,
+        Note: "Toilet is broken."
+    );
+    public static readonly RideEntity NovakSlavkovUsti = new(
+        Guid.Parse("0e9d44f2-bfac-4567-a9f3-469441ea2cf4"),
+        FromName: "Slavkov u Brna",
+        ToName: "Ústí nad Labem",
+        Distance: 314,
+        SharedSeats: 3,
+        Departure: DateTime.Parse("2023-02-05 10:00", CultureInfo.InvariantCulture),
+        Arrival: DateTime.Parse("2023-02-15 13:00", CultureInfo.InvariantCulture),
+        VehicleId: VehicleSeeds.AudiA8.Id,
         Note: "Toilet is broken."
     );
 
@@ -202,7 +213,7 @@ public static class RideSeeds
             PrahaBrno, BrnoOstrava, OlomoucOstrava, OlomoucBrno, TynecOlomouc,
             TynecPraha, BrnoOlomouc, BrnoPrague, BrnoOstrava2, ElonAsOstrava,
             NovakPragueOstrava, DoeJihlavaOstrava, TuskJihlavaMohelnice, NovakJihlavaBrno,
-            DoeJihlavaOlomouc
+            DoeJihlavaOlomouc, NovakSlavkovUsti
         );
     }
 }

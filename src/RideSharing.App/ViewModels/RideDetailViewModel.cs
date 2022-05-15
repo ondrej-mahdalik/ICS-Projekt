@@ -59,11 +59,19 @@ namespace RideSharing.App.ViewModels
 
         public int SelectedSeats { get; set; }
 
-        public bool ReservationConflict { get; set; } = false;
-
+        public bool ReservationConflict { get; set; }
+        public bool RideFull { get; set; }
+        public bool SliderVisible
+        {
+            get
+            {
+                return (!ReservationConflict && MaxAvailableSeats != 0);
+            }
+        }
         public bool CanSave()
         {
-            return ReservationCreation || SelectedSeats != Reservation?.Seats;
+            return (ReservationCreation && !ReservationConflict && MaxAvailableSeats != 0) || 
+                   (!ReservationCreation && SelectedSeats != Reservation?.Seats);
         }
 
 
@@ -127,8 +135,10 @@ namespace RideSharing.App.ViewModels
             else
             { // creating reservation
                 Reservation = null;
+                ReservationCreation = true;
                 CheckReservationConflict();
                 SelectedSeats = 1;
+                RideFull = MaxAvailableSeats == 0;
             }
 
         }

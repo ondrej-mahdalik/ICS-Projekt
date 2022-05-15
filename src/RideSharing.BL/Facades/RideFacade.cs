@@ -62,11 +62,11 @@ public class RideFacade : CRUDFacade<RideEntity, RideRecentListModel, RideDetail
 
         if (cityFrom != string.Empty)
         {
-            rides = rides.Where(x =>  x.FromName.Equals(cityFrom));
+            rides = rides.Where(x =>  x.FromName.StartsWith(cityFrom.Trim()));
         }
         if (cityTo != string.Empty)
         {
-            rides = rides.Where(x => x.ToName.Equals(cityTo));
+            rides = rides.Where(x => x.ToName.StartsWith(cityTo.Trim()));
         }
 
         rides = rides.Include(ride => ride.Vehicle).ThenInclude(vehicle => vehicle!.Owner).Where(x => x.Vehicle!.OwnerId != userId);
@@ -132,7 +132,7 @@ public class RideFacade : CRUDFacade<RideEntity, RideRecentListModel, RideDetail
                 x.Departure <= DateTime.Now && (x.Reservations.Any(y => y.ReservingUserId == userId) ||
                                                 x.Vehicle != null && x.Vehicle.OwnerId == userId))
         };
-        var rideModels = await Mapper.ProjectTo<RideRecentListModel>(rides.OrderBy(x => x.Departure)).ToArrayAsync().ConfigureAwait(false);
+        var rideModels = await Mapper.ProjectTo<RideRecentListModel>(rides.OrderByDescending(x => x.Departure)).ToArrayAsync().ConfigureAwait(false);
 
         foreach (var ride in rideModels)
         {

@@ -44,13 +44,19 @@ public class ReservationFacade : CRUDFacade<ReservationEntity, ReservationListMo
 
         // Check for conflicting rides
         bool conflictReservation = await dbSetReservations.AnyAsync(
-            x => x.ReservingUserId == userId && x.Ride != null &&
-                 (ride.Departure <= x.Ride.Arrival || ride.Arrival >= x.Ride.Departure)
+            x => x.ReservingUserId == userId && x.Ride != null && (
+                 (ride.Departure <= x.Ride.Arrival && x.Ride.Arrival <= ride.Arrival) ||
+                 (ride.Departure <= x.Ride.Departure && x.Ride.Departure <= ride.Arrival) ||
+                 (x.Ride.Departure <= ride.Arrival && ride.Arrival <= x.Ride.Arrival) ||
+                 (x.Ride.Departure <= ride.Departure && ride.Departure <= x.Ride.Arrival))
         );
 
         bool conflictRide = await dbSetRides.AnyAsync(
-            x => x.Vehicle != null && x.Vehicle.Owner != null && x.Vehicle.Owner.Id == userId &&
-                 (ride.Departure <= x.Arrival || ride.Arrival >= x.Departure)
+            x => x.Vehicle != null && x.Vehicle.Owner != null && x.Vehicle.Owner.Id == userId && (
+                 (ride.Departure <= x.Arrival && x.Arrival <= ride.Arrival) ||
+                 (ride.Departure <= x.Departure && x.Departure <= ride.Arrival) ||
+                 (x.Departure <= ride.Arrival && ride.Arrival <= x.Arrival) ||
+                 (x.Departure <= ride.Departure && ride.Departure <= x.Arrival))
         );
         return conflictRide || conflictReservation;
 

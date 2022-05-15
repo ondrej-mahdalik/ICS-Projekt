@@ -9,11 +9,11 @@ using System.Windows.Data;
 
 namespace RideSharing.App.Converters;
 
-public class BoolToReviewMessageConverter : IValueConverter
+public class BoolToUpcomingRideMessageConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        return value.ToString() == "True" ? "You were the driver." : "Rating submitted.";
+        return value.ToString() == "True" ? "You are the driver." : "You are a passenger.";
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -53,12 +53,13 @@
                                   NavigationCompleted="MapView_OnNavigationCompleted" />
                     <Grid Margin="0px 20px">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock FontWeight="Bold"
                                    Text="{Binding DetailModel.Distance, StringFormat='Distance: {0} km', FallbackValue=''}" />
-                        <TextBlock Grid.Column="1"
+                        <TextBlock Grid.Column="2"
                                    FontWeight="Bold"
                                    HorizontalAlignment="Right"
                                    Text="{Binding Duration, StringFormat='Duration: {0}', Converter={StaticResource TimespanToStringConverter}}" />
@@ -194,8 +195,10 @@
                                  Margin="10px 10px 20px 20px">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -204,11 +207,11 @@
                     <Image Width="100px"
                            Height="100px"
                            Stretch="UniformToFill"
-                           Grid.RowSpan="2"
+                           Grid.RowSpan="3"
                            Source="{Binding Vehicle.ImageUrl, TargetNullValue={StaticResource VehicleDefault}, FallbackValue={StaticResource VehicleDefault}}" />
                     <TextBlock Grid.Row="0"
                                Grid.Column="1"
-                               Margin="10px"
+                               Margin="10px 0px 0px 0px"
                                Style="{StaticResource MaterialDesignHeadline6TextBlock}">
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}{0} {1}">
@@ -221,9 +224,13 @@
                     </TextBlock>
                     <TextBlock Grid.Row="1"
                                Grid.Column="1"
-                               Margin="10px"
+                               Margin="10px, 3px 0px 0px"
                                Text="{Binding Vehicle.Registered, StringFormat='Registration date: {0:Y}', FallbackValue=''}" />
 
+                    <TextBlock Grid.Row="2"
+                               Grid.Column="1"
+                               Margin="10px 0px 0px 0px"
+                               Text="{Binding Vehicle.Seats, StringFormat='Number of seats: {0}', FallbackValue=''}"/>
                 </Grid>
             </materialDesign:Card>
         </Grid>
