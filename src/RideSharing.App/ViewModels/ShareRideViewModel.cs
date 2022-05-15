@@ -40,6 +40,10 @@ namespace RideSharing.App.ViewModels
             SaveCommand = new AsyncRelayCommand(SaveAsync, CanSave);
             UpdateRouteCommand = new AsyncRelayCommand(UpdateRoute);
             ClearCommand = new AsyncRelayCommand(async _ => await LoadAsync());
+
+            mediator.Register<AddedMessage<VehicleWrapper>>(async _ => await LoadAsync());
+            mediator.Register<UpdateMessage<VehicleWrapper>>(async _ => await LoadAsync());
+            mediator.Register<DeleteMessage<VehicleWrapper>>(async _ => await LoadAsync());
         }
 
         

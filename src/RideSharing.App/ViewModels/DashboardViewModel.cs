@@ -33,9 +33,10 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
         ReviewSubmittedCommand = new RelayCommand<RideRecentListModel>(ReviewSubmitted);
         UpcomingRideDetailClickedCommand = new RelayCommand<RideUpcomingListModel>(UpcomingRideDetailClicked);
 
+        mediator.Register<AddedMessage<RideWrapper>>(RideAdded);
         mediator.Register<UpdateMessage<RideWrapper>>(RideUpdated);
         mediator.Register<DeleteMessage<RideWrapper>>(RideDeleted);
-        mediator.Register<NewMessage<ReservationWrapper>>(ReservationAdded);
+        mediator.Register<AddedMessage<ReservationWrapper>>(ReservationAdded);
         mediator.Register<UpdateMessage<ReservationWrapper>>(ReservationUpdated);
         mediator.Register<DeleteMessage<ReservationWrapper>>(ReservationDeleted);
     }
@@ -112,11 +113,12 @@ public class DashboardViewModel : ViewModelBase, IDashboardViewModel
     public ICommand ReviewSubmittedCommand { get; }
     public ICommand UpcomingRideDetailClickedCommand { get; }
 
+    private async void RideAdded(AddedMessage<RideWrapper> _) => await LoadAsync();
     private async void RideUpdated(UpdateMessage<RideWrapper> _) => await LoadAsync();
     private async void RideDeleted(DeleteMessage<RideWrapper> _) => await LoadAsync();
     private async void ReservationUpdated(UpdateMessage<ReservationWrapper> _) => await LoadAsync();
     private async void ReservationDeleted(DeleteMessage<ReservationWrapper> _) => await LoadAsync();
-    private async void ReservationAdded(NewMessage<ReservationWrapper> _) => await LoadAsync();
+    private async void ReservationAdded(AddedMessage<ReservationWrapper> _) => await LoadAsync();
 
 
     private async void ReviewSubmitted(RideRecentListModel? rideListModel)
