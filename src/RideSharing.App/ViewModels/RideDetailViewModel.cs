@@ -181,7 +181,11 @@ namespace RideSharing.App.ViewModels
             }
             
             await _reservationFacade.SaveAsync(Reservation);
-            _mediator.Send(new NewMessage<ReservationWrapper>());
+            if (ReservationCreation)
+                _mediator.Send(new AddedMessage<ReservationWrapper>());
+            else
+                _mediator.Send(new UpdateMessage<ReservationWrapper>());
+
             _messageQueue.Enqueue($"Reservation has been successfully {(ReservationCreation ? "created" : "edited")}.");
             await LoadAsync(DetailModel.Id);
         }
