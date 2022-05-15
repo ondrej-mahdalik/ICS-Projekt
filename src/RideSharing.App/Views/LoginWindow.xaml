@@ -1,0 +1,28 @@
+﻿<Window x:Class="RideSharing.App.Views.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Style="{StaticResource MaterialDesignWindow}"
+        xmlns:views="clr-namespace:RideSharing.App.Views"
+        xmlns:viewModels="clr-namespace:RideSharing.App.ViewModels"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:dialogs="clr-namespace:RideSharing.App.Services.Dialogs"
+        FontFamily="{materialDesign:MaterialDesignFont}"
+        d:DataContext="{d:DesignInstance viewModels:LoginViewModel}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        mc:Ignorable="d"
+        Title="LoginWindow" Height="450" Width="800"
+        Closing="Window_Closing">
+    <Grid>
+        <materialDesign:Transitioner SelectedIndex="{Binding TransitionerSelectedIndex, Converter={StaticResource LoginViewIndexToIntConverter}}">
+            <materialDesign:TransitionerSlide>
+                <views:SelectUserView DataContext="{Binding SelectUserViewModel}" />
+            </materialDesign:TransitionerSlide>
+            <materialDesign:TransitionerSlide>
+                <views:AddUserView DataContext="{Binding AddUserViewModel}" />
+            </materialDesign:TransitionerSlide>
+        </materialDesign:Transitioner>
+    </Grid>
+</Window>

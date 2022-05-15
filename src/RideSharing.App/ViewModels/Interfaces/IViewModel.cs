@@ -1,4 +1,4 @@
-﻿namespace RideSharing.App.ViewModels.Interfaces;
+﻿namespace RideSharing.App.ViewModels;
 
 public interface IViewModel
 {

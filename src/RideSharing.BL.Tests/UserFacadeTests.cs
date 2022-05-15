@@ -38,8 +38,6 @@ public sealed class UserFacadeTests : CRUDFacadeTestsBase
         var users = await _userFacadeSUT.GetAsync();
         var user = users.Single(i => i.Id == UserSeeds.JustSubmittedReviewUser.Id);
         DeepAssert.Equal(Mapper.Map<UserListModel>(UserSeeds.JustSubmittedReviewUser), user);
-        Assert.Equal(0, user.NumberOfVehicles);
-        Assert.Equal(0, user.UpcomingRidesCount);
     }
 
     [Fact]
@@ -60,10 +58,11 @@ public sealed class UserFacadeTests : CRUDFacadeTestsBase
     }
 
     [Fact]
-    public async Task SeededUserWithRide_DeleteById_Throws()
+    public async Task SeededUserWithRide_DeleteById_DoesNotThrow()
     {
-        await Assert.ThrowsAsync<DbUpdateException>(async () =>
-            await _userFacadeSUT.DeleteAsync(UserSeeds.DriverUser.Id));
+        await _userFacadeSUT.DeleteAsync(UserSeeds.DriverUser.Id);
+        await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
+        Assert.False(await dbxAssert.UserEntities.AnyAsync(i => i.Id == UserSeeds.DriverUser.Id));
     }
 
     [Fact]

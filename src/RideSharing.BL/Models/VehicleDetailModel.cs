@@ -21,12 +21,17 @@ public record VehicleDetailModel(
     public ushort Seats { get; set; } = Seats;
     public string? ImageUrl { get; set; } = ImageUrl;
 
+    public UserListModel? Owner { get; init; }
+
     public class MapperProfile : Profile
     {
         public MapperProfile()
         {
             CreateMap<VehicleEntity, VehicleDetailModel>()
-                .ReverseMap();
+                .ReverseMap()
+                .ForMember(entity => entity.Owner, action => action.Ignore());
         }
     }
+
+    public static VehicleDetailModel Empty => new(default, default, string.Empty, string.Empty, DateTime.Now, default);
 }

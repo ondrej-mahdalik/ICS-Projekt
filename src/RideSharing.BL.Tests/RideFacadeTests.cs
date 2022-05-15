@@ -25,15 +25,12 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
     {
         var ride = new RideDetailModel(
             "Praha",
-            50.073658,
-            14.418540,
             "Brno",
-            49.195061,
-            16.606836,
             203,
             4,
             new DateTime(2022, 3, 25, 09, 04, 00),
-            new DateTime(2022, 3, 25, 12, 04, 00)
+            new DateTime(2022, 3, 25, 12, 04, 00),
+            VehicleSeeds.Felicia.Id
         );
         var _ = await _rideFacadeSUT.SaveAsync(ride);
     }
@@ -43,8 +40,7 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
     {
         var rides = await _rideFacadeSUT.GetAsync();
         var ride = rides.Single(i => i.Id == RideSeeds.BrnoBratislava.Id);
-        DeepAssert.Equal(Mapper.Map<RideListModel>(RideSeeds.BrnoBratislava), ride, "Driver", "Vehicle");
-        DeepAssert.Equal(ride.Vehicle, Mapper.Map<VehicleDetailModel>(VehicleSeeds.Felicia));
+        DeepAssert.Equal(Mapper.Map<RideRecentListModel>(RideSeeds.BrnoBratislava), ride, "Driver", "Vehicle");
     }
 
     [Fact]
@@ -52,7 +48,7 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
     {
         var ride = await _rideFacadeSUT.GetAsync(RideSeeds.BrnoBratislava.Id);
         DeepAssert.Equal(Mapper.Map<RideDetailModel>(RideSeeds.BrnoBratislava), ride, "Driver", "Vehicle",
-            "Reservations");
+            "Reservations", "DriverRating", "DriverReviewCount", "OccupiedSeats");
     }
 
     [Fact]
@@ -75,31 +71,20 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
     {
         var ride = new RideDetailModel(
             "Wien",
-            48.20849,
-            16.37208,
             "Milan",
-            45.464664,
-            9.188540,
             861,
             3,
             new DateTime(2022, 03, 26, 11, 40, 00),
-            new DateTime(2022, 03, 26, 19, 41, 00)
-        )
-        {
-            Vehicle = new VehicleListModel(
-                VehicleSeeds.Felicia.OwnerId,
-                VehicleSeeds.Felicia.VehicleType,
-                VehicleSeeds.Felicia.Make,
-                VehicleSeeds.Felicia.Model,
-                VehicleSeeds.Felicia.Registered,
-                VehicleSeeds.Felicia.Seats
-            ) { Id = VehicleSeeds.Felicia.Id }
-        };
+            new DateTime(2022, 03, 26, 19, 41, 00),
+            VehicleSeeds.Felicia.Id
+        );
+
         ride = await _rideFacadeSUT.SaveAsync(ride);
 
         await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
         var rideFromDb = await dbxAssert.RideEntities.SingleAsync(i => i.Id == ride.Id);
-        DeepAssert.Equal(ride, Mapper.Map<RideDetailModel>(rideFromDb), "Reservations", "Vehicle");
+        DeepAssert.Equal(ride, Mapper.Map<RideDetailModel>(rideFromDb), "Reservations", "Vehicle",
+            "Reservations", "DriverRating", "DriverReviewCount", "OccupiedSeats");
         DeepAssert.Equal(ride.Vehicle, Mapper.Map<VehicleListModel>(VehicleSeeds.Felicia));
     }
 
@@ -109,33 +94,19 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
         // Arrange
         var ride = new RideDetailModel(
             RideSeeds.BrnoBratislava.FromName,
-            RideSeeds.BrnoBratislava.FromLatitude,
-            RideSeeds.BrnoBratislava.FromLongitude,
             RideSeeds.BrnoBratislava.ToName,
-            RideSeeds.BrnoBratislava.ToLatitude,
-            RideSeeds.BrnoBratislava.ToLongitude,
             RideSeeds.BrnoBratislava.Distance,
             Departure: RideSeeds.BrnoBratislava.Departure,
             Arrival: RideSeeds.BrnoBratislava.Arrival,
-            SharedSeats: RideSeeds.BrnoBratislava.SharedSeats
+            SharedSeats: RideSeeds.BrnoBratislava.SharedSeats,
+            VehicleId: VehicleSeeds.Karosa.Id
         )
         {
             Id = RideSeeds.BrnoBratislava.Id,
-            Vehicle = new VehicleListModel(
-                VehicleSeeds.Karosa.OwnerId,
-                VehicleSeeds.Karosa.VehicleType,
-                VehicleSeeds.Karosa.Make,
-                VehicleSeeds.Karosa.Model,
-                VehicleSeeds.Karosa.Registered,
-                VehicleSeeds.Karosa.Seats,
-                VehicleSeeds.Karosa.ImageUrl
-            ) { Id = VehicleSeeds.Karosa.Id }
         };
 
         // Act
         ride.ToName = "Ostrava";
-        ride.ToLatitude = 49.820923;
-        ride.ToLongitude = 18.262524;
         await _rideFacadeSUT.SaveAsync(ride);
 
         // Assert
@@ -143,6 +114,7 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
         var rideFromDb = await dbxAssert.RideEntities.Include(entity => entity.Vehicle)
             .SingleAsync(i => i.Id == ride.Id);
         var updatedRide = Mapper.Map<RideDetailModel>(rideFromDb);
-        DeepAssert.Equal(ride, updatedRide);
+        DeepAssert.Equal(ride, updatedRide, "Driver", "Vehicle",
+            "Reservations", "DriverRating", "DriverReviewCount", "OccupiedSeats");
     }
 }

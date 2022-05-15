@@ -1,0 +1,75 @@
+﻿<local:UserControlBase x:Class="RideSharing.App.Views.AddUserView"
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                       xmlns:viewModels="clr-namespace:RideSharing.App.ViewModels"
+                       xmlns:controls="clr-namespace:RideSharing.App.Controls"
+                       xmlns:local="clr-namespace:RideSharing.App.Views"
+                       mc:Ignorable="d"
+                       FontSize="14"
+                       d:DesignHeight="450"
+                       d:DesignWidth="800"
+                       Background="{StaticResource MaterialDesignLightBackground}"
+                       d:DataContext="{d:DesignInstance viewModels:AddUserViewModel}">
+    <Grid x:Name="Root">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Column="1"
+                   Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                   Padding="20px"
+                   Text="Create New Profile"
+                   TextAlignment="Center" />
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1">
+            <Image Width="100px"
+                   HorizontalAlignment="Center"
+                   Margin="10px"
+                   Height="100px"
+                   Stretch="UniformToFill"
+                   IsEnabled="{Binding UploadingImage, Converter={StaticResource InvertBooleanConverter}}"
+                   Source="{Binding DetailModel.ImageUrl, FallbackValue={StaticResource ProfileDefault}, TargetNullValue={StaticResource ProfileDefault}}" />
+            <Button x:Name="UploadImageBtn"
+                    HorizontalAlignment="Center"
+                    Style="{StaticResource MaterialDesignOutlinedButton}"
+                    Click="UploadImageBtn_OnClick">Upload photo</Button>
+            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="Name"
+                     Margin="5px"
+                     Text="{Binding DetailModel.Name, UpdateSourceTrigger=PropertyChanged}"
+                     Cursor="Arrow" />
+            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="Surname"
+                     Margin="5px"
+                     Text="{Binding DetailModel.Surname, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="Phone"
+                     Margin="5px"
+                     Text="{Binding DetailModel.Phone, UpdateSourceTrigger=PropertyChanged}" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Style="{StaticResource MaterialDesignFlatSecondaryButton}"
+                        HorizontalAlignment="Left"
+                        Margin="5px"
+                        Command="{Binding CancelCommand}"
+                        Cursor="Hand">Cancel</Button>
+                <Button Grid.Column="1" Style="{StaticResource MaterialDesignOutlinedButton}"
+                        HorizontalAlignment="Right"
+                        Margin="5px"
+                        Command="{Binding SaveCommand}">Save Changes</Button>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</local:UserControlBase>

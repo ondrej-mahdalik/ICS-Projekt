@@ -1,0 +1,242 @@
+﻿<local:UserControlBase x:Class="RideSharing.App.Views.RideManagementView"
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                       xmlns:viewModels="clr-namespace:RideSharing.App.ViewModels"
+                       xmlns:controls="clr-namespace:RideSharing.App.Controls"
+                       xmlns:local="clr-namespace:RideSharing.App.Views"
+                       xmlns:wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+                       mc:Ignorable="d"
+                       FontSize="14"
+                       d:DesignHeight="600"
+                       d:DesignWidth="1000"
+                       Background="{StaticResource MaterialDesignLightBackground}"
+                       d:DataContext="{d:DesignInstance viewModels:RideManagementViewModel}">
+    <Grid x:Name="Root">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock TextAlignment="Center"
+                   Padding="20px"
+                   Style="{StaticResource MaterialDesignHeadline4TextBlock}">Detail of upcoming ride</TextBlock>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="4*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <materialDesign:Card Grid.RowSpan="2"
+                                 Padding="20px"
+                                 Margin="20px 20px 10px 20px">
+                <StackPanel>
+                    <controls:FromToBlock x:Name="FromToBlock"
+                                          FromName="{Binding DetailModel.FromName, FallbackValue=''}"
+                                          ToName="{Binding DetailModel.ToName,FallbackValue=''}"
+                                          Departure="{Binding DetailModel.Departure, FallbackValue=''}"
+                                          Arrival="{Binding DetailModel.Arrival, FallbackValue=''}"
+                                          FontSize="20px"
+                                          HorizontalAlignment="Center" />
+                    <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                               HorizontalAlignment="Center"
+                               Padding="0px 15px">Route Map</TextBlock>
+                    <wpf:WebView2 x:Name="MapView"
+                                  Height="150px"
+                                  Source="https://ondrej-mahdalik.github.io/ridesharing-cdn/EmbedMap/"
+                                  IsEnabled="{Binding MapEnabled}"
+                                  IsEnabledChanged="MapView_OnIsEnabledChanged"
+                                  NavigationCompleted="MapView_OnNavigationCompleted" />
+                    <Grid Margin="0px 20px">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock FontWeight="Bold"
+                                   Text="{Binding DetailModel.Distance, StringFormat='Distance: {0} km', FallbackValue=''}" />
+                        <TextBlock Grid.Column="2"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Right"
+                                   Text="{Binding Duration, StringFormat='Duration: {0}', Converter={StaticResource TimespanToStringConverter}}" />
+                    </Grid>
+                    <TextBlock FontWeight="Bold"
+                               Text="Driver's note:" />
+                    <TextBox TextAlignment="Center"
+                             Style="{StaticResource MaterialDesignFilledTextBox}"
+                             Text="{Binding DetailModel.Note, FallbackValue=''}" />
+                    <Button Content="Edit Note"
+                            Command="{Binding SaveCommand}"
+                            Style="{StaticResource MaterialDesignOutlinedButton}"
+                            HorizontalAlignment="Right"
+                            Margin="0 10px" />
+                </StackPanel>
+            </materialDesign:Card>
+            <materialDesign:Card Grid.Row="0"
+                                 Grid.Column="1"
+                                 Padding="20px"
+                                 Margin="10px 20px 20px 10px">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="10px"
+                                       Text="Shared seats:"
+                                       VerticalAlignment="Center" />
+                            <Slider Margin="10px"
+                                    AutoToolTipPlacement="TopLeft"
+                                    Width="150px"
+                                    VerticalAlignment="Center"
+                                    Value="{Binding DetailModel.SharedSeats, UpdateSourceTrigger=PropertyChanged}"
+                                    Maximum="{Binding Vehicle.Seats}"
+                                    Minimum="1" />
+                            <TextBlock Margin="10px"
+                                       VerticalAlignment="Center">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} out of {1}">
+                                        <Binding Path="DetailModel.SharedSeats"
+                                                 FallbackValue="0" />
+                                        <Binding Path="Vehicle.Seats"
+                                                 FallbackValue="0" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </StackPanel>
+                        <Button Grid.Column="1"
+                                Content="Change"
+                                Command="{Binding SaveCommand}"
+                                Style="{StaticResource MaterialDesignOutlinedButton}"
+                                HorizontalAlignment="Right"
+                                Margin="10px" />
+                    </Grid>
+                    <TextBlock Grid.Row="1"
+                               Text="Registered travelers:"
+                               Margin="10px" />
+                    <ListView Grid.Row="2"
+                              Style="{StaticResource MaterialDesignListViewNoRippleEffect}"
+                              Background="{StaticResource MaterialDesignLightBackground}"
+                              materialDesign:ListViewAssist.ListViewItemPadding="10px"
+                              ItemsSource="{Binding Reservations}"
+                              Height="120px">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock VerticalAlignment="Center">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0} {1}">
+                                                    <Binding Path="ReservingUser.Name"
+                                                             FallbackValue="" />
+                                                    <Binding Path="ReservingUser.Surname"
+                                                             FallbackValue="" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                        <TextBlock Text="{Binding Seats, StringFormat='({0} seats)'}"
+                                                   FontSize="10px"
+                                                   Margin="5px 0"
+                                                   VerticalAlignment="Center" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1"
+                                                Orientation="Horizontal"
+                                                HorizontalAlignment="Right">
+                                        <Button Margin="5"
+                                                materialDesign:RippleAssist.IsDisabled="False"
+                                                Content="Contact"
+                                                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:RideManagementView}},
+                                                    Path=DataContext.ContactUserCommand}"
+                                                CommandParameter="{Binding}"
+                                                Style="{StaticResource MaterialDesignOutlinedButton}" />
+                                        <Button Margin="5px"
+                                                Content="Remove"
+                                                Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:RideManagementView}},
+                                                    Path=DataContext.DeleteReservationCommand}"
+                                                CommandParameter="{Binding}"
+                                                materialDesign:RippleAssist.IsDisabled="False"
+                                                Style="{StaticResource MaterialDesignOutlinedSecondaryButton}" />
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment"
+                                        Value="Stretch"/>
+                                <Setter Property="Focusable"
+                                        Value="False" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+                    <Button Grid.Row="3"
+                            Style="{StaticResource MaterialDesignOutlinedSecondaryButton}"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Command="{Binding DeleteRideCommand}"
+                            Margin="10px"
+                            Content="Cancel the ride" />
+                </Grid>
+            </materialDesign:Card>
+            <materialDesign:Card Grid.Row="1"
+                                 Grid.Column="1"
+                                 Padding="20px"
+                                 Margin="10px 10px 20px 20px">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Image Width="100px"
+                           Height="100px"
+                           Stretch="UniformToFill"
+                           Grid.RowSpan="3"
+                           Source="{Binding Vehicle.ImageUrl, TargetNullValue={StaticResource VehicleDefault}, FallbackValue={StaticResource VehicleDefault}}" />
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="1"
+                               Margin="10px 0px 0px 0px"
+                               Style="{StaticResource MaterialDesignHeadline6TextBlock}">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0} {1}">
+                                <Binding Path="Vehicle.Make"
+                                         FallbackValue="" />
+                                <Binding Path="Vehicle.Model"
+                                         FallbackValue="" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="1"
+                               Margin="10px, 3px 0px 0px"
+                               Text="{Binding Vehicle.Registered, StringFormat='Registration date: {0:Y}', FallbackValue=''}" />
+
+                    <TextBlock Grid.Row="2"
+                               Grid.Column="1"
+                               Margin="10px 0px 0px 0px"
+                               Text="{Binding Vehicle.Seats, StringFormat='Number of seats: {0}', FallbackValue=''}"/>
+                </Grid>
+            </materialDesign:Card>
+        </Grid>
+    </Grid>
+</local:UserControlBase>

@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.Globalization;
-using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
+using MaterialDesignThemes.Wpf;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using RideSharing.App.Extensions;
+using RideSharing.App.Services;
 using RideSharing.App.Settings;
 using RideSharing.App.ViewModels;
-using RideSharing.App.ViewModels.Interfaces;
 using RideSharing.App.Views;
 using RideSharing.BL;
 using RideSharing.DAL;
@@ -26,7 +22,7 @@ namespace RideSharing.App
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App
     {
         private readonly IHost _host;
 
@@ -34,6 +30,7 @@ namespace RideSharing.App
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en");
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en");
+            Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
 
             _host = Host.CreateDefaultBuilder()
                 .ConfigureAppConfiguration(ConfigureAppConfiguration)
@@ -59,14 +56,29 @@ namespace RideSharing.App
                     dalSettings.SkipMigrationAndSeedDemoData);
             });
 
+            services.AddSingleton<LoginWindow>();
             services.AddSingleton<MainWindow>();
-            
-            // TODO Mediator & MessageDialogService singletons
+
+            services.AddSingleton<IMediator, Mediator>();
+            services.AddSingleton<ISnackbarMessageQueue, SnackbarMessageQueue>();
 
             services.AddSingleton<MainViewModel>();
+            services.AddSingleton<LoginViewModel>();
+
             services.AddSingleton<IDashboardViewModel, DashboardViewModel>();
+            services.AddSingleton<IFindRideViewModel, FindRideViewModel>();
+            services.AddSingleton<IRideDetailViewModel, RideDetailViewModel>();
+            services.AddSingleton<IShareRideViewModel, ShareRideViewModel>();
+            services.AddSingleton<IRideManagementViewModel, RideManagementViewModel>();
+            services.AddSingleton<IUserDetailViewModel, UserDetailViewModel>();
+            services.AddSingleton<IVehicleDetailViewModel, VehicleDetailViewModel>();
+            services.AddSingleton<IVehicleListViewModel, VehicleListViewModel>();
+            services.AddSingleton<IAddVehicleViewModel, AddVehicleViewModel>();
+            services.AddSingleton<IAddUserViewModel, AddUserViewModel>();
+            services.AddSingleton<ISelectUserViewModel, SelectUserViewModel>();
 
             services.AddFactory<IDashboardViewModel, DashboardViewModel>();
+            services.AddFactory<IFindRideViewModel, FindRideViewModel>();
         }
 
         protected override async void OnStartup(StartupEventArgs e)
@@ -89,13 +101,40 @@ namespace RideSharing.App
                 }
             }
 
+            var loginViewModel = _host.Services.GetRequiredService<LoginViewModel>();
+            var mainViewModel = _host.Services.GetRequiredService<MainViewModel>();
+            var loginWindow = _host.Services.GetRequiredService<LoginWindow>();
             var mainWindow = _host.Services.GetRequiredService<MainWindow>();
-            mainWindow.Show();
-            
+
+            // Login
+            loginViewModel.OnLogin += (_, _) =>
+            {
+                loginWindow.Hide();
+                mainWindow.Show();
+            };
+
+            // Logout
+            mainViewModel.OnLogout += (_, _) =>
+            {
+                mainWindow.Hide();
+                loginWindow.Show();
+            };
+
+            // Handle closing from login window
+            loginWindow.Closed += OnClosed;
+            mainWindow.Closed += OnClosed;
+
+            loginWindow.Show();
             base.OnStartup(e);
         }
 
-        protected override async void OnExit(ExitEventArgs e)
+        private void OnClosed(object? sender, EventArgs e)
+        {
+            OnExit(default);
+            Current.Shutdown();
+        }
+
+        protected override async void OnExit(ExitEventArgs? e)
         {
             using (_host)
             {

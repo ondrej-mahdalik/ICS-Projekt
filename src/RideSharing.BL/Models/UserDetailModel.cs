@@ -13,8 +13,8 @@ public record UserDetailModel(
     public string Surname { get; set; } = Surname;
     public string Phone { get; set; } = Phone;
     public string? ImageUrl { get; set; } = ImageUrl;
-    public List<VehicleListModel> Vehicles { get; set; } = new();
-    public List<ReviewListModel> SubmittedReviews { get; set; } = new();
+    public List<VehicleDetailModel> Vehicles { get; set; } = new();
+    public List<ReviewDetailModel> SubmittedReviews { get; set; } = new();
 
     public class MapperProfile : Profile
     {
@@ -24,6 +24,9 @@ public record UserDetailModel(
                 .ReverseMap()
                 .ForMember(entity => entity.Vehicles, action => action.Ignore())
                 .ForMember(entity => entity.SubmittedReviews, action => action.Ignore());
+
         }
     }
+    public static UserDetailModel Empty => new(string.Empty, string.Empty, string.Empty);
+
 }

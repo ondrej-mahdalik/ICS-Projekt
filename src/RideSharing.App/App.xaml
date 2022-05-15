@@ -2,16 +2,32 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:local="clr-namespace:RideSharing.App"
-             xmlns:viewModels="clr-namespace:RideSharing.App.ViewModels">
+             xmlns:converters="clr-namespace:RideSharing.App.Converters">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <materialDesign:BundledTheme BaseTheme="Light"
-                                             PrimaryColor="DeepPurple"
-                                             SecondaryColor="Lime" />
+                                             PrimaryColor="BlueGrey"
+                                             SecondaryColor="DeepOrange"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="Styles/MaterialDesignThemes.Overrides.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <converters:TimespanToStringConverter x:Key="TimespanToStringConverter"/>
+            <converters:NullToCreateOrEditConverter x:Key="NullToCreateOrEditConverter"/>
+            <converters:FloatToIntConverter x:Key="FloatToIntConverter"/>
+            <converters:RideFilterEnumToBoolConverter x:Key="RideFilterEnumToBoolConverter"/>
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <converters:BoolToReviewMessageConverter x:Key="BoolToReviewMessageConverter"/>
+            <converters:ViewIndexToIntConverter x:Key="ViewIndexToIntConverter"/>
+            <converters:LoginViewIndexToIntConverter x:Key="LoginViewIndexToIntConverter" />
+            <converters:VehicleTypeToIntConverter x:Key="VehicleTypeToIntConverter"/>
+            <converters:BoolToUpcomingRideMessageConverter x:Key="BoolToUpcomingRideMessageConverter"/>
+            <converters:IntSubtractConverter x:Key="IntSubtractConverter"/>
+            <BitmapImage x:Key="ProfileDefault"
+                         UriSource="/Resources/profile_default.jpg" />
+            <BitmapImage x:Key="VehicleDefault"
+                         UriSource="Resources/vehicle_default.jpg"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

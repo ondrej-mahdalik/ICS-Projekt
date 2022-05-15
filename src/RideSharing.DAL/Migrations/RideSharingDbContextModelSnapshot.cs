@@ -17,7 +17,7 @@ namespace RideSharing.DAL.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.3")
+                .HasAnnotation("ProductVersion", "6.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -88,12 +88,6 @@ namespace RideSharing.DAL.Migrations
                     b.Property<int>("Distance")
                         .HasColumnType("int");
 
-                    b.Property<double>("FromLatitude")
-                        .HasColumnType("float");
-
-                    b.Property<double>("FromLongitude")
-                        .HasColumnType("float");
-
                     b.Property<string>("FromName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -103,12 +97,6 @@ namespace RideSharing.DAL.Migrations
 
                     b.Property<int>("SharedSeats")
                         .HasColumnType("int");
-
-                    b.Property<double>("ToLatitude")
-                        .HasColumnType("float");
-
-                    b.Property<double>("ToLongitude")
-                        .HasColumnType("float");
 
                     b.Property<string>("ToName")
                         .IsRequired()

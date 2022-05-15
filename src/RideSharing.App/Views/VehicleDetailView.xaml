@@ -1,0 +1,103 @@
+﻿<local:UserControlBase x:Class="RideSharing.App.Views.VehicleDetailView"
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                       xmlns:viewModels="clr-namespace:RideSharing.App.ViewModels"
+                       xmlns:controls="clr-namespace:RideSharing.App.Controls"
+                       xmlns:local="clr-namespace:RideSharing.App.Views"
+                       xmlns:System="clr-namespace:System;assembly=System.Runtime"
+                       mc:Ignorable="d"
+                       FontSize="14"
+                       d:DesignHeight="600"
+                       d:DesignWidth="1000"
+                       Background="{StaticResource MaterialDesignLightBackground}"
+                       d:DataContext="{d:DesignInstance viewModels:VehicleDetailViewModel}">
+    <Grid x:Name="Root">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Column="1"
+                   TextAlignment="Center"
+                   Text="Edit Vehicle"
+                   Style="{StaticResource MaterialDesignHeadline4TextBlock}" />
+        <Grid Grid.Column="1"
+              Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.ColumnSpan="2">
+                <Image Width="150px"
+                       HorizontalAlignment="Center"
+                       Margin="10px"
+                       Height="150px"
+                       Stretch="UniformToFill"
+                       IsEnabled="{Binding UploadingImage, Converter={StaticResource InvertBooleanConverter}}"
+                       Source="{Binding DetailModel.ImageUrl, FallbackValue={StaticResource VehicleDefault}, TargetNullValue={StaticResource VehicleDefault}}" />
+                <Button x:Name="UploadImageBtn"
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Click="UploadImageBtn_OnClick">Upload photo</Button>
+            </StackPanel>
+            <TextBox Grid.Row="1"
+                     Grid.Column="0"
+                     Margin="10px"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="Make"
+                     Text="{Binding DetailModel.Make, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Grid.Row="1"
+                     Grid.Column="1"
+                     Margin="10px"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     materialDesign:HintAssist.Hint="Model"
+                     Text="{Binding DetailModel.Model, UpdateSourceTrigger=PropertyChanged}"/>
+            <ComboBox Grid.Row="2"
+                      Grid.Column="0"
+                      Margin="10px"
+                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                      materialDesign:HintAssist.Hint="Vehicle Type"
+                      ItemsSource="{Binding VehicleTypes}"
+                      SelectedIndex="{Binding DetailModel.VehicleType, Converter={StaticResource VehicleTypeToIntConverter}}" />
+            <TextBox Grid.Row="2"
+                                 Grid.Column="1"
+                                 Margin="10px"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                 materialDesign:HintAssist.Hint="Seats"
+                                 Text="{Binding DetailModel.Seats, UpdateSourceTrigger=PropertyChanged}"
+                                 PreviewTextInput="SeatsTextBox_OnPreviewTextInput"/>
+            <DatePicker Grid.Row="3" Grid.Column="0"
+                        Margin="10px" Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                        materialDesign:HintAssist.Hint="Registration Date"
+                        DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static System:DateTime.Today}}"
+                        Text="{Binding DetailModel.Registered}"/>
+            <StackPanel Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+                <Button Margin="10px"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource MaterialDesignFlatSecondaryButton}"
+                        Command="{Binding CancelCommand}"
+                        Cursor="Hand">Cancel</Button>
+                <Button Margin="10px"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Command="{Binding SaveCommand}"
+                        Cursor="Hand">Save Changes</Button>
+            </StackPanel>
+            
+        </Grid>
+    </Grid>
+</local:UserControlBase>
