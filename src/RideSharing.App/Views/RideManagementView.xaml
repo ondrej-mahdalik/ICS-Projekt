@@ -127,6 +127,8 @@
                                Margin="10px" />
                     <ListView Grid.Row="2"
                               Style="{StaticResource MaterialDesignListViewNoRippleEffect}"
+                              Background="{StaticResource MaterialDesignLightBackground}"
+                              materialDesign:ListViewAssist.ListViewItemPadding="10px"
                               ItemsSource="{Binding Reservations}"
                               Height="120px">
                         <ListView.ItemTemplate>
@@ -177,6 +179,8 @@
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalContentAlignment"
                                         Value="Stretch"/>
+                                <Setter Property="Focusable"
+                                        Value="False" />
                             </Style>
                         </ListView.ItemContainerStyle>
                     </ListView>
