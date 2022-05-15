@@ -25,7 +25,8 @@ public sealed class ReviewFacadeTests : CRUDFacadeTestsBase
     {
         // Arrange
         var review = new ReviewDetailModel(
-
+            RideSeeds.JustReviewRide.Id,
+            UserSeeds.ReservationUser1.Id,
             5
         );
 
@@ -68,22 +69,10 @@ public sealed class ReviewFacadeTests : CRUDFacadeTestsBase
     public async Task NewReview_InsertOrUpdate_ReviewAdded()
     {
         var review = new ReviewDetailModel(
+            RideSeeds.JustReviewRide.Id,
+            UserSeeds.ReservationUser1.Id,
             3
-        )
-        {
-            AuthorUser = new UserListModel(
-                UserSeeds.ReservationUser1.Name,
-                UserSeeds.ReservationUser1.Surname,
-                UserSeeds.ReservationUser1.ImageUrl
-            ) { Id = UserSeeds.ReservationUser1.Id },
-            Ride = new RideRecentListModel(
-                RideSeeds.JustReviewRide.FromName,
-                RideSeeds.JustReviewRide.ToName,
-
-                Departure: RideSeeds.JustReviewRide.Departure,
-                Arrival: RideSeeds.JustReviewRide.Arrival
-            ) { Id = RideSeeds.JustReviewRide.Id }
-        };
+        );
         review = await _reviewFacadeSUT.SaveAsync(review);
 
         await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
@@ -97,21 +86,12 @@ public sealed class ReviewFacadeTests : CRUDFacadeTestsBase
     public async Task NewReview_InsertOrUpdate_ReviewUpdated()
     {
         var review = new ReviewDetailModel(
+            RideSeeds.JustReviewRide.Id,
+            UserSeeds.ReservationUser1.Id,
             ReviewSeeds.JustRideReview.Rating
         )
         {
             Id = ReviewSeeds.JustRideReview.Id,
-            AuthorUser = new UserListModel(
-                UserSeeds.ReservationUser1.Name,
-                UserSeeds.ReservationUser1.Surname,
-                UserSeeds.ReservationUser1.ImageUrl
-            ) { Id = UserSeeds.ReservationUser1.Id },
-            Ride = new RideRecentListModel(
-                RideSeeds.JustReviewRide.FromName,
-                RideSeeds.JustReviewRide.ToName,
-                Departure: RideSeeds.JustReviewRide.Departure,
-                Arrival: RideSeeds.JustReviewRide.Arrival
-            ) { Id = RideSeeds.JustReviewRide.Id }
         };
         review.Rating = 2;
         await _reviewFacadeSUT.SaveAsync(review);

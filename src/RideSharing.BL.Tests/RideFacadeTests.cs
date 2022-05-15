@@ -29,7 +29,8 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
             203,
             4,
             new DateTime(2022, 3, 25, 09, 04, 00),
-            new DateTime(2022, 3, 25, 12, 04, 00)
+            new DateTime(2022, 3, 25, 12, 04, 00),
+            VehicleSeeds.Felicia.Id
         );
         var _ = await _rideFacadeSUT.SaveAsync(ride);
     }
@@ -74,18 +75,10 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
             861,
             3,
             new DateTime(2022, 03, 26, 11, 40, 00),
-            new DateTime(2022, 03, 26, 19, 41, 00)
-        )
-        {
-            Vehicle = new VehicleListModel(
-                VehicleSeeds.Felicia.OwnerId,
-                VehicleSeeds.Felicia.VehicleType,
-                VehicleSeeds.Felicia.Make,
-                VehicleSeeds.Felicia.Model,
-                VehicleSeeds.Felicia.Registered,
-                VehicleSeeds.Felicia.Seats
-            ) { Id = VehicleSeeds.Felicia.Id }
-        };
+            new DateTime(2022, 03, 26, 19, 41, 00),
+            VehicleSeeds.Felicia.Id
+        );
+
         ride = await _rideFacadeSUT.SaveAsync(ride);
 
         await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
@@ -104,19 +97,11 @@ public sealed class RideFacadeTests : CRUDFacadeTestsBase
             RideSeeds.BrnoBratislava.Distance,
             Departure: RideSeeds.BrnoBratislava.Departure,
             Arrival: RideSeeds.BrnoBratislava.Arrival,
-            SharedSeats: RideSeeds.BrnoBratislava.SharedSeats
+            SharedSeats: RideSeeds.BrnoBratislava.SharedSeats,
+            VehicleId: VehicleSeeds.Karosa.Id
         )
         {
             Id = RideSeeds.BrnoBratislava.Id,
-            Vehicle = new VehicleListModel(
-                VehicleSeeds.Karosa.OwnerId,
-                VehicleSeeds.Karosa.VehicleType,
-                VehicleSeeds.Karosa.Make,
-                VehicleSeeds.Karosa.Model,
-                VehicleSeeds.Karosa.Registered,
-                VehicleSeeds.Karosa.Seats,
-                VehicleSeeds.Karosa.ImageUrl
-            ) { Id = VehicleSeeds.Karosa.Id }
         };
 
         // Act

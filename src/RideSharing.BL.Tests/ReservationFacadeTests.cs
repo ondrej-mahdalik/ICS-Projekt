@@ -23,11 +23,8 @@ public sealed class ReservationFacadeTests : CRUDFacadeTestsBase
     public async Task CreateReservation()
     {
         // Arrange
-        ReservationDetailModel reservation = new(DateTime.Now, 2)
-        {
-            ReservingUser = Mapper.Map<UserDetailModel>(UserSeeds.JustSubmittedReviewUser),
-            Ride = Mapper.Map<RideDetailModel>(RideSeeds.JustReviewRide)
-        };
+        ReservationDetailModel reservation =
+            new(DateTime.Now, 2, UserSeeds.JustSubmittedReviewUser.Id, RideSeeds.JustReviewRide.Id);
 
         // Act
         await _reservationFacadeSUT.SaveAsync(reservation);
@@ -43,12 +40,9 @@ public sealed class ReservationFacadeTests : CRUDFacadeTestsBase
     public async Task UpdateReservation()
     {
         // Arrange
-        ReservationDetailModel reservation = new(DateTime.Now, 3)
-        {
-            ReservingUser = Mapper.Map<UserDetailModel>(UserSeeds.ReservationUser1),
-            Ride = Mapper.Map<RideDetailModel>(RideSeeds.JustReviewRide)
-        };
-        
+        ReservationDetailModel reservation =
+            new(DateTime.Now, 3, UserSeeds.ReservationUser1.Id, RideSeeds.JustReviewRide.Id);
+
         reservation.ReservingUser = Mapper.Map<UserDetailModel>(UserSeeds.ReservationUser2);
 
         // Act
