@@ -32,4 +32,6 @@ public record VehicleDetailModel(
                 .ForMember(entity => entity.Owner, action => action.Ignore());
         }
     }
+
+    public static VehicleDetailModel Empty => new(default, default, string.Empty, string.Empty, DateTime.Now, default);
 }

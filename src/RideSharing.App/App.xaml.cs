@@ -73,7 +73,7 @@ namespace RideSharing.App
             services.AddSingleton<IUserDetailViewModel, UserDetailViewModel>();
             services.AddSingleton<IVehicleDetailViewModel, VehicleDetailViewModel>();
             services.AddSingleton<IVehicleListViewModel, VehicleListViewModel>();
-            services.AddSingleton<IAddCarViewModel, AddCarViewModel>();
+            services.AddSingleton<IAddVehicleViewModel, AddVehicleViewModel>();
             services.AddSingleton<IAddUserViewModel, AddUserViewModel>();
             services.AddSingleton<ISelectUserViewModel, SelectUserViewModel>();
 

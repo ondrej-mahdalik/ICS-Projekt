@@ -43,7 +43,7 @@ namespace RideSharing.App.ViewModels
         public bool CanSave()
         {
             return DetailModel is not null && DetailModel.Name!.Length > 0 &&
-                   DetailModel.Surname!.Length > 0 && DetailModel.Phone!.Length > 0;
+                   DetailModel.Surname!.Length > 0 && DetailModel.Phone!.Length > 0 && !UploadingImage;
         }
 
         public async Task LoadAsync()

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using MaterialDesignThemes.Wpf;
@@ -11,6 +10,7 @@ using RideSharing.App.Messages;
 using RideSharing.App.Services;
 using RideSharing.App.Services.Dialogs;
 using RideSharing.App.Wrappers;
+using RideSharing.Common.Enums;
 
 namespace RideSharing.App.ViewModels
 {
@@ -34,24 +34,32 @@ namespace RideSharing.App.ViewModels
             VehicleEditCommand = new RelayCommand<VehicleListModel>(EditVehicle);
 
             mediator.Register<UpdateMessage<VehicleWrapper>>(VehicleUpdated);
-            mediator.Register<NewMessage<VehicleWrapper>>(VehicleCreated);
+            mediator.Register<AddedMessage<VehicleWrapper>>(VehicleCreated);
         }
 
         public ICommand VehicleNewCommand { get; }
         public ICommand VehicleDeleteCommand { get; }
         public ICommand VehicleEditCommand { get; }
 
-        private void NewVehicle() => _mediator.Send(new NewMessage<VehicleWrapper>());
+        private void NewVehicle()
+        {
+            _mediator.Send(new NewMessage<VehicleWrapper>());
+            _mediator.Send(new SwitchTabMessage(ViewIndex.AddVehicle));
+        }
 
         private void EditVehicle(VehicleListModel? model)
         {
-            if (model is not null)
-                _mediator.Send(new ManageMessage<VehicleWrapper> { Id = model.Id });
+            if (model is null)
+                return;
+            
+            _mediator.Send(new ManageMessage<VehicleWrapper> { Id = model.Id });
+            _mediator.Send(new SwitchTabMessage(ViewIndex.VehicleManage));
+            
         }
 
         private async void VehicleUpdated(UpdateMessage<VehicleWrapper> _) => await LoadAsync();
 
-        private async void VehicleCreated(NewMessage<VehicleWrapper> _) => await LoadAsync();
+        private async void VehicleCreated(AddedMessage<VehicleWrapper> _) => await LoadAsync();
 
         public ObservableCollection<VehicleListModel> Vehicles { get; set; } = new();
 

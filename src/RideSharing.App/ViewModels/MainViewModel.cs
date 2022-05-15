@@ -23,6 +23,7 @@ public class MainViewModel : ViewModelBase
         IUserDetailViewModel userDetailViewModel,
         IVehicleDetailViewModel vehicleDetailViewModel,
         IVehicleListViewModel vehicleListViewModel,
+        IAddVehicleViewModel addVehicleViewModel,
         IMediator mediator,
         ISnackbarMessageQueue messageQueue) : base(mediator)
     {
@@ -35,6 +36,7 @@ public class MainViewModel : ViewModelBase
         UserDetailViewModel = userDetailViewModel;
         VehicleDetailViewModel = vehicleDetailViewModel;
         VehicleListViewModel = vehicleListViewModel;
+        AddVehicleViewModel = addVehicleViewModel;
 
         LogOutCommand = new RelayCommand(LogOut);
         MenuTabCommand = new RelayCommand<string>(MenuTab);
@@ -91,7 +93,7 @@ public class MainViewModel : ViewModelBase
     public IUserDetailViewModel UserDetailViewModel { get; }
     public IVehicleDetailViewModel VehicleDetailViewModel { get; }
     public IVehicleListViewModel VehicleListViewModel { get; }
-
+    public IAddVehicleViewModel AddVehicleViewModel { get; }
 
     public ICommand LogOutCommand { get; }
     public ICommand MenuTabCommand { get; }

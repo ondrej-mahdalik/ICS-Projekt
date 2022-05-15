@@ -9,5 +9,6 @@ public enum ViewIndex
     ProfileSettings,
     RideDetail,
     RideManage,
-    VehicleManage
+    VehicleManage,
+    AddVehicle
 }

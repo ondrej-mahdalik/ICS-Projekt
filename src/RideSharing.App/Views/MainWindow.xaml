@@ -163,6 +163,9 @@
                     <materialDesign:TransitionerSlide>
                         <views:VehicleDetailView DataContext="{Binding VehicleDetailViewModel}" />
                     </materialDesign:TransitionerSlide>
+                    <materialDesign:TransitionerSlide>
+                        <views:AddVehicleView DataContext="{Binding AddVehicleViewModel}" />
+                    </materialDesign:TransitionerSlide>
                 </materialDesign:Transitioner>
             </Grid>
             <materialDesign:Snackbar x:Name="MainSnackbar" Margin="10px" MessageQueue="{Binding MessageQueue}" />

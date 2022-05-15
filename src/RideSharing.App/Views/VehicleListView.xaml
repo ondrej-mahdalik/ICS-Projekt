@@ -29,7 +29,9 @@
         <Button Grid.Row="0"
                 Grid.Column="1"
                 HorizontalAlignment="Right"
-                Style="{StaticResource MaterialDesignOutlinedButton}">Add New Vehicle</Button>
+                Command="{Binding VehicleNewCommand}"
+                Style="{StaticResource MaterialDesignOutlinedButton}"
+                Cursor="Hand">Add New Vehicle</Button>
         <ListView Grid.Row="1"
                   Grid.Column="1"
                   Margin="0px 20px"
