@@ -41,7 +41,7 @@ public sealed class ReservationFacadeTests : CRUDFacadeTestsBase
     {
         // Arrange
         ReservationDetailModel reservation =
-            new(DateTime.Now, 3, UserSeeds.ReservationUser1.Id, RideSeeds.JustReviewRide.Id);
+            new(DateTime.Now, 2, UserSeeds.ReservationUser1.Id, RideSeeds.PragueBrno.Id);
 
         reservation.ReservingUser = Mapper.Map<UserDetailModel>(UserSeeds.ReservationUser2);
 
@@ -51,7 +51,7 @@ public sealed class ReservationFacadeTests : CRUDFacadeTestsBase
         // Assert
         await using var dbxAssert = await DbContextFactory.CreateDbContextAsync();
         var temp = await dbxAssert.ReservationEntities.Include(x => x.ReservingUser).Include(x => x.Ride).FirstOrDefaultAsync(x => 
-            x.ReservingUserId == UserSeeds.ReservationUser2.Id && x.RideId == RideSeeds.JustReviewRide.Id);
+            x.ReservingUserId == UserSeeds.ReservationUser2.Id && x.RideId == RideSeeds.PragueBrno.Id);
         Assert.NotNull(temp);
     }
     
