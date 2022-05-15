@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using GoogleApi.Entities.Maps.Common;
 using MaterialDesignThemes.Wpf;
 using RideSharing.App.Messages;
 using RideSharing.App.Services;
@@ -39,7 +40,7 @@ namespace RideSharing.App.ViewModels
 
             SaveCommand = new AsyncRelayCommand(SaveAsync, CanSave);
             UpdateRouteCommand = new AsyncRelayCommand(UpdateRoute);
-            ClearCommand = new AsyncRelayCommand(async _ => await LoadAsync());
+            ClearCommand = new AsyncRelayCommand(ClearView);
 
             mediator.Register<AddedMessage<VehicleWrapper>>(async _ => await LoadAsync());
             mediator.Register<UpdateMessage<VehicleWrapper>>(async _ => await LoadAsync());
@@ -50,7 +51,21 @@ namespace RideSharing.App.ViewModels
 
         public RideWrapper? DetailModel { get; set; }
         public List<VehicleListModel>? Vehicles { get; set; }
-        public VehicleListModel? SelectedVehicle { get; set; }
+
+        private VehicleListModel? _selectedVehicle;
+        public VehicleListModel? SelectedVehicle
+        {
+            get { return _selectedVehicle; }
+            set
+            {
+                _selectedVehicle = value;
+                if (DetailModel is not null)
+                {
+                    DetailModel.SharedSeats = 1;
+                }
+            }
+        }
+
 
         public ICommand SaveCommand { get; }
         public ICommand ClearCommand { get; }
@@ -63,17 +78,81 @@ namespace RideSharing.App.ViewModels
             await LoadAsync();
         }
 
+        private TimeSpan _duration;
+        public TimeSpan Duration
+        {
+            get { return _duration; }
+            set
+            {
+                _duration = value;
+                ArrTime = _depTime + Duration;
+                ArrDate = _depDate + Duration;
+            }
+        }
+
+        private DateTime _depTime;
+        public DateTime DepTime
+        {
+            get { return _depTime; }
+            set
+            {
+                _depTime = value;
+                ArrTime = _depTime + Duration;
+            }
+        }
+
+        private DateTime _depDate;
+        public DateTime DepDate
+        {
+            get { return _depDate; }
+            set
+            {
+                _depDate = value;
+                ArrDate = _depDate + Duration;
+            }
+        }
+
+        private DateTime _arrTime;
+        public DateTime ArrTime
+        {
+            get { return _arrTime; }
+            set { _arrTime = value; }
+        }
+
+        private DateTime _arrDate;
+        public DateTime ArrDate
+        {
+            get { return _arrDate; }
+            set
+            {
+                _arrDate = value;
+            }
+        }
+
+        public async Task ClearView()
+        {
+            await LoadAsync();
+            SelectedVehicle = null;
+        }
+
         public async Task LoadAsync()
         {
             if (LoggedUser is null)
                 return;
 
+            MapEnabled = false;
             DetailModel = new(RideDetailModel.Empty);
             Vehicles = await _vehicleFacade.GetByOwnerAsync(LoggedUser.Id);
+            ArrDate = DepDate = DateTime.Today;
+            ArrTime  = DepTime = DateTime.Now;
+            Duration = TimeSpan.Zero;
+            RefreshMap();
         }
 
-        public bool CanSave() => DetailModel is not null && DetailModel.Distance > 0 && DetailModel.Arrival > DetailModel.Departure && DetailModel.Arrival > DateTime.Now && 
-                                 DetailModel.Departure > DateTime.Now &&  SelectedVehicle is not null && (Vehicles?.Any(x => x.Id == SelectedVehicle.Id) ?? false);
+        public bool MapEnabled { get; set; }
+
+        public bool CanSave() => DetailModel is not null && DetailModel.Distance > 0 && Combine(ArrDate, ArrTime) > Combine(DepDate, DepTime) && Combine(ArrDate, ArrTime) > DateTime.Now &&
+                                 Combine(DepDate, DepTime) > DateTime.Now &&  SelectedVehicle is not null && (Vehicles?.Any(x => x.Id == SelectedVehicle.Id) ?? false);
         
         public async Task SaveAsync()
         {
@@ -91,12 +170,14 @@ namespace RideSharing.App.ViewModels
             try
             {
                 DetailModel.VehicleId = SelectedVehicle!.Id;
+                DetailModel.Arrival = Combine(ArrDate, ArrTime);
+                DetailModel.Departure = Combine(DepDate, DepTime);
                 await _rideFacade.SaveAsync(DetailModel);
                 _mediator.Send(new AddedMessage<RideWrapper>());
                 _mediator.Send(new SwitchTabMessage(ViewIndex.Dashboard));
                 _messageQueue.Enqueue("Ride has been successfully created");
 
-                await LoadAsync(); // Clear fields
+                await ClearView();
             }
             catch
             {
@@ -104,7 +185,6 @@ namespace RideSharing.App.ViewModels
             }
         }
 
-        public TimeSpan Duration { get; private set; }
         public DateTime Today { get; set; } = DateTime.Now;
         
         private async Task UpdateRoute()
@@ -118,9 +198,19 @@ namespace RideSharing.App.ViewModels
 
             DetailModel.Distance = routeInfo.Item2!.Value;
             Duration = routeInfo.Item3!.Value;
-            DetailModel.Arrival = DetailModel.Departure.Add(Duration);
+        }
+
+        private void RefreshMap()
+        {
+            MapEnabled = true;
+            MapEnabled = false;
+        }
+
+        private DateTime Combine(DateTime date, DateTime time)
+        {
+            return date.Date.Add(time.TimeOfDay);
         }
     }
 
-    
+
 }

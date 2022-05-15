@@ -23,6 +23,7 @@
             <converters:LoginViewIndexToIntConverter x:Key="LoginViewIndexToIntConverter" />
             <converters:VehicleTypeToIntConverter x:Key="VehicleTypeToIntConverter"/>
             <converters:BoolToUpcomingRideMessageConverter x:Key="BoolToUpcomingRideMessageConverter"/>
+            <converters:IntSubtractConverter x:Key="IntSubtractConverter"/>
             <BitmapImage x:Key="ProfileDefault"
                          UriSource="/Resources/profile_default.jpg" />
             <BitmapImage x:Key="VehicleDefault"

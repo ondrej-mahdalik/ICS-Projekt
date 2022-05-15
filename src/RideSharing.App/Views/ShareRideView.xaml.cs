@@ -1,4 +1,5 @@
-﻿using Microsoft.Web.WebView2.Core;
+﻿using System.Windows;
+using Microsoft.Web.WebView2.Core;
 using RideSharing.App.ViewModels;
 
 namespace RideSharing.App.Views
@@ -29,6 +30,12 @@ namespace RideSharing.App.Views
                 if (viewModel.UpdateRouteCommand.CanExecute(false))
                     viewModel.UpdateRouteCommand.Execute(false);
             }
+        }
+
+        private void MapView_OnEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (MapView.IsEnabled)
+                MapView.Reload();
         }
     }
 }

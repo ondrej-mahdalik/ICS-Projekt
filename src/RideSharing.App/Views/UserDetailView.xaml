@@ -49,16 +49,16 @@
             <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="Name"
                      Margin="10px"
-                     Text="{Binding DetailModel.Name}" />
+                     Text="{Binding DetailModel.Name, UpdateSourceTrigger=PropertyChanged}" />
             <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="Surname"
                      Margin="10px"
-                     Text="{Binding DetailModel.Surname}" />
+                     Text="{Binding DetailModel.Surname, UpdateSourceTrigger=PropertyChanged}" />
 
             <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      materialDesign:HintAssist.Hint="Phone"
                      Margin="10px"
-                     Text="{Binding DetailModel.Phone}" />
+                     Text="{Binding DetailModel.Phone, UpdateSourceTrigger=PropertyChanged}" />
             <Button Style="{StaticResource MaterialDesignOutlinedButton}"
                     HorizontalAlignment="Right"
                     Margin="10px"

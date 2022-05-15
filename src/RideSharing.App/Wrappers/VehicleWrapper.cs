@@ -71,9 +71,9 @@ public class VehicleWrapper : ModelWrapper<VehicleDetailModel>
             yield return new ValidationResult($"{nameof(Model)} is required", new[] { nameof(Model) });
         }
 
-        if (Seats <= 0)
+        if (Seats < 2)
         {
-            yield return new ValidationResult($"{nameof(Seats)} has to be positive integer", new[] { nameof(Seats) });
+            yield return new ValidationResult($"Vehicle must have at least 2 seats.", new[] { nameof(Seats) });
         }
 
     }
