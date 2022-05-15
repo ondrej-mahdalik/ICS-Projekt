@@ -92,6 +92,7 @@
                         HorizontalAlignment="Right">
                 <Button HorizontalAlignment="Center"
                         Style="{StaticResource MaterialDesignFlatAccentButton}"
+                        Command="{Binding CancelCommand}"
                         Cursor="Hand">Cancel</Button>
                 <Button Margin="10px"
                         HorizontalAlignment="Right"

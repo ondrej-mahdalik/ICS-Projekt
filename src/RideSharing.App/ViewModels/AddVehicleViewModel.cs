@@ -35,10 +35,7 @@ namespace RideSharing.App.ViewModels
             ChangeImageCommand = new Commands.AsyncRelayCommand<string>(ChangeImageAsync);
             CancelCommand = new RelayCommand(Cancel);
 
-            mediator.Register<NewMessage<VehicleWrapper>>(async _ =>
-            {
-                await LoadAsync();
-            });
+            mediator.Register<NewMessage<VehicleWrapper>>(async _ => await LoadAsync());
         }
 
         private void Cancel()
@@ -46,33 +43,17 @@ namespace RideSharing.App.ViewModels
             _mediator.Send(new SwitchTabMessage(ViewIndex.VehicleList));
         }
 
+        public VehicleWrapper? DetailModel { get; private set; }
+
         public ICommand SaveCommand { get; }
         public ICommand ChangeImageCommand { get; }
         public ICommand CancelCommand { get; }
-        public VehicleWrapper? DetailModel { get; private set; }
 
         public static IEnumerable<string> VehicleTypes
         {
             get => Enum.GetNames<VehicleType>();
         }
-        public bool UploadingImage { get; private set; }
 
-        private async Task ChangeImageAsync(string? filePath)
-        {
-            if (filePath is null || DetailModel is null)
-                return;
-
-            UploadingImage = true;
-            try
-            {
-                var imageUrl = await BusinessLogic.UploadImageAsync(filePath);
-                DetailModel.ImageUrl = imageUrl;
-            }
-            finally
-            {
-                UploadingImage = false;
-            }
-        }
 
         public async Task LoadAsync()
         {
@@ -103,6 +84,24 @@ namespace RideSharing.App.ViewModels
             {
                 await DialogHost.Show(new MessageDialog("Creating Failed", "Failed to create the vehicle.",
                     DialogType.OK));
+            }
+        }
+
+        public bool UploadingImage { get; private set; }
+        private async Task ChangeImageAsync(string? filePath)
+        {
+            if (filePath is null || DetailModel is null)
+                return;
+
+            UploadingImage = true;
+            try
+            {
+                var imageUrl = await BusinessLogic.UploadImageAsync(filePath);
+                DetailModel.ImageUrl = imageUrl;
+            }
+            finally
+            {
+                UploadingImage = false;
             }
         }
     }

@@ -86,23 +86,16 @@
                                        Grid.Row="3"
                                        Text="{Binding Path=UpcomingRidesCount, StringFormat='Upcoming Rides: {0}'}" />
                             <Button Grid.Column="0"
+                                    Grid.ColumnSpan="2"
                                     Grid.Row="4"
                                     Style="{StaticResource MaterialDesignOutlinedButton}"
                                     materialDesign:RippleAssist.IsDisabled="False"
-                                    Margin="5px"
+                                    Margin="30px, 7px"
                                     Cursor="Hand"
                                     Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:UserControlBase}},
                         Path=DataContext.LoginCommand}"
                                     CommandParameter="{Binding Id}">Log in</Button>
-                            <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:UserControlBase}},
-                        Path=DataContext.DeleteUserCommand}"
-                                    CommandParameter="{Binding}"
-                                    Grid.Row="4"
-                                    Style="{StaticResource MaterialDesignOutlinedButton}"
-                                    materialDesign:RippleAssist.IsDisabled="False"
-                                    Grid.Column="1"
-                                    Margin="5px"
-                                    Cursor="Hand">Delete</Button>
+
                         </Grid>
                     </materialDesign:Card>
                 </DataTemplate>

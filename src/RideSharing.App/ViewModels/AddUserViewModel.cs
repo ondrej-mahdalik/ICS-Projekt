@@ -40,13 +40,9 @@ namespace RideSharing.App.ViewModels
         public ICommand CancelCommand { get; }
         public ICommand ChangeImageCommand { get; }
 
-        public bool CanSave()
-        {
-            return DetailModel is not null && DetailModel.Name!.Length > 0 &&
-                   DetailModel.Surname!.Length > 0 && DetailModel.Phone!.Length > 0 && !UploadingImage;
-        }
+        public bool CanSave() => (DetailModel?.IsValid ?? false) && !UploadingImage;
 
-        public async Task LoadAsync()
+            public async Task LoadAsync()
         {
             DetailModel = new UserWrapper(UserDetailModel.Empty);
         }
@@ -63,7 +59,6 @@ namespace RideSharing.App.ViewModels
         }
 
         public bool UploadingImage { get; private set; }
-
         private async Task ChangeImageAsync(string? filePath)
         {
             if (filePath is null || DetailModel is null)

@@ -39,7 +39,7 @@ public class UserDetailViewModel : ViewModelBase, IUserDetailViewModel
         _mediator = mediator;
         _messageQueue = messageQueue;
 
-        DeleteUserCommand = new RelayCommand(UserDeleted);
+        DeleteUserCommand = new AsyncRelayCommand(DeleteAsync);
         SaveChangesCommand = new AsyncRelayCommand(SaveAsync);
         ChangeImageCommand = new AsyncRelayCommand<string>(ChangeImageAsync);
     }
@@ -70,17 +70,12 @@ public class UserDetailViewModel : ViewModelBase, IUserDetailViewModel
         if (obj.Model is not null)
             await LoadAsync(obj.Model.Id);
     }
-
-    private async void UserUpdated(UpdateMessage<UserWrapper> _) => await LoadAsync(DetailModel.Id);
-    private async void UserDeleted()
-    {
-        await DeleteAsync();
-    }
     
     public async Task LoadAsync(Guid id)
     {
         DetailModel = await _userFacade.GetAsync(id) ?? throw new InvalidOperationException("Failed to load the selected ride");
     }
+
     public async Task SaveAsync()
     {
         if (DetailModel is null)
