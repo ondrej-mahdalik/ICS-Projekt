@@ -68,8 +68,14 @@ public class VehicleWrapper : ModelWrapper<VehicleDetailModel>
 
         if (string.IsNullOrWhiteSpace(Model))
         {
-            yield return new ValidationResult($"{nameof(Make)} is required", new[] { nameof(Make) });
+            yield return new ValidationResult($"{nameof(Model)} is required", new[] { nameof(Model) });
         }
+
+        if (Seats <= 0)
+        {
+            yield return new ValidationResult($"{nameof(Seats)} has to be positive integer", new[] { nameof(Seats) });
+        }
+
     }
 
     public static implicit operator VehicleWrapper(VehicleDetailModel? detailModel)
