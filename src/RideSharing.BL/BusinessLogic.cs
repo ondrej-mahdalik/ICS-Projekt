@@ -55,7 +55,7 @@ public class BusinessLogic
         if (distance is null || duration is null)
             return new Tuple<bool, int?, TimeSpan?>(false, null, null);
 
-        return new Tuple<bool, int?, TimeSpan?>(true, distance.Value, TimeSpan.FromSeconds(duration.Value));
+        return new Tuple<bool, int?, TimeSpan?>(true, distance.Value / 1000, TimeSpan.FromSeconds(duration.Value));
 
     }
 }
