@@ -67,7 +67,7 @@
                     </Grid>
                     <TextBlock FontWeight="Bold"
                                Text="Driver's note:" />
-                    <materialDesign:Chip HorizontalAlignment="Stretch">
+                    <materialDesign:Chip HorizontalAlignment="Stretch" Cursor="Arrow">
                         <TextBlock TextAlignment="Center"
                                    Text="{Binding DetailModel.Note, FallbackValue='No note.'}"/>
                     </materialDesign:Chip>

@@ -95,8 +95,11 @@
                         Command="{Binding FindRideCommand}" />
             </Grid>
             <!--Results-->
-            <StackPanel Grid.Column="1"
-                        Margin="10,0,-10,0">
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height=" Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Center">
                     <Label VerticalAlignment="Center">Sort by:</Label>
@@ -125,7 +128,9 @@
                         Rating
                     </RadioButton>
                 </StackPanel>
-                <ListView HorizontalContentAlignment="Center"
+                <ListView Grid.Row="1" HorizontalContentAlignment="Center"
+                          materialDesign:ListViewAssist.ListViewItemPadding="10px"
+                          ScrollViewer.VerticalScrollBarVisibility="Visible"
                           Style="{StaticResource MaterialDesignListViewNoRippleEffect}"
                           ItemsSource="{Binding FoundRides}">
                     <ListView.ItemTemplate>
@@ -219,7 +224,7 @@
 
 
 
-            </StackPanel>
+            </Grid>
         </Grid>
     </Grid>
 </local:UserControlBase>
