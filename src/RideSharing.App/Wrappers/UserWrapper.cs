@@ -63,7 +63,7 @@ public class UserWrapper : ModelWrapper<UserDetailModel>
 
     public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
-        Regex letters = new Regex(@"^\p{L}+$");
+        Regex letters = new Regex(@"^[\p{L} \d]+$");
         if (!letters.IsMatch(Name))
         {
             yield return new ValidationResult($"{nameof(Name)} is required", new[] { nameof(Name) });

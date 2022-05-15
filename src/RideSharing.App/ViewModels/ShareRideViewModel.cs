@@ -72,7 +72,8 @@ namespace RideSharing.App.ViewModels
             Vehicles = await _vehicleFacade.GetByOwnerAsync(LoggedUser.Id);
         }
 
-        public bool CanSave() => DetailModel is not null && DetailModel.Distance > 0 && DetailModel.Arrival > DetailModel.Departure && SelectedVehicle is not null && (Vehicles?.Any(x => x.Id == SelectedVehicle.Id) ?? false);
+        public bool CanSave() => DetailModel is not null && DetailModel.Distance > 0 && DetailModel.Arrival > DetailModel.Departure && DetailModel.Arrival > DateTime.Now && 
+                                 DetailModel.Departure > DateTime.Now &&  SelectedVehicle is not null && (Vehicles?.Any(x => x.Id == SelectedVehicle.Id) ?? false);
         
         public async Task SaveAsync()
         {
