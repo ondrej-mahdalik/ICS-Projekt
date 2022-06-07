@@ -18,3 +18,7 @@ Kompletní zadání viz [zde](https://github.com/nesfit/ICS/tree/3583719af06a469
 - 3\. část - 50/50
 
 Celkové hodnocení 100/100
+
+## Další Informace
+Pro plnou funkčnost aplikace je třeba si v Google Cloud Console vytvořit API klíč a servisní účet a dané údaje vložit do adekvátních souborů.
+Údaje obsažené v tomto repozitáři jsou jen referenční a neplatné.
